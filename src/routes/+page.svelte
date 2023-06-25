@@ -17,7 +17,7 @@
 		</li>
 		{/each}
 	</ul>
-	<div>
-		<a class="text-xs text-gray-500 dark:text-gray-400 hover:underline" href="/bookmarks">Checkout some of my web bookmarks here.</a>
+	<div class="text-xs text-gray-500 dark:text-gray-400 text-center">
+		<span class="italic">“I have not failed. I've just found 10,000 ways that won't work.”</span> ― Thomas A. Edison
 	</div>
 </div>
