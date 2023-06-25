@@ -17,4 +17,7 @@
 		</li>
 		{/each}
 	</ul>
+	<div>
+		<a class="text-xs text-slate-500 dark:text-slate-400 hover:underline" href="/bookmarks">Checkout some of my web bookmarks here.</a>
+	</div>
 </div>
