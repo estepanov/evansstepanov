@@ -1,6 +1,7 @@
 <script>
 	import Logo from '../components/Logo.svelte'
 	import Link from '../components/Link.svelte'
+	export let data
 </script>
 
 <svelte:head>
@@ -8,16 +9,12 @@
 </svelte:head>
 
 <div class="flex justify-center items-center p-5 flex-col h-screen space-y-20">
-	<div class="w-60 text-slate-900 dark:text-slate-100"><Logo /></div>
-	<ul class="flex flex-row space-x-6 uppercase tracking-wide">
-		<li>
-			<Link href="https://github.com/estepanov">GitHub</Link>
+	<div class="w-60 text-slate-900 dark:text-slate-100 p-1"><Logo /></div>
+	<ul class="flex flex-col md:flex-row uppercase tracking-wide">
+		{#each data.links as link}	
+		<li class="uppercase my-2 mx-2 text-center">
+			<Link href={link.url}>{link.title}</Link>
 		</li>
-		<li>
-			<Link href="https://linkedin.com/in/evansstepanov/">LinkedIn</Link>
-		</li>
-		<li>
-			<Link href="https://builtbyevans.com/">Projects</Link>
-		</li>
+		{/each}
 	</ul>
 </div>
