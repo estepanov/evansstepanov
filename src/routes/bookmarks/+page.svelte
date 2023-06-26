@@ -1,6 +1,4 @@
 <script>
-	import Logo from "../../components/Logo.svelte";
-
 	export let data;
 </script>
 
@@ -10,17 +8,19 @@
 </svelte:head>
 
 <div class="h-screen text-base">
-	<a class="block w-44 mx-auto my-10 text-gray-900 dark:text-gray-100" href="/">
-		<Logo />
-	</a>
-	<h1 class="text-center text-2xl font-bold text-gray-800 dark:text-gray-300 m-4">
-		Some bookmarks
-	</h1>
+	<div class="flex flex-row justify-center items-center">
+		<a class="inline-flex text-gray-900 dark:text-gray-100 justify-center items-center" href="/">
+			<img src="/logo/logo.svg" class="h-12 w-12 mr-2" alt="E.S." />
+		</a>
+		<h1 class="text-center text-2xl font-bold text-gray-800 dark:text-gray-300 m-4">
+			Random Links
+		</h1>
+	</div>
 	{#if data && data.tags}
 		<div class="columns-1 md:columns-2 lg:columns-4 max-w-6xl mx-auto p-4 space-y-4 text-black dark:text-white">
 			{#each data.tags as tag}
 				<div
-					class="group py-4 px-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:border-purple-400 shadow-none hover:shadow-md shadow-purple-500 dark:shadow-purple-100 transition-all ease-in"
+					class="group py-4 px-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:border-purple-400 shadow-none hover:shadow-md shadow-purple-500 dark:shadow-purple-100 transition-all ease-in"
 				>
 					<h2 class="text-lg tracking-wide font-medium text-center text-gray-500 dark:text-gray-400 group-hover:text-purple-500 dark:group-hover:text-purple-400 uppercase ">
 						{tag.name}
