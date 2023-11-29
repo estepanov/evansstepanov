@@ -37,6 +37,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@notionhq/client": "^2.2.5"
+		"@notionhq/client": "^2.2.5",
+		"fathom-client": "^3.6.0"
 	}
 }
