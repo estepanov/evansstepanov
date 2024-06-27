@@ -43,22 +43,22 @@
 				{#each data.work as work}
 					<li>
 						<div>
-							<h3 class="font-bold mb-1">
+							<h3 class="font-bold mb-2">
 								<span class="text-gray-700 dark:text-gray-200">
 									{work.title}
 								</span>
-								<span class="px-1 text-gray-400 font-thin">@</span>
+								<span class="px-1 text-gray-700 dark:text-gray-400 font-thin">@</span>
 								{#if work.url}
-								<a target="_blank" rel="noopener" referrerpolicy="no-referrer" href={work.url} class="font-bold text-gray-700 dark:text-gray-300 underline-offset-4 italic underline hover:text-emerald-500 transition-all duration-200 ease-in"
+								<a target="_blank" rel="noopener" referrerpolicy="no-referrer" href={work.url} class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 										>{work.companyName}</a
 									>
 									{:else}
-									<span class="font-bold italic text-gray-700 dark:text-gray-300 "
+									<span class="font-normal text-gray-700 dark:text-gray-300 "
 									>{work.companyName}</span
 								>
 									{/if}
 							</h3>
-							<p class="font-thin">{work.description}</p>
+							<p class="leading-tight dark:text-gray-900 text-gray-600">{work.description}</p>
 						</div>
 					</li>
 				{/each}
