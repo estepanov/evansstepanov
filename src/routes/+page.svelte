@@ -58,7 +58,7 @@
 								>
 									{/if}
 							</h3>
-							<p class="leading-tight dark:text-gray-900 text-gray-600">{work.description}</p>
+							<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
 						</div>
 					</li>
 				{/each}
