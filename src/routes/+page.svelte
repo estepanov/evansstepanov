@@ -1,6 +1,8 @@
 <script>
 	import Logo from '../components/Logo.svelte';
 	import Link from '../components/Link.svelte';
+	import * as Fathom from 'fathom-client';
+
 	export let data;
 </script>
 
@@ -15,7 +17,7 @@
 	<ul class="flex flex-row flex-wrap uppercase tracking-wide justify-center items-center">
 		{#each data.links as link}
 			<li class="uppercase my-1 sm:my-2 mx-1 sm:mx-2 md:mx-3 leading-8 text-center text-xs sm:text-sm">
-				<Link href={link.url}>{link.title}</Link>
+				<Link target='_blank' onClick={() => Fathom.trackEvent(`click_main_link-${link.title}`)} href={link.url}>{link.title}</Link>
 			</li>
 		{/each}
 	</ul>
@@ -49,7 +51,7 @@
 								</span>
 								<span class="px-1 text-gray-700 dark:text-gray-400 font-thin">@</span>
 								{#if work.url}
-								<a target="_blank" rel="noopener" referrerpolicy="no-referrer" href={work.url} class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+								<a target="_blank" rel="noopener" referrerpolicy="no-referrer" on:click={() => Fathom.trackEvent(`click_work_link-${work.title}`)} href={work.url} class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 										>{work.companyName}</a
 									>
 									{:else}
