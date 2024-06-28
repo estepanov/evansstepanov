@@ -45,7 +45,8 @@
 				{#each data.work as work}
 					<li>
 						<div>
-							<h3 class="font-bold mb-2">
+							<h3 class={`font-bold mb-2`}>
+					
 								<span class="text-gray-700 dark:text-gray-200">
 									{work.title}
 								</span>
@@ -58,6 +59,11 @@
 									<span class="font-normal text-gray-700 dark:text-gray-300 "
 									>{work.companyName}</span
 								>
+									{/if}
+									{#if work.isCurrent}
+									<span class="ml-2 p-1 bg-gradient-to-tr from-emerald-600 to-emerald-400 text-black uppercase text-xs px-3">
+										Current
+									</span>
 									{/if}
 							</h3>
 							<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>

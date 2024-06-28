@@ -1,5 +1,6 @@
 
 export interface Work {
+    isCurrent?: boolean,
     companyName: string,
     companyGroup?: string,
     title: string,
@@ -10,6 +11,7 @@ export interface Work {
 
 export const work: Work[] = [
     {
+        isCurrent: true,
         companyName: 'CLEAR',
         companyGroup: 'Web Platform',
         title: 'Senior Software Engineer',
