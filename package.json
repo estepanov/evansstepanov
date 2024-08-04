@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
+		"download-images":"node --env-file=.env ./scripts/download-build-images.js",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",

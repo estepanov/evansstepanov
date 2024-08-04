@@ -2,8 +2,11 @@
 	import Logo from '../components/Logo.svelte';
 	import Link from '../components/Link.svelte';
 	import * as Fathom from 'fathom-client';
+	import Section from '../components/Section.svelte';
+	import SpecialBadge from '../components/SpecialBadge.svelte';
 
 	export let data;
+
 </script>
 
 <svelte:head>
@@ -21,33 +24,22 @@
 			</li>
 		{/each}
 	</ul>
-	<main class="w-full space-y-10">
-		<div class="space-y-2">
-			<div class="relative flex py-5 items-center">
-				<div class="flex-grow border-t dark:border-gray-800 border-gray-300"></div>
-				<h2 class="flex-shrink mx-4 font-bold text-lg dark:text-gray-400 tracking-widest text-gray-800 uppercase">About</h2>
-				<div class="flex-grow border-t dark:border-gray-800 border-gray-300"></div>
-			</div>
+	<main class="w-full space-y-20">
+		<Section title="About">
 			<p>
 				Professioinally I enjoy building seamless and delightful user experiences via full stack
 				TypeScript web applications. With experience working on code bases of every size from small
 				startups to one of the largest. Improving reliability and stability, while delivering
 				incremental value.
 			</p>
-		</div>
-		<div class="space-y-2">
-			<div class="relative flex py-5 items-center">
-				<div class="flex-grow border-t dark:border-gray-800 border-gray-300"></div>
-				<h2 class="flex-shrink mx-4 font-bold text-lg dark:text-gray-400 tracking-widest text-gray-800 uppercase">Work</h2>
-				<div class="flex-grow border-t dark:border-gray-800 border-gray-300"></div>
-			</div>
-			<ul class=" space-y-4">
+		</Section>
+		<Section title="Work">
+			<ul class=" space-y-8">
 				{#each data.work as work}
 					<li>
 						<div>
-							<h3 class={`font-bold mb-2`}>
-					
-								<span class="text-gray-700 dark:text-gray-200">
+							<h3 class={`mb-2`}>
+								<span class="text-gray-700 dark:text-gray-200 font-bold">
 									{work.title}
 								</span>
 								<span class="px-1 text-gray-700 dark:text-gray-400 font-thin">@</span>
@@ -61,9 +53,9 @@
 								>
 									{/if}
 									{#if work.isCurrent}
-									<span class="ml-2 p-1 bg-gradient-to-tr from-emerald-600 to-emerald-400 text-black uppercase text-xs px-3">
+									<SpecialBadge>
 										Current
-									</span>
+									</SpecialBadge>
 									{/if}
 							</h3>
 							<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
@@ -71,13 +63,42 @@
 					</li>
 				{/each}
 			</ul>
-		</div>
-		<div class="space-y-2">
-			<div class="relative flex py-5 items-center">
-				<div class="flex-grow border-t dark:border-gray-800 border-gray-300"></div>
-				<h2 class="flex-shrink mx-4 font-bold text-lg dark:text-gray-400 tracking-widest text-gray-800 uppercase">Tech</h2>
-				<div class="flex-grow border-t dark:border-gray-800 border-gray-300"></div>
-			</div>
+		</Section>
+		<Section title="Projects">
+			<ul class="space-y-8">
+				{#each data.projects as project}
+					<li>
+						<div>
+							<div class="flex flex-row items-center mb-2">
+								<h3 class="font-bold flex justify-center items-center">
+									{#if project.url}
+									<a target="_blank" rel="noopener" referrerpolicy="no-referrer" on:click={() => Fathom.trackEvent(`click_project_link-${project.name}`)} href={project.url} class="text-gray-700 dark:text-gray-200 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+										>{project.name}</a
+									>
+									{:else}
+									<span class="text-gray-700 dark:text-gray-200">{project.name}</span>
+									{/if}
+								</h3>
+								{#if project.isActive} 
+									<SpecialBadge>
+										Active
+									</SpecialBadge>
+								{/if}
+							</div>
+							<p class="leading-tight dark:text-gray-200 text-gray-600">{project.description}</p>
+							<div class="text-xs mt-2">
+								{#if project.source}
+								<a target="_blank" rel="noopener" referrerpolicy="no-referrer" on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)} href={project.source} class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+									>View source code</a
+								>
+								{/if}
+							</div>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		</Section>
+		<Section title="Tech">
 			<ul class="flex flex-row flex-wrap">
 				{#each data.tech as tech}
 					<li class="mr-5 mb-2">
@@ -85,7 +106,8 @@
 					</li>
 				{/each}
 			</ul>
-		</div>
+		</Section>
+		
 	</main>
 	<footer class="mt-10">
 		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">
