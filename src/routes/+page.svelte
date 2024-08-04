@@ -42,7 +42,7 @@
 								<span class="text-gray-700 dark:text-gray-200 font-bold">
 									{work.title}
 								</span>
-								<span class="px-1 text-gray-700 dark:text-gray-400 font-thin">@</span>
+								<span class="px-2 text-gray-700 dark:text-gray-400 font-thin">@</span>
 								{#if work.url}
 								<a target="_blank" rel="noopener" referrerpolicy="no-referrer" on:click={() => Fathom.trackEvent(`click_work_link-${work.title}`)} href={work.url} class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 										>{work.companyName}</a
