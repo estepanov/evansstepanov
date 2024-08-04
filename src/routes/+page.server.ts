@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client"
-import { NOTION_TOKEN, LANDING_LINKS_NOTION_DB_ID, PROJECTS_NOTION_DB_ID, WORK_NOTION_DB_ID} from '$env/static/private';
-import { type Tech, tech } from '../data/tech'
+import { NOTION_TOKEN, LANDING_LINKS_NOTION_DB_ID, PROJECTS_NOTION_DB_ID, WORK_NOTION_DB_ID, TECH_NOTION_DB_ID} from '$env/static/private';
+import { TechProficiencyWeight, type Tech } from '../data/tech'
 import { type Work } from '../data/work'
 
 const notion = new Client({
@@ -19,6 +19,8 @@ interface Project {
     source: string
     tags?: string[]
     isActive?: boolean
+    startDate?: Date,
+    endDate?: Date,
 }
 
 interface LoadResults {
@@ -38,6 +40,9 @@ export async function load(): Promise<LoadResults> {
     const work = await notion.databases.query({
         database_id: WORK_NOTION_DB_ID as string
     })
+    const tech = await notion.databases.query({
+        database_id: TECH_NOTION_DB_ID as string
+    })
 
     const projectsResults = projects.results.map(page => ({
         name: page.properties.Name.title[0].plain_text,
@@ -47,7 +52,9 @@ export async function load(): Promise<LoadResults> {
         source: page.properties.Source.url,
         // media: page.properties.Media.files,
         media: [],
-        isActive: page.properties.Active.checkbox
+        isActive: page.properties.Active.checkbox,
+        startDate: page.properties.Dates.date.start ? new Date(page.properties.Dates.date.start) : undefined,
+        endDate: page.properties.Dates.date.end ? new Date(page.properties.Dates.date.end) : undefined
     })) as unknown as Project[]
 
     const workResults = work.results.map(page => ({
@@ -56,25 +63,35 @@ export async function load(): Promise<LoadResults> {
         description: page.properties.Summary.rich_text[0].plain_text,
         url: page.properties.URL.url,
         isCurrent: page.properties.Dates.date.end === null,
-        startDate: page.properties.Dates.date.start ? new Date(page.properties.Dates.date.start).toUTCString() : undefined,
-        endDate: page.properties.Dates.date.end ? new Date(page.properties.Dates.date.end).toUTCString() : undefined,
+        startDate: page.properties.Dates.date.start ? new Date(page.properties.Dates.date.start) : undefined,
+        endDate: page.properties.Dates.date.end ? new Date(page.properties.Dates.date.end) : undefined,
     })) as unknown as Work[]
+
+    const techResults = tech.results.map(page => ({
+        name: page.properties.Name.title[0].plain_text,
+        proficiency: page.properties.Proficiency.select.name,
+        proficiencyWeight: TechProficiencyWeight[page.properties.Proficiency.select.name],
+        description: page.properties.Description.rich_text[0]?.plain_text ?? undefined,
+        url: page.properties.URL.url ?? undefined,
+    })) as unknown as Tech[]
 
     return {
         links: links.results.map(page => ({
             title: page.properties.Name.title[0].plain_text,
             url: page.properties.URL.url,
         })) as unknown as PageLink[],
-        tech,
+        // sort tech by highest proficiencyWeight
+        tech: techResults.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight),
         // sort work by startDate
         work: workResults.sort((a, b) => {
             if (a.startDate && b.startDate) return new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
             return 0
         }),
-        // sort projects by isActive
+        // sort projects by isActive first and then by startDate
         projects: projectsResults.sort((a, b) => {
             if (a.isActive && !b.isActive) return -1
             if (!a.isActive && b.isActive) return 1
+            if (a.startDate && b.startDate) return new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
             return 0
         })
     };

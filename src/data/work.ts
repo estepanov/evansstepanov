@@ -6,6 +6,6 @@ export interface Work {
     description: string,
     url: string,
     image?: string
-    startDate?: string,
-    endDate?: string,
+    startDate?: Date,
+    endDate?: Date,
 }
