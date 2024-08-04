@@ -15,14 +15,17 @@
 </svelte:head>
 
 <div
-	class="flex justify-center items-center p-5 flex-col space-y-10 max-w-screen-md mx-auto"
+	class="flex justify-center items-center p-5 flex-col space-y-20 max-w-screen-md mx-auto mt-20"
 >
-	<div class="w-60 p-1"><Logo /></div>
+	<div class="w-60 p-1 "><Logo /></div>
 	<ul class="flex flex-row flex-wrap uppercase tracking-wide justify-center items-center">
-		{#each data.links as link}
+		{#each data.links as link, i}
 			<li class="uppercase my-1 sm:my-2 mx-1 sm:mx-2 md:mx-3 leading-8 text-center text-xs sm:text-sm">
 				<Link target='_blank' onClick={() => Fathom.trackEvent(`click_main_link-${link.title}`)} href={link.url}>{link.title}</Link>
 			</li>
+			{#if i !== data.links.length - 1}
+				<li class="uppercase leading-8 text-center text-xs sm:text-sm">&#x205E;</li>
+			{/if}
 		{/each}
 	</ul>
 	<main class="w-full space-y-20">
