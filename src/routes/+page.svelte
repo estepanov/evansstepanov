@@ -4,6 +4,7 @@
 	import * as Fathom from 'fathom-client';
 	import Section from '../components/Section.svelte';
 	import SpecialBadge from '../components/SpecialBadge.svelte';
+	import SpecialStatus from '../components/SpecialStatus.svelte';
 
 	export let data;
 
@@ -38,9 +39,14 @@
 				{#each data.work as work}
 					<li>
 						<div>
-							<h3 class={`mb-2`}>
+							<h3 class={`mb-2 relative`}>
+								{#if work.isCurrent}
+								<span class="absolute -left-4">
+									<SpecialStatus />
+								</span>
+								{/if}
+								{work.title}
 								<span class="text-gray-700 dark:text-gray-200 font-bold">
-									{work.title}
 								</span>
 								<span class="px-2 text-gray-700 dark:text-gray-400 font-thin">@</span>
 								{#if work.url}
@@ -69,8 +75,14 @@
 				{#each data.projects as project}
 					<li>
 						<div>
-							<div class="flex flex-row items-center mb-2">
+							<div class="flex flex-row items-center mb-2 relative">
+								{#if project.isActive}
+								<span class="absolute -left-4">
+									<SpecialStatus />
+								</span>
+								{/if}
 								<h3 class="font-bold flex justify-center items-center">
+
 									{#if project.url}
 									<a target="_blank" rel="noopener" referrerpolicy="no-referrer" on:click={() => Fathom.trackEvent(`click_project_link-${project.name}`)} href={project.url} class="text-gray-700 dark:text-gray-200 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 										>{project.name}</a
