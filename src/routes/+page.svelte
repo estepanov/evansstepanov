@@ -6,6 +6,7 @@
 	import SpecialBadge from '../components/SpecialBadge.svelte';
 	import SpecialStatus from '../components/SpecialStatus.svelte';
 	import { getFormattedDate } from '../util/dates';
+	import { getColorFromWeight } from '../util/statusColors';
 
 	export let data;
 </script>
@@ -42,7 +43,7 @@
 			</p>
 		</Section>
 		<Section title="Work">
-			<ul class=" space-y-8">
+			<ul class=" space-y-10">
 				{#each data.work as work}
 					<li>
 						<div>
@@ -92,7 +93,7 @@
 			</ul>
 		</Section>
 		<Section title="Projects">
-			<ul class="space-y-8">
+			<ul class="space-y-10">
 				{#each data.projects as project}
 					<li>
 						<div>
@@ -149,7 +150,16 @@
 		</Section>
 		<Section title="Tech">
 			<ul class="flex flex-row flex-wrap">
-				{#each data.tech as tech}
+				{#each data.tech as tech, i}
+					<!-- {#if i === 0 || tech.proficiencyWeight !== data.tech[i - 1].proficiencyWeight}
+						<div
+							class="{getColorFromWeight(
+								i === 0 ? tech.proficiencyWeight : data.tech[i - 1].proficiencyWeight
+							)} inline-block"
+						>
+							<span class="mr-5 mb-2 rounded-full px-2 border py-1">{tech.proficiency}</span>
+						</div>
+					{/if} -->
 					<li class="mr-5 mb-2">
 						<span>{tech.name}</span>
 					</li>
