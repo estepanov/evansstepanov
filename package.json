@@ -3,9 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "npm run download-images && vite dev",
 		"download-images": "NODE_OPTIONS='--import=tsx' node --env-file=.env ./scripts/download-build-images.ts",
-		"build": "vite build",
+		"build": "npm run download-images && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
