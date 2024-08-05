@@ -145,24 +145,23 @@
 											on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)}
 											href={project.source}
 											class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-											>Code</a
+											>{new URL(project.source).hostname.split('.')[0]}</a
 										>
 									</li>
 								{/if}
 								{#if project.media?.length > 0}
 									<li class="special">
-										<a
+										<button
 											on:click={() =>
 												handleClick(project.name === selectedProjectImage ? null : project.name)}
-											href={`#${idHash(project.name)}`}
 											class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 										>
 											{#if project.name === selectedProjectImage}
-												Close Media
+												close media
 											{:else}
-												Media
+												media
 											{/if}
-										</a>
+										</button>
 									</li>
 								{/if}
 							</ul>

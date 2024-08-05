@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	export let parentRouter: string | null = null;
+
 	export let isOpen: boolean = false;
 	const dispatch = createEventDispatcher();
 
@@ -21,20 +21,20 @@
 </script>
 
 <div
-	class={`mt-4 w-full bg-gray-300 dark:bg-slate-900 bg-opacity-50 rounded-xl ${
+	class={` mt-4 w-full bg-gradient-to-br from-gray-200 to-emerald-200 dark:from-gray-800 dark:to-emerald-900 rounded-xl ${
 		isOpen ? ' h-32' : 'h-0'
 	} overflow-hidden transition-all ease-in-out duration-500`}
 >
 	<div class="flex overflow-x-auto space-x-4 p-4">
 		{#each images as image}
-			<a href={`${parentRouter}`} on:click={() => openModal(image)}>
+			<button on:click={() => openModal(image)}>
 					<img
 						src={image.url}
                         loading="lazy"
 						alt={image.alt}
-						class={`h-24 w-auto object-cover cursor-pointer rounded-lg shadow-sm hover:shadow-lg duration-300 grayscale border border-white dark:border-black opacity-80 hover:opacity-100 transition-all ease-in`}
+						class={`scale-100 hover:scale-110 h-24 w-auto object-cover cursor-pointer rounded-lg shadow-sm hover:shadow-lg duration-300 grayscale opacity-80 hover:opacity-100 transition-all ease-in-out`}
 					/>
-			</a>
+            </button>
 		{/each}
 	</div>
 </div>
