@@ -2,6 +2,7 @@ import { Client } from "@notionhq/client"
 import { NOTION_TOKEN, LANDING_LINKS_NOTION_DB_ID, PROJECTS_NOTION_DB_ID, WORK_NOTION_DB_ID, TECH_NOTION_DB_ID} from '$env/static/private';
 import { TechProficiencyWeight, type Tech } from '../data/tech'
 import { type Work } from '../data/work'
+import { formatNotionFiles } from "../util/formate-notion-files";
 
 const notion = new Client({
     auth: NOTION_TOKEN,
@@ -21,6 +22,7 @@ interface Project {
     isActive?: boolean
     startDate?: Date,
     endDate?: Date,
+    media: string[]
 }
 
 interface LoadResults {
@@ -43,15 +45,14 @@ export async function load(): Promise<LoadResults> {
     const tech = await notion.databases.query({
         database_id: TECH_NOTION_DB_ID as string
     })
-
+// console.log(projects.results.map(p => p.properties.Media.files[0]))
     const projectsResults = projects.results.map(page => ({
         name: page.properties.Name.title[0].plain_text,
         description: page.properties.Description.rich_text[0].plain_text,
         tags: page.properties.Tags.multi_select.map(tag => tag.name),
         url: page.properties.URL.url,
         source: page.properties.Source.url,
-        // media: page.properties.Media.files,
-        media: [],
+        media: formatNotionFiles(page.properties.Media.files),
         isActive: page.properties.Active.checkbox,
         startDate: page.properties.Dates.date.start ? new Date(page.properties.Dates.date.start) : undefined,
         endDate: page.properties.Dates.date.end ? new Date(page.properties.Dates.date.end) : undefined

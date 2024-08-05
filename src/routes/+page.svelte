@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Logo from '../components/Logo.svelte';
 	import Link from '../components/Link.svelte';
 	import * as Fathom from 'fathom-client';
@@ -7,8 +7,15 @@
 	import SpecialStatus from '../components/SpecialStatus.svelte';
 	import { getFormattedDate } from '../util/dates';
 	import { getColorFromWeight } from '../util/statusColors';
+	import MiniImageGallery from '../components/MiniImageGallery.svelte';
+	import { idHash } from '../util/id-hash-link-format';
 
 	export let data;
+
+	let selectedProjectImage: string | null = null;
+	const handleClick = (event: string | null) => {
+		selectedProjectImage = event;
+	};
 </script>
 
 <svelte:head>
@@ -95,7 +102,7 @@
 		<Section title="Projects">
 			<ul class="space-y-10">
 				{#each data.projects as project}
-					<li>
+					<li id={idHash(project.name)}>
 						<div>
 							<div class="flex flex-row items-center mb-4 relative">
 								{#if project.isActive}
@@ -138,12 +145,42 @@
 											on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)}
 											href={project.source}
 											class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-											>View code</a
+											>Code</a
 										>
+									</li>
+								{/if}
+								{#if project.media?.length > 0}
+									<li>
+										<a
+											on:click={() =>
+												handleClick(project.name === selectedProjectImage ? null : project.name)}
+											href={`#${idHash(project.name)}`}
+											class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+										>
+											{#if project.name === selectedProjectImage}
+												Close Media
+											{:else}
+												Media
+											{/if}
+										</a>
 									</li>
 								{/if}
 							</ul>
 						</div>
+						<!-- {#if project.name === selectedProjectImage}
+							<div class="mt-4"> -->
+								<MiniImageGallery
+									isOpen={project.name === selectedProjectImage}
+									parentRouter={`#${idHash(project.name)}`}
+									images={project.media.map((img) => {
+										return {
+											url: img,
+											alt: `Image of ${project.name}`
+										};
+									})}
+								/>
+							<!-- </div>
+						{/if} -->
 					</li>
 				{/each}
 			</ul>
