@@ -132,12 +132,12 @@
 							<p class="leading-tight dark:text-gray-200 text-gray-600">{project.description}</p>
 							<ul class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500">
 								{#if project.startDate}
-									<li>
+									<li class="special">
 										{getFormattedDate(project.startDate)}
 									</li>
 								{/if}
 								{#if project.source}
-									<li>
+									<li class="special">
 										<a
 											target="_blank"
 											rel="noopener"
@@ -150,7 +150,7 @@
 									</li>
 								{/if}
 								{#if project.media?.length > 0}
-									<li>
+									<li class="special">
 										<a
 											on:click={() =>
 												handleClick(project.name === selectedProjectImage ? null : project.name)}
@@ -167,20 +167,16 @@
 								{/if}
 							</ul>
 						</div>
-						<!-- {#if project.name === selectedProjectImage}
-							<div class="mt-4"> -->
-								<MiniImageGallery
-									isOpen={project.name === selectedProjectImage}
-									parentRouter={`#${idHash(project.name)}`}
-									images={project.media.map((img) => {
-										return {
-											url: img,
-											alt: `Image of ${project.name}`
-										};
-									})}
-								/>
-							<!-- </div>
-						{/if} -->
+						<MiniImageGallery
+							isOpen={project.name === selectedProjectImage}
+							parentRouter={`#${idHash(project.name)}`}
+							images={project.media.map((img) => {
+								return {
+									url: img,
+									alt: `Image of ${project.name}`
+								};
+							})}
+						/>
 					</li>
 				{/each}
 			</ul>
@@ -211,3 +207,10 @@
 		</div>
 	</footer>
 </div>
+
+<style>
+	.special + li::before {
+		content: '⁞';
+		margin-right: 1rem;
+	}
+</style>
