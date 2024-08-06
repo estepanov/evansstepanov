@@ -56,7 +56,7 @@
 						<div>
 							<h3 class="mb-4 relative">
 								{#if work.isCurrent}
-									<span class="absolute -left-4">
+									<span class="absolute -left-3 md:-left-4">
 										<SpecialStatus />
 									</span>
 								{/if}
@@ -168,7 +168,6 @@
 						</div>
 						<MiniImageGallery
 							isOpen={project.name === selectedProjectImage}
-							parentRouter={`#${idHash(project.name)}`}
 							images={project.media.map((img) => {
 								return {
 									url: img,

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import LazyLoadImage from './LazyLoadImage.svelte';
 
 	export let isOpen: boolean = false;
 	const dispatch = createEventDispatcher();
@@ -28,13 +29,13 @@
 	<div class="flex overflow-x-auto space-x-4 p-4">
 		{#each images as image}
 			<button on:click={() => openModal(image)}>
-					<img
-						src={image.url}
-                        loading="lazy"
-						alt={image.alt}
-						class={`scale-100 hover:scale-110 h-24 w-auto object-cover cursor-pointer rounded-lg shadow-sm hover:shadow-lg duration-300 grayscale opacity-80 hover:opacity-100 transition-all ease-in-out`}
-					/>
-            </button>
+				<LazyLoadImage
+					classNames={`scale-100 ring-opacity-20 ring-white dark:ring-black ring-2 hover:scale-105 w-auto object-cover cursor-pointer rounded-lg shadow-sm hover:shadow-lg duration-300 transition-all ease-in-out`}
+					src={image.url}
+					shouldLoad={isOpen}
+					alt={image.alt}
+				/>
+			</button>
 		{/each}
 	</div>
 </div>
@@ -44,7 +45,7 @@
 		on:click={closeModal}
 	>
 		<div
-			class="max-w-3xl max-h-[90vh] p-4 bg-white dark:bg-black rounded-lg"
+			class="max-w-3xl max-h-[90vh] p-4 bg-white dark:bg-black rounded-lg m-2"
 			on:click|stopPropagation
 		>
 			<img
