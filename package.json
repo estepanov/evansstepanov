@@ -3,8 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "npm run download-images && vite dev",
-		"download-images": "NODE_OPTIONS='--import=tsx' node --env-file=.env ./scripts/download-build-images.ts",
+		"dev": "npm run download-images:dev && vite dev",
+		"download-images": "NODE_OPTIONS='--import=tsx' node ./scripts/download-build-images.ts",
+		"download-images:dev": "NODE_OPTIONS='--import=tsx' node --env-file=.env ./scripts/download-build-images.ts",
 		"build": "npm run download-images && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",

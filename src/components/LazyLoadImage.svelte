@@ -28,15 +28,17 @@
 				const dataUrl = canvas.toDataURL();
 				imageCache.addImage(src, dataUrl);
 			};
-			imageElement.src = src;
+            setTimeout(() => {
+                imageElement.src = src;
+            }, 500);
 		}
 	}
 </script>
 
-<div class="block h-24">
+<div class="block h-32 w-32 flex-shrink-0">
 	{#if !loaded}
 		<div
-			class={`relative h-full bg-emerald-50 dark:bg-emerald-950 rounded-md animate-pulse bg-opacity-40 px-20 transition-all ease-in-out ${
+			class={`relative h-full flex-shrink-0 bg-emerald-50 dark:bg-emerald-950 rounded-md animate-pulse bg-opacity-40 px-10 transition-all ease-in-out ${
 				loaded ? 'opacity-0' : 'opacity-100'
 			}`}
 		>
@@ -46,7 +48,7 @@
 	<img
 		bind:this={imageElement}
 		{alt}
-		class={`${classNames} h-24 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+		class={`${classNames} h-32 ${loaded ? 'opacity-100' : 'opacity-0'}`}
 	/>
 </div>
 

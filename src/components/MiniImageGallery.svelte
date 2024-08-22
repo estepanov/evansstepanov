@@ -23,14 +23,14 @@
 
 <div
 	class={` mt-4 w-full bg-gradient-to-br from-gray-200 to-emerald-200 dark:from-gray-800 dark:to-emerald-900 rounded-xl ${
-		isOpen ? ' h-32' : 'h-0'
+		isOpen ? 'h-40' : 'h-0'
 	} overflow-hidden transition-all ease-in-out duration-500`}
 >
 	<div class="flex overflow-x-auto space-x-4 p-4">
 		{#each images as image}
 			<button on:click={() => openModal(image)}>
 				<LazyLoadImage
-					classNames={`scale-100 ring-opacity-20 ring-white dark:ring-black ring-2 hover:scale-105 w-auto object-cover cursor-pointer rounded-lg shadow-sm hover:shadow-lg duration-300 transition-all ease-in-out`}
+					classNames={`scale-100 ring-opacity-20 ring-white dark:ring-black ring-2 hover:scale-105 w-auto object-cover cursor-pointer rounded shadow-sm hover:shadow-lg duration-300 transition-all ease-in-out`}
 					src={image.url}
 					shouldLoad={isOpen}
 					alt={image.alt}
