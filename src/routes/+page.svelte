@@ -42,15 +42,21 @@
 	</ul>
 	<main class="w-full space-y-20">
 		<Section title="About">
-			<p>
-				Professioinally I enjoy building seamless and delightful user experiences via full stack
-				TypeScript web applications. With experience working on code bases of every size from small
-				startups to one of the largest. Improving reliability and stability, while delivering
-				incremental value.
-			</p>
+			<div class="space-y-6">
+				<p class="leading-relaxed">
+					I'm a software engineer with a passion for building scalable, high-performance <span class="font-bold">web applications</span>. 
+					With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and full-stack initiatives, from architecting monorepos and optimizing legacy systems to enhancing accessibility and streamlining cloud infrastructure. 
+				</p>
+				<p class="leading-relaxed">
+					I specialize in React, Next.js, and modern JavaScript tooling, and thrive on solving complex technical challenges with elegant, user-focused solutions. 
+				</p>
+				<p class="leading-relaxed">
+					When I'm not coding, you can find me <span class="font-bold">reading</span> 📚, <span class="font-bold">skiing</span> ⛷️, playing <span class="font-bold">Halo</span> 🎮, or <span class="font-bold">sleeping</span> 🛌.
+				</p>
+			</div>
 		</Section>
 		<Section title="Work">
-			<ul class=" space-y-10">
+			<ul class="space-y-10">
 				{#each data.work as work}
 					<li>
 						<div>
