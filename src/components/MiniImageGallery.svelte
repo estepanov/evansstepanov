@@ -22,8 +22,8 @@
 </script>
 
 <div
-	class={` mt-4 w-full bg-gradient-to-br from-gray-200 to-emerald-200 dark:from-gray-800 dark:to-emerald-900 rounded-xl ${
-		isOpen ? 'h-40' : 'h-0'
+	class={`w-full bg-gradient-to-br from-gray-200 to-emerald-200 dark:from-gray-800 dark:to-emerald-900 rounded-xl ${
+		isOpen ? 'h-40 mt-2' : 'h-0 mt-0'
 	} overflow-hidden transition-all ease-in-out duration-500`}
 >
 	<div class="flex overflow-x-auto space-x-4 p-4">

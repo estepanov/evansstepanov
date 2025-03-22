@@ -24,155 +24,173 @@
 
 <div class="flex justify-center items-center p-5 flex-col space-y-20 max-w-screen-md mx-auto mt-20">
 	<div class="w-60 p-1"><Logo /></div>
-	<ul class="flex flex-row flex-wrap uppercase tracking-wide justify-center items-center">
-		{#each data.links as link, i}
-			<li
-				class="uppercase my-1 sm:my-2 mx-1 sm:mx-2 md:mx-3 leading-8 text-center text-xs sm:text-sm"
-			>
-				<Link
-					target="_blank"
-					onClick={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
-					href={link.url}>{link.title}</Link
-				>
-			</li>
-			{#if i !== data.links.length - 1}
-				<li class="uppercase leading-8 text-center text-xs sm:text-sm">&#x205E;</li>
-			{/if}
-		{/each}
-	</ul>
 	<main class="w-full space-y-20">
-		<Section title="About">
-			<div class="space-y-6">
+		<Section title="About me">
+			<div class={'space-y-6'}>
 				<p class="leading-relaxed">
-					I'm a software engineer with a passion for building scalable, high-performance <span class="font-bold">web applications</span>. 
-					With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and full-stack initiatives, from architecting monorepos and optimizing legacy systems to enhancing accessibility and streamlining cloud infrastructure. 
+					I'm a software engineer with a passion for building scalable, high-performance <span
+						class="font-bold text-emerald-600 dark:text-emerald-500">web applications</span
+					>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
+					full-stack initiatives, from architecting monorepos and optimizing legacy systems to
+					enhancing accessibility and streamlining cloud infrastructure.
 				</p>
 				<p class="leading-relaxed">
-					I specialize in React, Next.js, and modern JavaScript tooling, and thrive on solving complex technical challenges with elegant, user-focused solutions. 
+					I specialize in React, Next.js, and modern JavaScript tooling, and thrive on solving
+					complex technical challenges with elegant, user-focused solutions.
 				</p>
 				<p class="leading-relaxed">
-					When I'm not coding, you can find me <span class="font-bold">reading</span> 📚, <span class="font-bold">skiing</span> ⛷️, playing <span class="font-bold">Halo</span> 🎮, or <span class="font-bold">sleeping</span> 🛌.
+					When I'm not coding, you can find me <span class="font-bold text-emerald-600 dark:text-emerald-500">reading</span> 📚,
+					<span class="font-bold text-emerald-600 dark:text-emerald-500">skiing</span>
+					⛷️, playing <span class="font-bold text-emerald-600 dark:text-emerald-500">Halo</span> 🎮, or
+					<span class="font-bold text-emerald-600 dark:text-emerald-500">sleeping</span> 🛌.
 				</p>
 			</div>
 		</Section>
-		<Section title="Work">
-			<ul class="space-y-10">
-				{#each data.work as work}
+		<Section title="Links">
+			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center space-x-6">
+				{#each data.links as link, i}
 					<li>
-						<div>
-							<h3 class="mb-4 relative">
-								{#if work.isCurrent}
+						<a
+							target="_blank"
+							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
+							class="transition-all ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm border p-4 hover:border-emerald-500 hover:dark:border-emerald-400/30 border-slate-500/20 dark:border-slate-300/10 bg-emerald-900/0 hover:bg-emerald-100/30 dark:hover:bg-emerald-900/20"
+							href={link.url}>
+							{link.title}
+							</a>
+					</li>
+				{/each}
+			</ul>
+		</Section>
+		<Section title="Work">
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-10">
+				{#each data.work as work}
+					<li
+						class={`border p-6 rounded-xl flex flex-col ${
+							work.isCurrent
+								? `border-emerald-500 dark:border-emerald-400/30`
+								: `border-slate-500/20 dark:border-slate-300/10`
+						}`}
+					>
+						<h3 class="relative mb-4">
+							<!-- {#if work.isCurrent}
 									<span class="absolute -left-3 md:-left-4">
 										<SpecialStatus />
 									</span>
-								{/if}
+								{/if} -->
+							<span class="w-full block font-bold">
 								{work.title}
-								<span class="text-gray-700 dark:text-gray-200 font-bold" />
-								<span class="text-gray-700 dark:text-gray-400 font-thin">@</span>
-								{#if work.url}
-									<a
-										target="_blank"
-										rel="noopener"
-										referrerpolicy="no-referrer"
-										on:click={() => Fathom.trackEvent(`click_work_link-${work.title}`)}
-										href={work.url}
-										class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-										>{work.companyName}</a
-									>
-								{:else}
-									<span class="font-normal text-gray-700 dark:text-gray-300"
-										>{work.companyName}</span
-									>
-								{/if}
-								{#if work.isCurrent}
-									<SpecialBadge>Current</SpecialBadge>
-								{/if}
-							</h3>
-							<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
-							<ul class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500">
-								{#if work.startDate}
-									<li>
-										{getFormattedDate(work.startDate)}
-										{#if work.endDate}
-											<span class="mx-1">-</span>
-											{getFormattedDate(work.endDate)}
-										{/if}
-									</li>
-								{/if}
-							</ul>
-						</div>
+							</span>
+							<!-- <span class="text-gray-700 dark:text-gray-200 font-bold" />
+								<span class="text-gray-700 dark:text-gray-400 font-thin">at</span> -->
+							{#if work.url}
+								<a
+									target="_blank"
+									rel="noopener"
+									referrerpolicy="no-referrer"
+									on:click={() => Fathom.trackEvent(`click_work_link-${work.title}`)}
+									href={work.url}
+									class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+									>{work.companyName}</a
+								>
+							{:else}
+								<span class="font-normal text-gray-700 dark:text-gray-300">{work.companyName}</span>
+							{/if}
+						</h3>
+						<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
+						<div class="flex flex-grow" />
+						<ul
+							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
+						>
+							{#if work.isCurrent}
+								<SpecialBadge className="-ml-2">Current</SpecialBadge>
+							{/if}
+							{#if work.startDate}
+								<li>
+									{getFormattedDate(work.startDate)}
+									{#if work.endDate}
+										<span class="mx-1">-</span>
+										{getFormattedDate(work.endDate)}
+									{/if}
+								</li>
+							{/if}
+						</ul>
 					</li>
 				{/each}
 			</ul>
 		</Section>
 		<Section title="Projects">
-			<ul class="space-y-10">
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-10">
 				{#each data.projects as project}
-					<li id={idHash(project.name)}>
-						<div>
-							<div class="flex flex-row items-center mb-4 relative">
-								{#if project.isActive}
-									<span class="absolute -left-4">
-										<SpecialStatus />
-									</span>
+					<li
+						id={idHash(project.name)}
+						class={` transition-all ease-in-out border p-6 rounded-xl flex flex-col ${
+							project.isActive
+								? `border-emerald-500 dark:border-emerald-400/30`
+								: `border-slate-500/20 dark:border-slate-300/10`
+						}`}
+					>
+						<div class="flex flex-row items-center mb-4 relative">
+							<h3 class="font-bold flex justify-center items-center">
+								{#if project.url}
+									<a
+										target="_blank"
+										rel="noopener"
+										referrerpolicy="no-referrer"
+										on:click={() => Fathom.trackEvent(`click_project_link-${project.name}`)}
+										href={project.url}
+										class="text-gray-700 dark:text-gray-200 line-clamp-1 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+										>{project.name}</a
+									>
+								{:else}
+									<span class="text-gray-700 dark:text-gray-200 line-clamp-1">{project.name}</span>
 								{/if}
-								<h3 class="font-bold flex justify-center items-center">
-									{#if project.url}
-										<a
-											target="_blank"
-											rel="noopener"
-											referrerpolicy="no-referrer"
-											on:click={() => Fathom.trackEvent(`click_project_link-${project.name}`)}
-											href={project.url}
-											class="text-gray-700 dark:text-gray-200 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-											>{project.name}</a
-										>
-									{:else}
-										<span class="text-gray-700 dark:text-gray-200">{project.name}</span>
-									{/if}
-								</h3>
-								{#if project.isActive}
-									<SpecialBadge>Active</SpecialBadge>
-								{/if}
-							</div>
-							<p class="leading-tight dark:text-gray-200 text-gray-600">{project.description}</p>
-							<ul class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500">
-								{#if project.startDate}
-									<li class="special">
-										{getFormattedDate(project.startDate)}
-									</li>
-								{/if}
-								{#if project.source}
-									<li class="special">
-										<a
-											target="_blank"
-											rel="noopener"
-											referrerpolicy="no-referrer"
-											on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)}
-											href={project.source}
-											class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-											>{new URL(project.source).hostname.split('.')[0]}</a
-										>
-									</li>
-								{/if}
-								{#if project.media?.length > 0}
-									<li class="special">
-										<button
-											on:click={() =>
-												handleClick(project.name === selectedProjectImage ? null : project.name)}
-											class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-										>
-											{#if project.name === selectedProjectImage}
-												close media
-											{:else}
-												media
-											{/if}
-										</button>
-									</li>
-								{/if}
-							</ul>
+							</h3>
 						</div>
-						<MiniImageGallery
+						<p class="leading-tight dark:text-gray-200 text-gray-600 line-clamp-4">
+							{project.description}
+						</p>
+						<div class="flex flex-grow" />
+						<ul
+							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
+						>
+							{#if project.isActive}
+								<SpecialBadge className="-ml-2">Active</SpecialBadge>
+							{/if}
+							{#if project.startDate}
+								<li class="special">
+									{getFormattedDate(project.startDate)}
+								</li>
+							{/if}
+							{#if project.source}
+								<li class="special">
+									<a
+										target="_blank"
+										rel="noopener"
+										referrerpolicy="no-referrer"
+										on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)}
+										href={project.source}
+										class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+										>{new URL(project.source).hostname.split('.')[0]}</a
+									>
+								</li>
+							{/if}
+							<!-- {#if project.media?.length > 0}
+								<li class="special">
+									<button
+										on:click={() =>
+											handleClick(project.name === selectedProjectImage ? null : project.name)}
+										class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+									>
+										{#if project.name === selectedProjectImage}
+											close media
+										{:else}
+											media
+										{/if}
+									</button>
+								</li>
+							{/if} -->
+						</ul>
+						<!-- <MiniImageGallery
 							isOpen={project.name === selectedProjectImage}
 							images={project.media.map((img) => {
 								return {
@@ -180,7 +198,7 @@
 									alt: `Image of ${project.name}`
 								};
 							})}
-						/>
+						/> -->
 					</li>
 				{/each}
 			</ul>
