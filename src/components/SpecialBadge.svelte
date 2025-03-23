@@ -11,10 +11,10 @@
 
 <style lang="postcss">
 	.animated-badge {
-        @apply shadow-sm;
+        /* @apply shadow-sm; */
         text-shadow: 1px 1px white;
 		@apply px-3 py-1 text-xs ml-2 uppercase rounded-full;
-		@apply text-emerald-800 dark:text-emerald-100;
+		@apply text-emerald-600 dark:text-emerald-100;
 		@apply border border-emerald-300 dark:border-emerald-600;
 		@apply relative;
 		background: linear-gradient(

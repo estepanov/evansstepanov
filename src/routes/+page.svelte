@@ -114,7 +114,7 @@
 							{/if}
 						</ul>
 						{#if work.isCurrent}
-							<span class="absolute -bottom-3 bg-black rounded-full">
+							<span class="absolute -bottom-3 dark:bg-black bg-white rounded-full">
 								<SpecialBadge className="-ml-2">Current</SpecialBadge>
 							</span>
 						{/if}
@@ -193,7 +193,7 @@
 						</ul>
 
 						{#if project.isActive}
-							<span class="absolute -bottom-3 bg-black rounded-full">
+							<span class="absolute -bottom-3 dark:bg-black bg-white rounded-full">
 								<SpecialBadge className="-ml-2">Active</SpecialBadge>
 							</span>
 						{/if}
