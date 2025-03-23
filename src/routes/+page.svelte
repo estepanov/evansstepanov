@@ -29,7 +29,7 @@
 			<div class={'space-y-6'}>
 				<p class="leading-relaxed">
 					I'm a software engineer with a passion for building scalable, high-performance <span
-						class="font-bold text-emerald-600 dark:text-emerald-500">web applications</span
+						class="font-bold text-emerald-800 dark:text-emerald-200">web applications</span
 					>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
 					full-stack initiatives, from architecting monorepos and optimizing legacy systems to
 					enhancing accessibility and streamlining cloud infrastructure.
@@ -39,10 +39,10 @@
 					complex technical challenges with elegant, user-focused solutions.
 				</p>
 				<p class="leading-relaxed">
-					When I'm not coding, you can find me <span class="font-bold text-emerald-600 dark:text-emerald-500">reading</span> 📚,
-					<span class="font-bold text-emerald-600 dark:text-emerald-500">skiing</span>
-					⛷️, playing <span class="font-bold text-emerald-600 dark:text-emerald-500">Halo</span> 🎮, or
-					<span class="font-bold text-emerald-600 dark:text-emerald-500">sleeping</span> 🛌.
+					When I'm not coding, you can find me <span class="font-bold text-emerald-800 dark:text-emerald-200">reading</span> 📚,
+					<span class="font-bold text-emerald-800 dark:text-emerald-200">skiing</span>
+					⛷️, playing <span class="font-bold text-emerald-800 dark:text-emerald-200">Halo</span> 🎮, or
+					<span class="font-bold text-emerald-800 dark:text-emerald-200">sleeping</span> 🛌.
 				</p>
 			</div>
 		</Section>
@@ -53,7 +53,7 @@
 						<a
 							target="_blank"
 							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
-							class="transition-all ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm border p-4 hover:border-emerald-500 hover:dark:border-emerald-400/30 border-slate-500/20 dark:border-slate-300/10 bg-emerald-900/0 hover:bg-emerald-100/30 dark:hover:bg-emerald-900/20"
+							class="transition-all px-8 ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-slate-500/10 dark:border-slate-300/0 hover:bg-emerald-100/30 dark:hover:bg-emerald-900/50"
 							href={link.url}>
 							{link.title}
 							</a>
@@ -65,10 +65,10 @@
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-10">
 				{#each data.work as work}
 					<li
-						class={`border p-6 rounded-xl flex flex-col ${
+						class={`transition-all ease-in p-6 rounded-xl flex flex-col ${
 							work.isCurrent
-								? `border-emerald-500 dark:border-emerald-400/30`
-								: `border-slate-500/20 dark:border-slate-300/10`
+								? `project-active-border`
+								: `border border-slate-500/20 dark:border-slate-300/10`
 						}`}
 					>
 						<h3 class="relative mb-4">
@@ -123,10 +123,10 @@
 				{#each data.projects as project}
 					<li
 						id={idHash(project.name)}
-						class={` transition-all ease-in-out border p-6 rounded-xl flex flex-col ${
+						class={`transition-all ease-in-out p-6 rounded-xl flex flex-col ${
 							project.isActive
-								? `border-emerald-500 dark:border-emerald-400/30`
-								: `border-slate-500/20 dark:border-slate-300/10`
+								? `project-active-border`
+								: `border border-slate-500/20 dark:border-slate-300/10`
 						}`}
 					>
 						<div class="flex flex-row items-center mb-4 relative">
@@ -157,7 +157,7 @@
 								<SpecialBadge className="-ml-2">Active</SpecialBadge>
 							{/if}
 							{#if project.startDate}
-								<li class="special">
+								<li class="special opacity-80">
 									{getFormattedDate(project.startDate)}
 								</li>
 							{/if}
@@ -234,5 +234,67 @@
 	.special + li::before {
 		content: '⁞';
 		margin-right: 1rem;
+		opacity: 0.5;
+	}
+
+	.project-active-border {
+		position: relative;
+		background: transparent;
+		z-index: 0;
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+	}
+
+	.project-active-border::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		border-radius: inherit;
+		border: 1px solid transparent;
+		background: linear-gradient(
+			45deg,
+            theme('colors.emerald.500 / 0.1'),
+            theme('colors.emerald.500 / 0.9'),
+            theme('colors.emerald.500 / 0.1')
+		) border-box;
+		-webkit-mask: 
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		mask: 
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
+		background-size: 200% auto;
+		animation: animatedBorder 6s ease-in-out infinite alternate;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.project-active-border::before {
+			background: linear-gradient(
+				45deg,
+				theme('colors.emerald.500 / 0.1'),
+				theme('colors.emerald.500 / 0.9'),
+				theme('colors.emerald.500 / 0.1')
+			) border-box;
+			background-size: 200% auto;
+			animation: animatedBorder 6s ease-in-out infinite alternate;
+		}
+	}
+
+	@keyframes animatedBorder {
+		0% {
+			background-position: 0% center;
+		}
+		50% {
+			background-position: 100% center;
+		}
+		100% {
+			background-position: 0% center;
+		}
 	}
 </style>
