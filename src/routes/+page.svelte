@@ -24,9 +24,8 @@
 
 <div class="flex justify-center items-center p-5 flex-col space-y-20 max-w-screen-md mx-auto mt-20">
 	<div class="w-60 p-1"><Logo /></div>
-	<main class="w-full space-y-20">
+	<main class="w-full space-y-12">
 		<Section title="About me">
-			<div class={'space-y-6'}>
 				<p class="leading-relaxed">
 					I'm a software engineer with a passion for building scalable, high-performance <span
 						class="font-bold text-emerald-800 dark:text-emerald-200">web applications</span
@@ -48,16 +47,15 @@
 					or
 					<span class="font-bold text-emerald-800 dark:text-emerald-200">sleeping</span> 🛌.
 				</p>
-			</div>
 		</Section>
 		<Section title="Links">
 			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center space-x-6">
 				{#each data.links as link, i}
-					<li>
+					<li class="mt-4">
 						<a
 							target="_blank"
 							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
-							class="transition-all px-8 ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-r from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-r hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-r dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60 animate-gradient bg-[length:200%_200%] hover:animate-gradient-hover"
+							class="transition-all box-border px-8 ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-r from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-r hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-r dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60 animate-gradient bg-[length:200%_200%] hover:animate-gradient-hover"
 							href={link.url}
 						>
 							{link.title}
@@ -162,7 +160,7 @@
 									{getFormattedDate(project.startDate)}
 								</li>
 							{/if}
-							<!-- {#if project.source}
+							{#if project.source}
 								<li class="special">
 									<a
 										target="_blank"
@@ -170,11 +168,11 @@
 										referrerpolicy="no-referrer"
 										on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)}
 										href={project.source}
-										class="underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+										class="opacity-80 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 										>{new URL(project.source).hostname.split('.')[0]}</a
 									>
 								</li>
-							{/if} -->
+							{/if}
 							<!-- {#if project.media?.length > 0}
 								<li class="special">
 									<button
@@ -211,19 +209,10 @@
 			</ul>
 		</Section>
 		<Section title="Tech">
-			<ul class="flex flex-row flex-wrap">
+			<ul class="flex flex-row flex-wrap gap-2">
 				{#each data.tech as tech, i}
-					<!-- {#if i === 0 || tech.proficiencyWeight !== data.tech[i - 1].proficiencyWeight}
-						<div
-							class="{getColorFromWeight(
-								i === 0 ? tech.proficiencyWeight : data.tech[i - 1].proficiencyWeight
-							)} inline-block"
-						>
-							<span class="mr-5 mb-2 rounded-full px-2 border py-1">{tech.proficiency}</span>
-						</div>
-					{/if} -->
-					<li class="mr-5 mb-2">
-						<span>{tech.name}</span>
+					<li class="px-3 py-1.5 rounded-full text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out">
+							{tech.name}
 					</li>
 				{/each}
 			</ul>
