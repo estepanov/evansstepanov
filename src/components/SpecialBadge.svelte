@@ -11,7 +11,7 @@
 
 <style lang="postcss">
 	.animated-badge {
-        @apply shadow-lg;
+        @apply shadow-sm;
         text-shadow: 1px 1px white;
 		@apply px-3 py-1 text-xs ml-2 uppercase rounded-full;
 		@apply text-emerald-800 dark:text-emerald-100;

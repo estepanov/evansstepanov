@@ -39,9 +39,13 @@
 					complex technical challenges with elegant, user-focused solutions.
 				</p>
 				<p class="leading-relaxed">
-					When I'm not coding, you can find me <span class="font-bold text-emerald-800 dark:text-emerald-200">reading</span> 📚,
+					When I'm not coding, you can find me <span
+						class="font-bold text-emerald-800 dark:text-emerald-200">reading</span
+					>
+					📚,
 					<span class="font-bold text-emerald-800 dark:text-emerald-200">skiing</span>
-					⛷️, playing <span class="font-bold text-emerald-800 dark:text-emerald-200">Halo</span> 🎮, or
+					⛷️, playing <span class="font-bold text-emerald-800 dark:text-emerald-200">Halo</span> 🎮,
+					or
 					<span class="font-bold text-emerald-800 dark:text-emerald-200">sleeping</span> 🛌.
 				</p>
 			</div>
@@ -53,10 +57,11 @@
 						<a
 							target="_blank"
 							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
-							class="transition-all px-8 ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-slate-500/10 dark:border-slate-300/0 hover:bg-emerald-100/30 dark:hover:bg-emerald-900/50"
-							href={link.url}>
+							class="transition-all px-8 ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-r from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-r hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-r dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60 animate-gradient bg-[length:200%_200%] hover:animate-gradient-hover"
+							href={link.url}
+						>
 							{link.title}
-							</a>
+						</a>
 					</li>
 				{/each}
 			</ul>
@@ -72,11 +77,6 @@
 						}`}
 					>
 						<h3 class="relative mb-4">
-							<!-- {#if work.isCurrent}
-									<span class="absolute -left-3 md:-left-4">
-										<SpecialStatus />
-									</span>
-								{/if} -->
 							<span class="w-full block font-bold">
 								{work.title}
 							</span>
@@ -89,11 +89,13 @@
 									referrerpolicy="no-referrer"
 									on:click={() => Fathom.trackEvent(`click_work_link-${work.title}`)}
 									href={work.url}
-									class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
+									class="font-normal text-gray-700 dark:text-gray-300 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in opacity-70"
 									>{work.companyName}</a
 								>
 							{:else}
-								<span class="font-normal text-gray-700 dark:text-gray-300">{work.companyName}</span>
+								<span class="font-normal text-gray-700 dark:text-gray-300 opacity-70"
+									>{work.companyName}</span
+								>
 							{/if}
 						</h3>
 						<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
@@ -101,11 +103,8 @@
 						<ul
 							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
 						>
-							{#if work.isCurrent}
-								<SpecialBadge className="-ml-2">Current</SpecialBadge>
-							{/if}
 							{#if work.startDate}
-								<li>
+								<li class="opacity-80">
 									{getFormattedDate(work.startDate)}
 									{#if work.endDate}
 										<span class="mx-1">-</span>
@@ -114,6 +113,11 @@
 								</li>
 							{/if}
 						</ul>
+						{#if work.isCurrent}
+							<span class="absolute -bottom-3 bg-black rounded-full">
+								<SpecialBadge className="-ml-2">Current</SpecialBadge>
+							</span>
+						{/if}
 					</li>
 				{/each}
 			</ul>
@@ -153,15 +157,12 @@
 						<ul
 							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
 						>
-							{#if project.isActive}
-								<SpecialBadge className="-ml-2">Active</SpecialBadge>
-							{/if}
 							{#if project.startDate}
 								<li class="special opacity-80">
 									{getFormattedDate(project.startDate)}
 								</li>
 							{/if}
-							{#if project.source}
+							<!-- {#if project.source}
 								<li class="special">
 									<a
 										target="_blank"
@@ -173,7 +174,7 @@
 										>{new URL(project.source).hostname.split('.')[0]}</a
 									>
 								</li>
-							{/if}
+							{/if} -->
 							<!-- {#if project.media?.length > 0}
 								<li class="special">
 									<button
@@ -190,6 +191,12 @@
 								</li>
 							{/if} -->
 						</ul>
+
+						{#if project.isActive}
+							<span class="absolute -bottom-3 bg-black rounded-full">
+								<SpecialBadge className="-ml-2">Active</SpecialBadge>
+							</span>
+						{/if}
 						<!-- <MiniImageGallery
 							isOpen={project.name === selectedProjectImage}
 							images={project.media.map((img) => {
@@ -256,17 +263,14 @@
 		border-radius: inherit;
 		border: 1px solid transparent;
 		background: linear-gradient(
-			45deg,
-            theme('colors.emerald.500 / 0.1'),
-            theme('colors.emerald.500 / 0.9'),
-            theme('colors.emerald.500 / 0.1')
-		) border-box;
-		-webkit-mask: 
-			linear-gradient(#fff 0 0) content-box,
-			linear-gradient(#fff 0 0);
-		mask: 
-			linear-gradient(#fff 0 0) content-box,
-			linear-gradient(#fff 0 0);
+				45deg,
+				theme('colors.emerald.500 / 0.1'),
+				theme('colors.emerald.500 / 0.9'),
+				theme('colors.emerald.500 / 0.1')
+			)
+			border-box;
+		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
 		-webkit-mask-composite: xor;
 		mask-composite: exclude;
 		background-size: 200% auto;
@@ -276,11 +280,12 @@
 	@media (prefers-color-scheme: dark) {
 		.project-active-border::before {
 			background: linear-gradient(
-				45deg,
-				theme('colors.emerald.500 / 0.1'),
-				theme('colors.emerald.500 / 0.9'),
-				theme('colors.emerald.500 / 0.1')
-			) border-box;
+					45deg,
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9'),
+					theme('colors.emerald.500 / 0.1')
+				)
+				border-box;
 			background-size: 200% auto;
 			animation: animatedBorder 6s ease-in-out infinite alternate;
 		}
