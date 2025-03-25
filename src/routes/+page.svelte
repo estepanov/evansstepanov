@@ -4,12 +4,41 @@
 	import * as Fathom from 'fathom-client';
 	import Section from '../components/Section.svelte';
 	import SpecialBadge from '../components/SpecialBadge.svelte';
-	import SpecialStatus from '../components/SpecialStatus.svelte';
 	import { getFormattedDate } from '../util/dates';
 	import { getColorFromWeight } from '../util/statusColors';
 	import MiniImageGallery from '../components/MiniImageGallery.svelte';
 	import { idHash } from '../util/id-hash-link-format';
 	import { GithubIcon, LinkedinIcon } from '@lucide/svelte';
+	import {
+		SiGithub,
+		SiReact,
+		SiTypescript,
+		SiNextdotjs,
+		SiReactquery,
+		SiTrpc,
+		SiHono,
+		SiDrizzle,
+		SiNodedotjs,
+		SiBun,
+		SiStyledcomponents,
+		SiTailwindcss,
+		SiChakraui,
+		SiExpress,
+		SiPostgresql,
+		SiSvelte,
+		SiSqlite,
+		SiAmazondynamodb,
+		SiMongodb,
+		SiPrisma,
+		SiMongoose,
+		SiDocker,
+		SiGithubactions,
+		SiCypress,
+		SiJest,
+		SiVitest,
+		SiMockserviceworker,
+		SiBuddy
+	} from '@icons-pack/svelte-simple-icons';
 
 	export let data;
 
@@ -29,14 +58,20 @@
 		<Section title="About me">
 			<p class="leading-relaxed">
 				I'm a software engineer with a passion for building scalable, high-performance <span
-					class="font-bold text-emerald-800 dark:text-emerald-200">web applications</span
+					class="font-bold text-indigo-800 dark:text-indigo-200">web applications</span
 				>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
 				full-stack initiatives, from architecting monorepos and optimizing legacy systems to
 				enhancing accessibility and streamlining cloud infrastructure.
 			</p>
 			<p class="leading-relaxed">
-				I specialize in React, Next.js, and modern JavaScript tooling, and thrive on solving complex
-				technical challenges with elegant, user-focused solutions.
+				I primarily work in <span class="font-bold text-indigo-800 dark:text-indigo-200">
+					TypeScript <span class="inline-block"><SiTypescript size={16} /></span>
+				</span>
+				and specialize in
+				<span class="font-bold text-indigo-800 dark:text-indigo-200">
+					React <span class="inline-block"><SiReact size={16} /></span>
+				</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with
+				elegant, user-focused solutions.
 			</p>
 			<p class="leading-relaxed">
 				When I'm not coding, you can find me <span
@@ -57,13 +92,16 @@
 							target="_blank"
 							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
 							class={`${
-							link.url?.includes('github.com') ||
-							link.url?.includes('linkedin.com') ? 'px-4' : 'px-8'
-							} transition-all box-border  ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-b from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-b hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-b dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60`}
+								link.url?.includes('github.com') || link.url?.includes('linkedin.com')
+									? 'px-4'
+									: 'px-8'
+							} flex flex-row justify-center items-center transition-all box-border  ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-b from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-b hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-b dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60`}
 							href={link.url}
 						>
 							{#if link.url?.includes('github.com')}
-								<GithubIcon class="inline-block h-4 mr-2" />
+								<span class="inline-block w-4 h-4 mr-2">
+									<SiGithub size={16} />
+								</span>
 							{/if}
 							{#if link.url?.includes('linkedin.com')}
 								<LinkedinIcon class="inline-block h-4 mr-2" />
@@ -220,15 +258,240 @@
 				{/each}
 			</ul>
 		</Section>
-		<Section title="Tech">
+		<!-- <Section title="Tech">
 			<ul class="flex flex-row flex-wrap gap-2">
 				{#each data.tech as tech, i}
 					<li
-						class="px-3 py-1.5 rounded-full text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+						class="px-3 py-1.5 rounded-full text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
 					>
 						{tech.name}
 					</li>
 				{/each}
+			</ul>
+		</Section> -->
+		<Section title="Tech">
+			<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
+			<ul class="flex flex-row flex-wrap gap-2">
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiNodedotjs size={20} />
+					</span>
+					NodeJS
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiBun size={20} />
+					</span>
+					Bun
+				</li>
+			</ul>
+			<h3 class="font-bold text-lg opacity-80">Testing</h3>
+			<ul class="flex flex-row flex-wrap gap-2">
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					Playwright
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiVitest size={20} />
+					</span>
+					Vitest
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiMockserviceworker size={20} />
+					</span>
+					Mock Service Worker
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiJest size={20} />
+					</span>
+					Jest
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiCypress size={20} />
+					</span>
+					Cypress
+				</li>
+			</ul>
+			<h3 class="font-bold text-lg opacity-80">Frontend</h3>
+			<ul class="flex flex-row flex-wrap gap-2">
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiNextdotjs size={20} />
+					</span>
+					NextJS
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiSvelte size={20} />
+					</span>
+					Svelte
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiReactquery size={20} />
+					</span>
+					React Query
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiStyledcomponents size={20} />
+					</span>
+					Styled Components
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiTailwindcss size={20} />
+					</span>
+					Tailwind CSS
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiChakraui size={20} />
+					</span>
+					Chakra UI
+				</li>
+			</ul>
+			<h3 class="font-bold text-lg opacity-80">Backend</h3>
+			<ul class="flex flex-row flex-wrap gap-2">
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiTrpc size={20} />
+					</span>
+					tRPC
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiHono size={20} />
+					</span>
+					Hono
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiExpress size={20} />
+					</span>
+					Express
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiDrizzle size={20} />
+					</span>
+					Drizzle ORM
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiPrisma size={20} />
+					</span>
+					Prisma ORM
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiMongoose size={20} />
+					</span>
+					Mongoose ORM
+				</li>
+			</ul>
+			<h3 class="font-bold text-lg opacity-80">Data stores</h3>
+			<ul class="flex flex-row flex-wrap gap-2">
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiPostgresql size={20} />
+					</span>
+					PostgreSQL
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiSqlite size={20} />
+					</span>
+					SQLite
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiAmazondynamodb size={20} />
+					</span>
+					DynamoDB
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiMongodb size={20} />
+					</span>
+					MongoDB
+				</li>
+			</ul>
+			<h3 class="font-bold text-lg opacity-80">DevOps</h3>
+			<ul class="flex flex-row flex-wrap gap-2">
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiDocker size={20} />
+					</span>
+					Docker
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiGithubactions size={20} />
+					</span>
+					GitHub Actions
+				</li>
+				<li
+					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+				>
+					<span class="mr-4">
+						<SiBuddy size={20} />
+					</span>
+					Buddy
+				</li>
 			</ul>
 		</Section>
 	</main>
@@ -241,19 +504,17 @@
 </div>
 
 <style>
+	@property --bg-angle {
+		inherits: false;
+		initial-value: 0deg;
+		syntax: '<angle>';
+	}
 
-@property --bg-angle {
-  inherits: false;
-  initial-value: 0deg;
-  syntax: "<angle>";
-}
-
-@keyframes spinnner {
-  to {
-    --bg-angle: 360deg;
-  }
-}
-
+	@keyframes spinnner {
+		to {
+			--bg-angle: 360deg;
+		}
+	}
 
 	.project-active-border {
 		position: relative;
@@ -279,9 +540,13 @@
 					theme('colors.emerald.500 / 0.1'),
 					theme('colors.emerald.500 / 0.9'),
 					theme('colors.emerald.500 / 0.1')
-				) 
+				)
 				padding-box,
-				conic-gradient(from var(--bg-angle),theme('colors.emerald.500 / 0.1'), theme('colors.emerald.500 / 0.9')) 
+			conic-gradient(
+					from var(--bg-angle),
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9')
+				)
 				border-box;
 		-webkit-mask:
 			linear-gradient(#fff 0 0) content-box,
@@ -292,7 +557,6 @@
 		-webkit-mask-composite: xor;
 		mask-composite: exclude;
 		animation: spinnner 20s linear infinite;
-		
 	}
 
 	@media (prefers-color-scheme: dark) {
@@ -303,14 +567,18 @@
 						theme('colors.emerald.500 / 0.1'),
 						theme('colors.emerald.500 / 0.9'),
 						theme('colors.emerald.500 / 0.1')
-					) 
+					)
 					padding-box,
-					conic-gradient(from var(--bg-angle),theme('colors.emerald.500 / 0.1'), theme('colors.emerald.500 / 0.9')) 
+				conic-gradient(
+						from var(--bg-angle),
+						theme('colors.emerald.500 / 0.1'),
+						theme('colors.emerald.500 / 0.9')
+					)
 					border-box;
 			animation: spinnner 20s linear infinite;
 		}
 	}
-/* 
+	/* 
 	.project-active-border:hover::before {
 		transition: background 500ms ease;
 		background: conic-gradient(from var(--bg-angle) theme('colors.emerald.500 / 0.9'), theme('colors.emerald.500 / 0.9')) 
@@ -334,5 +602,4 @@
 			background-position: 0% center;
 		}
 	}
-
 </style>

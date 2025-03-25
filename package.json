@@ -41,8 +41,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@icons-pack/svelte-simple-icons": "^5.0.0",
 		"@lucide/svelte": "^0.483.0",
 		"@notionhq/client": "^2.2.5",
-		"fathom-client": "^3.6.0"
+		"fathom-client": "^3.6.0",
+		"simple-icons": "^14.11.1"
 	}
 }

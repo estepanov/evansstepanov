@@ -14,9 +14,19 @@ export const TechProficiencyWeight = {
 
 export interface Tech {
     name: string,
+    type?:TechType,
     proficiency: TechProficiency,
     proficiencyWeight: number,
     description?: string,
     url?: string,
     image?: string
+}
+
+export enum TechType {
+    Runtime = 'Runtime',
+    Language = 'Language',
+    Library = 'Library',
+    Framework = 'Framework',
+    Database = 'Database',
+    DevOps = 'DevOps'
 }

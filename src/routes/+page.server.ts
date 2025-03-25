@@ -68,13 +68,15 @@ export async function load(): Promise<LoadResults> {
         endDate: page.properties.Dates.date.end ? new Date(page.properties.Dates.date.end) : undefined,
     })) as unknown as Work[]
 
-    const techResults = tech.results.map(page => ({
+    const techResults = tech.results.map(page => {
+        return ({
         name: page.properties.Name.title[0].plain_text,
+        type: page.properties.Type.select?.name,
         proficiency: page.properties.Proficiency.select.name,
         proficiencyWeight: TechProficiencyWeight[page.properties.Proficiency.select.name],
         description: page.properties.Description.rich_text[0]?.plain_text ?? undefined,
         url: page.properties.URL.url ?? undefined,
-    })) as unknown as Tech[]
+    })}) as unknown as Tech[]
 
     return {
         links: links.results.map(page => ({
