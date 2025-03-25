@@ -87,7 +87,7 @@
 		<Section title="Links">
 			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center space-x-6">
 				{#each data.links as link, i}
-					<li class="mt-4">
+					<li class="inline-flex">
 						<a
 							target="_blank"
 							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
@@ -95,7 +95,7 @@
 								link.url?.includes('github.com') || link.url?.includes('linkedin.com')
 									? 'px-4'
 									: 'px-8'
-							} flex flex-row justify-center items-center transition-all box-border  ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-b from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-b hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-b dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60`}
+							} flex flex-row justify-center items-center transition-all box-border ease-linear rounded-md text-center text-xs sm:text-sm py-3 bg-gradient-to-b from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-b hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-b dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60`}
 							href={link.url}
 						>
 							{#if link.url?.includes('github.com')}
@@ -106,7 +106,10 @@
 							{#if link.url?.includes('linkedin.com')}
 								<LinkedinIcon class="inline-block h-4 mr-2" />
 							{/if}
+							<span class="uppercase">
 							{link.title}
+							</span>
+
 						</a>
 					</li>
 				{/each}
