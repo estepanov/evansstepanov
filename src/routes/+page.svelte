@@ -9,6 +9,7 @@
 	import { getColorFromWeight } from '../util/statusColors';
 	import MiniImageGallery from '../components/MiniImageGallery.svelte';
 	import { idHash } from '../util/id-hash-link-format';
+	import { GithubIcon, LinkedinIcon } from '@lucide/svelte';
 
 	export let data;
 
@@ -26,27 +27,27 @@
 	<div class="w-60 p-1"><Logo /></div>
 	<main class="w-full space-y-12">
 		<Section title="About me">
-				<p class="leading-relaxed">
-					I'm a software engineer with a passion for building scalable, high-performance <span
-						class="font-bold text-emerald-800 dark:text-emerald-200">web applications</span
-					>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
-					full-stack initiatives, from architecting monorepos and optimizing legacy systems to
-					enhancing accessibility and streamlining cloud infrastructure.
-				</p>
-				<p class="leading-relaxed">
-					I specialize in React, Next.js, and modern JavaScript tooling, and thrive on solving
-					complex technical challenges with elegant, user-focused solutions.
-				</p>
-				<p class="leading-relaxed">
-					When I'm not coding, you can find me <span
-						class="font-bold text-emerald-800 dark:text-emerald-200">reading</span
-					>
-					📚,
-					<span class="font-bold text-emerald-800 dark:text-emerald-200">skiing</span>
-					⛷️, playing <span class="font-bold text-emerald-800 dark:text-emerald-200">Halo</span> 🎮,
-					or
-					<span class="font-bold text-emerald-800 dark:text-emerald-200">sleeping</span> 🛌.
-				</p>
+			<p class="leading-relaxed">
+				I'm a software engineer with a passion for building scalable, high-performance <span
+					class="font-bold text-emerald-800 dark:text-emerald-200">web applications</span
+				>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
+				full-stack initiatives, from architecting monorepos and optimizing legacy systems to
+				enhancing accessibility and streamlining cloud infrastructure.
+			</p>
+			<p class="leading-relaxed">
+				I specialize in React, Next.js, and modern JavaScript tooling, and thrive on solving complex
+				technical challenges with elegant, user-focused solutions.
+			</p>
+			<p class="leading-relaxed">
+				When I'm not coding, you can find me <span
+					class="font-bold text-emerald-800 dark:text-emerald-200">reading</span
+				>
+				📚,
+				<span class="font-bold text-emerald-800 dark:text-emerald-200">skiing</span>
+				⛷️, playing <span class="font-bold text-emerald-800 dark:text-emerald-200">Halo</span> 🎮,
+				or
+				<span class="font-bold text-emerald-800 dark:text-emerald-200">sleeping</span> 🛌.
+			</p>
 		</Section>
 		<Section title="Links">
 			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center space-x-6">
@@ -55,9 +56,18 @@
 						<a
 							target="_blank"
 							on:click={() => Fathom.trackEvent(`click_main_link-${link.title}`)}
-							class="transition-all box-border px-8 ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-r from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-r hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-r dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60 animate-gradient bg-[length:200%_200%] hover:animate-gradient-hover"
+							class={`${
+							link.url?.includes('github.com') ||
+							link.url?.includes('linkedin.com') ? 'px-4' : 'px-8'
+							} transition-all box-border  ease-linear rounded-md uppercase leading-8 text-center text-xs sm:text-sm py-4 bg-gradient-to-b from-slate-500/10 to-slate-500/20 hover:bg-gradient-to-b hover:from-emerald-400/30 hover:to-emerald-400/40 dark:hover:bg-gradient-to-b dark:hover:from-emerald-900/50 dark:hover:to-emerald-900/60`}
 							href={link.url}
 						>
+							{#if link.url?.includes('github.com')}
+								<GithubIcon class="inline-block h-4 mr-2" />
+							{/if}
+							{#if link.url?.includes('linkedin.com')}
+								<LinkedinIcon class="inline-block h-4 mr-2" />
+							{/if}
 							{link.title}
 						</a>
 					</li>
@@ -78,8 +88,6 @@
 							<span class="w-full block font-bold">
 								{work.title}
 							</span>
-							<!-- <span class="text-gray-700 dark:text-gray-200 font-bold" />
-								<span class="text-gray-700 dark:text-gray-400 font-thin">at</span> -->
 							{#if work.url}
 								<a
 									target="_blank"
@@ -97,7 +105,7 @@
 							{/if}
 						</h3>
 						<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
-						<div class="flex flex-grow" />
+						<div class="flex flex-grow"></div>
 						<ul
 							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
 						>
@@ -151,9 +159,9 @@
 						<p class="leading-tight dark:text-gray-200 text-gray-600 line-clamp-4">
 							{project.description}
 						</p>
-						<div class="flex flex-grow" />
+						<div class="flex flex-grow"></div>
 						<ul
-							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
+							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-700 items-center"
 						>
 							{#if project.startDate}
 								<li class="special opacity-80">
@@ -168,9 +176,13 @@
 										referrerpolicy="no-referrer"
 										on:click={() => Fathom.trackEvent(`click_project_source-${project.name}`)}
 										href={project.source}
-										class="opacity-80 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
-										>{new URL(project.source).hostname.split('.')[0]}</a
+										class="hover:underline-offset-4 capitalize flex flex-row justify-center items-center opacity-80 underline-offset-2 underline hover:text-emerald-500 transition-all duration-200 ease-in"
 									>
+										{#if project.source?.includes('github.com')}
+											<GithubIcon class="h-3 w-3 mr-1" />
+										{/if}
+										{new URL(project.source).hostname.split('.')[0]}
+									</a>
 								</li>
 							{/if}
 							<!-- {#if project.media?.length > 0}
@@ -211,8 +223,10 @@
 		<Section title="Tech">
 			<ul class="flex flex-row flex-wrap gap-2">
 				{#each data.tech as tech, i}
-					<li class="px-3 py-1.5 rounded-full text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out">
-							{tech.name}
+					<li
+						class="px-3 py-1.5 rounded-full text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						{tech.name}
 					</li>
 				{/each}
 			</ul>
@@ -227,11 +241,19 @@
 </div>
 
 <style>
-	.special + li::before {
-		content: '⁞';
-		margin-right: 1rem;
-		opacity: 0.5;
-	}
+
+@property --bg-angle {
+  inherits: false;
+  initial-value: 0deg;
+  syntax: "<angle>";
+}
+
+@keyframes spinnner {
+  to {
+    --bg-angle: 360deg;
+  }
+}
+
 
 	.project-active-border {
 		position: relative;
@@ -251,34 +273,55 @@
 		z-index: -1;
 		border-radius: inherit;
 		border: 1px solid transparent;
-		background: linear-gradient(
-				45deg,
-				theme('colors.emerald.500 / 0.1'),
-				theme('colors.emerald.500 / 0.9'),
-				theme('colors.emerald.500 / 0.1')
-			)
-			border-box;
-		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		background:
+			linear-gradient(
+					to bottom,
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9'),
+					theme('colors.emerald.500 / 0.1')
+				) 
+				padding-box,
+				conic-gradient(from var(--bg-angle),theme('colors.emerald.500 / 0.1'), theme('colors.emerald.500 / 0.9')) 
+				border-box;
+		-webkit-mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
 		-webkit-mask-composite: xor;
 		mask-composite: exclude;
-		background-size: 200% auto;
-		animation: animatedBorder 6s ease-in-out infinite alternate;
+		animation: spinnner 20s linear infinite;
+		
 	}
 
 	@media (prefers-color-scheme: dark) {
 		.project-active-border::before {
-			background: linear-gradient(
-					45deg,
-					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.9'),
-					theme('colors.emerald.500 / 0.1')
-				)
-				border-box;
-			background-size: 200% auto;
-			animation: animatedBorder 6s ease-in-out infinite alternate;
+			background:
+				linear-gradient(
+						to bottom,
+						theme('colors.emerald.500 / 0.1'),
+						theme('colors.emerald.500 / 0.9'),
+						theme('colors.emerald.500 / 0.1')
+					) 
+					padding-box,
+					conic-gradient(from var(--bg-angle),theme('colors.emerald.500 / 0.1'), theme('colors.emerald.500 / 0.9')) 
+					border-box;
+			animation: spinnner 20s linear infinite;
 		}
 	}
+/* 
+	.project-active-border:hover::before {
+		transition: background 500ms ease;
+		background: conic-gradient(from var(--bg-angle) theme('colors.emerald.500 / 0.9'), theme('colors.emerald.500 / 0.9')) 
+		border-box;
+	} */
+
+	/* .project-active-border:nth-child(1)::before { animation-delay: 1s }
+	.project-active-border:nth-child(2)::before { animation-delay: 2s }
+	.project-active-border:nth-child(3)::before { animation-delay: 3s }
+	.project-active-border:nth-child(4)::before { animation-delay: 4s }
+	.project-active-border:nth-child(5)::before { animation-delay: 5s } */
 
 	@keyframes animatedBorder {
 		0% {
@@ -291,4 +334,5 @@
 			background-position: 0% center;
 		}
 	}
+
 </style>
