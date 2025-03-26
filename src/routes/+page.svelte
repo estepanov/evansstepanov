@@ -107,9 +107,8 @@
 								<LinkedinIcon class="inline-block h-4 mr-2" />
 							{/if}
 							<span class="uppercase">
-							{link.title}
+								{link.title}
 							</span>
-
 						</a>
 					</li>
 				{/each}
@@ -273,229 +272,241 @@
 			</ul>
 		</Section> -->
 		<Section title="Tech">
-			<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
-			<ul class="flex flex-row flex-wrap gap-2">
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiNodedotjs size={20} />
-					</span>
-					NodeJS
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiBun size={20} />
-					</span>
-					Bun
-				</li>
-			</ul>
-			<h3 class="font-bold text-lg opacity-80">Testing</h3>
-			<ul class="flex flex-row flex-wrap gap-2">
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					Playwright
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiVitest size={20} />
-					</span>
-					Vitest
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiMockserviceworker size={20} />
-					</span>
-					Mock Service Worker
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiJest size={20} />
-					</span>
-					Jest
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiCypress size={20} />
-					</span>
-					Cypress
-				</li>
-			</ul>
-			<h3 class="font-bold text-lg opacity-80">Frontend</h3>
-			<ul class="flex flex-row flex-wrap gap-2">
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiNextdotjs size={20} />
-					</span>
-					NextJS
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiSvelte size={20} />
-					</span>
-					Svelte
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiReactquery size={20} />
-					</span>
-					React Query
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiStyledcomponents size={20} />
-					</span>
-					Styled Components
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiTailwindcss size={20} />
-					</span>
-					Tailwind CSS
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiChakraui size={20} />
-					</span>
-					Chakra UI
-				</li>
-			</ul>
-			<h3 class="font-bold text-lg opacity-80">Backend</h3>
-			<ul class="flex flex-row flex-wrap gap-2">
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiTrpc size={20} />
-					</span>
-					tRPC
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiHono size={20} />
-					</span>
-					Hono
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiExpress size={20} />
-					</span>
-					Express
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiDrizzle size={20} />
-					</span>
-					Drizzle ORM
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiPrisma size={20} />
-					</span>
-					Prisma ORM
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiMongoose size={20} />
-					</span>
-					Mongoose ORM
-				</li>
-			</ul>
-			<h3 class="font-bold text-lg opacity-80">Data stores</h3>
-			<ul class="flex flex-row flex-wrap gap-2">
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiPostgresql size={20} />
-					</span>
-					PostgreSQL
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiSqlite size={20} />
-					</span>
-					SQLite
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiAmazondynamodb size={20} />
-					</span>
-					DynamoDB
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiMongodb size={20} />
-					</span>
-					MongoDB
-				</li>
-			</ul>
-			<h3 class="font-bold text-lg opacity-80">DevOps</h3>
-			<ul class="flex flex-row flex-wrap gap-2">
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiDocker size={20} />
-					</span>
-					Docker
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiGithubactions size={20} />
-					</span>
-					GitHub Actions
-				</li>
-				<li
-					class="px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-				>
-					<span class="mr-4">
-						<SiBuddy size={20} />
-					</span>
-					Buddy
-				</li>
-			</ul>
+			<div class="space-y-2">
+				<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
+				<ul class="flex flex-row flex-wrap gap-2">
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiNodedotjs size={20} />
+						</span>
+						NodeJS
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiBun size={20} />
+						</span>
+						Bun
+					</li>
+				</ul>
+			</div>
+			<div class="space-y-2">
+				<h3 class="font-bold text-lg opacity-80">Testing</h3>
+				<ul class="flex flex-row flex-wrap gap-2">
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						Playwright
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiVitest size={20} />
+						</span>
+						Vitest
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiMockserviceworker size={20} />
+						</span>
+						Mock Service Worker
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiJest size={20} />
+						</span>
+						Jest
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiCypress size={20} />
+						</span>
+						Cypress
+					</li>
+				</ul>
+			</div>
+			<div class="space-y-2">
+				<h3 class="font-bold text-lg opacity-80">Frontend</h3>
+				<ul class="flex flex-row flex-wrap gap-2">
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiNextdotjs size={20} />
+						</span>
+						NextJS
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiSvelte size={20} />
+						</span>
+						Svelte
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiReactquery size={20} />
+						</span>
+						React Query
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiStyledcomponents size={20} />
+						</span>
+						Styled Components
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiTailwindcss size={20} />
+						</span>
+						Tailwind CSS
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiChakraui size={20} />
+						</span>
+						Chakra UI
+					</li>
+				</ul>
+			</div>
+			<div class="space-y-2">
+				<h3 class="font-bold text-lg opacity-80">Backend</h3>
+				<ul class="flex flex-row flex-wrap gap-2">
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiTrpc size={20} />
+						</span>
+						tRPC
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiHono size={20} />
+						</span>
+						Hono
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiExpress size={20} />
+						</span>
+						Express
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiDrizzle size={20} />
+						</span>
+						Drizzle ORM
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiPrisma size={20} />
+						</span>
+						Prisma ORM
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiMongoose size={20} />
+						</span>
+						Mongoose ORM
+					</li>
+				</ul>
+			</div>
+			<div class="space-y-2">
+				<h3 class="font-bold text-lg opacity-80">Data stores</h3>
+				<ul class="flex flex-row flex-wrap gap-2">
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiPostgresql size={20} />
+						</span>
+						PostgreSQL
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiSqlite size={20} />
+						</span>
+						SQLite
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiAmazondynamodb size={20} />
+						</span>
+						DynamoDB
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiMongodb size={20} />
+						</span>
+						MongoDB
+					</li>
+				</ul>
+			</div>
+			<div class="space-y-2">
+				<h3 class="font-bold text-lg opacity-80">DevOps</h3>
+				<ul class="flex flex-row flex-wrap gap-2">
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiDocker size={20} />
+						</span>
+						Docker
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiGithubactions size={20} />
+						</span>
+						GitHub Actions
+					</li>
+					<li
+						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
+					>
+						<span class="mr-4">
+							<SiBuddy size={20} />
+						</span>
+						Buddy
+					</li>
+				</ul>
+			</div>
 		</Section>
 	</main>
 	<footer class="mt-10">
@@ -594,15 +605,94 @@
 	.project-active-border:nth-child(4)::before { animation-delay: 4s }
 	.project-active-border:nth-child(5)::before { animation-delay: 5s } */
 
-	@keyframes animatedBorder {
-		0% {
-			background-position: 0% center;
+	.tag-highlighter {
+		position: relative;
+		background: transparent;
+		z-index: 0;
+	}
+
+	.tag-highlighter:hover {
+		border-color: transparent;
+		transition: border-color ease-in-out 200ms;
+	}
+
+	.tag-highlighter::before {
+		content: '';
+		position: absolute;
+		top: -1px;
+		right: -1px;
+		bottom: -1px;
+		left: -1px;
+		z-index: -1;
+		border-radius: inherit;
+		border: 1px solid transparent;
+		background:
+			linear-gradient(
+					to bottom,
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9'),
+					theme('colors.emerald.500 / 0.1')
+				)
+				padding-box,
+			conic-gradient(
+					from var(--bg-angle),
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9')
+				)
+				border-box;
+		-webkit-mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
+		animation: paused;
+		/* animation: spinnner 3s linear infinite; */
+	}
+
+	.tag-highlighter:hover:before {
+		animation: spinnner 3s linear infinite;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.tag-highlighter:hover:before {
+			animation: spinnner 3s linear infinite;
+			background:
+				linear-gradient(
+						to bottom,
+						theme('colors.emerald.500 / 0.1'),
+						theme('colors.emerald.500 / 0.9'),
+						theme('colors.emerald.500 / 0.1')
+					)
+					padding-box,
+				conic-gradient(
+						from var(--bg-angle),
+						theme('colors.emerald.500 / 0.1'),
+						theme('colors.emerald.500 / 0.9')
+					)
+					border-box;
+					opacity: 1;
+					transition: opacity 300ms ease-in-out;
 		}
-		50% {
-			background-position: 100% center;
-		}
-		100% {
-			background-position: 0% center;
+		.tag-highlighter::before {
+			opacity: 0;
+			background:
+				linear-gradient(
+						to bottom,
+						transparent,
+						transparent,
+					)
+					padding-box,
+				conic-gradient(
+						from var(--bg-angle),
+						transparent,
+						transparent
+					)
+					border-box;
+			animation: paused;
+			
 		}
 	}
 </style>
