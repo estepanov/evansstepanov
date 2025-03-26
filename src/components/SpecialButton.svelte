@@ -11,21 +11,23 @@
 <style lang="postcss">
 	@property --bg-angle {
 		inherits: false;
-		initial-value: -70deg;
+		initial-value: 0deg;
 		syntax: '<angle>';
 	}
 
 	@keyframes spinnner {
 		to {
-			--bg-angle: 290deg;
+			--bg-angle: 360deg;
 		}
 	}
 
 	.tag-highlighter {
+
 		position: relative;
 		background: transparent;
 		z-index: 0;
 		@apply transition-all duration-300 ease-in-out;
+		@apply text-gray-700 dark:text-gray-300;
 	}
 
 	.tag-highlighter:hover {
@@ -65,14 +67,14 @@
 			linear-gradient(
 					to bottom,
 					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.9'),
+					theme('colors.emerald.500 / 0.7'),
 					theme('colors.emerald.500 / 0.1')
 				)
 				padding-box,
 			conic-gradient(
 					from var(--bg-angle),
 					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.9')
+					theme('colors.emerald.500 / 0.7')
 				)
 				border-box;
 		opacity: 1;
@@ -85,14 +87,14 @@
 				linear-gradient(
 						to bottom,
 						theme('colors.emerald.500 / 0.1'),
-						theme('colors.emerald.500 / 0.9'),
+						theme('colors.emerald.500 / 0.7'),
 						theme('colors.emerald.500 / 0.1')
 					)
 					padding-box,
 				conic-gradient(
 						from var(--bg-angle),
 						theme('colors.emerald.500 / 0.1'),
-						theme('colors.emerald.500 / 0.9')
+						theme('colors.emerald.500 / 0.7')
 					)
 					border-box;
 			opacity: 1;
