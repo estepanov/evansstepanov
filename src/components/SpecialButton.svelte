@@ -2,80 +2,107 @@
 	export let className: string = '';
 </script>
 
-<div class={`inline-flex flex-row justify-center items-center ${className}`}>
-	<!-- <span class="bg-gradient-to-tr from-emerald-600 to-emerald-400 w-3 h-3 rounded-full"></span> -->
-	<span class="animated-badge font-bold tracking-widest">
-		<slot />
-	</span>
+<div
+	class={`tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/70 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 ${className}`}
+>
+	<slot />
 </div>
 
 <style lang="postcss">
-	.animated-badge {
-        text-shadow: 1px 1px white;
-		@apply px-3 py-1 text-xs ml-2 uppercase rounded-full;
-		@apply text-emerald-600 dark:text-emerald-100;
-		@apply border border-emerald-300 dark:border-emerald-600;
-		@apply relative;
-		background: linear-gradient(
-			90deg,
-            theme('colors.emerald.500 / 0.10'),
-            theme('colors.emerald.600 / 0.20'),
-            theme('colors.emerald.500 / 0.10')
-		);
-		background-size: 200% 100%;
-		animation: gradient-slide 3s linear infinite;
+	@property --bg-angle {
+		inherits: false;
+		initial-value: -70deg;
+		syntax: '<angle>';
 	}
 
-	.animated-badge::after {
+	@keyframes spinnner {
+		to {
+			--bg-angle: 290deg;
+		}
+	}
+
+	.tag-highlighter {
+		position: relative;
+		background: transparent;
+		z-index: 0;
+		@apply transition-all duration-300 ease-in-out;
+	}
+
+	.tag-highlighter:hover {
+		border-color: transparent;
+		@apply text-emerald-500;
+	}
+
+	.tag-highlighter::before {
 		content: '';
-		@apply absolute inset-0 rounded-full;
-		box-shadow: 0 0 10px theme('colors.emerald.900 / 0.2');
-		animation: glow 2s ease-in-out infinite alternate;
+		position: absolute;
+		top: -1px;
+		right: -1px;
+		bottom: -1px;
+		left: -1px;
+		z-index: -1;
+		border-radius: inherit;
+		border: 1px solid transparent;
+		opacity: 0;
+		background:
+			linear-gradient(to bottom, transparent, transparent) padding-box,
+			conic-gradient(from var(--bg-angle), transparent, transparent) border-box;
+		animation: paused;
+		-webkit-mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
+		animation: paused;
 	}
 
-	@keyframes gradient-slide {
-		0% {
-			background-position: 100% 0%;
-		}
-		100% {
-			background-position: -100% 0%;
-		}
-	}
-
-	@keyframes glow {
-		0% {
-			box-shadow: 0 0 5px theme('colors.emerald.900 / 0.15');
-		}
-		100% {
-			box-shadow: 0 0 15px theme('colors.emerald.900 / 0.25');
-		}
+	.tag-highlighter:hover:before {
+		animation: spinnner 3s linear infinite;
+		background:
+			linear-gradient(
+					to bottom,
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9'),
+					theme('colors.emerald.500 / 0.1')
+				)
+				padding-box,
+			conic-gradient(
+					from var(--bg-angle),
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.9')
+				)
+				border-box;
+		opacity: 1;
 	}
 
 	@media (prefers-color-scheme: dark) {
-		.animated-badge {
-            text-shadow: 1px 1px black;
-			background: linear-gradient(
-				45deg,
-				theme('colors.emerald.900 / 0.3'),
-				theme('colors.emerald.600 / 0.4'),
-				theme('colors.emerald.900 / 0.3')
-			);
-			background-size: 200% 100%;
-			animation: gradient-slide 3s linear infinite;
+		.tag-highlighter:hover:before {
+			animation: spinnner 3s linear infinite;
+			background:
+				linear-gradient(
+						to bottom,
+						theme('colors.emerald.500 / 0.1'),
+						theme('colors.emerald.500 / 0.9'),
+						theme('colors.emerald.500 / 0.1')
+					)
+					padding-box,
+				conic-gradient(
+						from var(--bg-angle),
+						theme('colors.emerald.500 / 0.1'),
+						theme('colors.emerald.500 / 0.9')
+					)
+					border-box;
+			opacity: 1;
 		}
-
-		.animated-badge::after {
-			box-shadow: 0 0 10px theme('colors.emerald.400 / 0.3');
-			animation: glow-dark 1.5s ease-in-out infinite alternate;
-		}
-
-		@keyframes glow-dark {
-			0% {
-				box-shadow: 0 0 5px theme('colors.emerald.400 / 0.2');
-			}
-			100% {
-				box-shadow: 0 0 15px theme('colors.emerald.400 / 0.4');
-			}
+		.tag-highlighter::before {
+			opacity: 0;
+			background:
+				linear-gradient(to bottom, transparent, transparent) padding-box,
+				conic-gradient(from var(--bg-angle), transparent, transparent) border-box;
+			animation: paused;
 		}
 	}
 </style>

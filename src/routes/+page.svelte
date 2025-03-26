@@ -39,6 +39,7 @@
 		SiMockserviceworker,
 		SiBuddy
 	} from '@icons-pack/svelte-simple-icons';
+	import SpecialButton from '../components/SpecialButton.svelte';
 
 	export let data;
 
@@ -275,235 +276,233 @@
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiNodedotjs size={20} />
-						</span>
-						NodeJS
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiNodedotjs size={20} />
+							</span>
+							NodeJS
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiBun size={20} />
-						</span>
-						Bun
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiBun size={20} />
+							</span>
+							Bun
+						</SpecialButton>
 					</li>
 				</ul>
 			</div>
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Testing</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						Playwright
+					<li>
+						<SpecialButton>Playwright</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiVitest size={20} />
-						</span>
-						Vitest
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiVitest size={20} />
+							</span>
+							Vitest
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiMockserviceworker size={20} />
-						</span>
-						Mock Service Worker
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiMockserviceworker size={20} />
+							</span>
+							Mock Service Worker
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiJest size={20} />
-						</span>
-						Jest
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiJest size={20} />
+							</span>
+							Jest
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiCypress size={20} />
-						</span>
-						Cypress
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiCypress size={20} />
+							</span>
+							Cypress
+						</SpecialButton>
 					</li>
 				</ul>
 			</div>
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Frontend</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiNextdotjs size={20} />
-						</span>
-						NextJS
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiNextdotjs size={20} />
+							</span>
+							NextJS
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiSvelte size={20} />
-						</span>
-						Svelte
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiSvelte size={20} />
+							</span>
+							Svelte
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiReactquery size={20} />
-						</span>
-						React Query
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiReactquery size={20} />
+							</span>
+							React Query
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiStyledcomponents size={20} />
-						</span>
-						Styled Components
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiStyledcomponents size={20} />
+							</span>
+							Styled Components
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiTailwindcss size={20} />
-						</span>
-						Tailwind CSS
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiTailwindcss size={20} />
+							</span>
+							Tailwind CSS
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiChakraui size={20} />
-						</span>
-						Chakra UI
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiChakraui size={20} />
+							</span>
+							Chakra UI
+						</SpecialButton>
 					</li>
 				</ul>
 			</div>
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Backend</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiTrpc size={20} />
-						</span>
-						tRPC
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiTrpc size={20} />
+							</span>
+							tRPC
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiHono size={20} />
-						</span>
-						Hono
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiHono size={20} />
+							</span>
+							Hono
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiExpress size={20} />
-						</span>
-						Express
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiExpress size={20} />
+							</span>
+							Express
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiDrizzle size={20} />
-						</span>
-						Drizzle ORM
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiDrizzle size={20} />
+							</span>
+							Drizzle ORM
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiPrisma size={20} />
-						</span>
-						Prisma ORM
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiPrisma size={20} />
+							</span>
+							Prisma ORM
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiMongoose size={20} />
-						</span>
-						Mongoose ORM
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiMongoose size={20} />
+							</span>
+							Mongoose ORM
+						</SpecialButton>
 					</li>
 				</ul>
 			</div>
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Data stores</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiPostgresql size={20} />
-						</span>
-						PostgreSQL
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiPostgresql size={20} />
+							</span>
+							PostgreSQL
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiSqlite size={20} />
-						</span>
-						SQLite
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiSqlite size={20} />
+							</span>
+							SQLite
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiAmazondynamodb size={20} />
-						</span>
-						DynamoDB
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiAmazondynamodb size={20} />
+							</span>
+							DynamoDB
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiMongodb size={20} />
-						</span>
-						MongoDB
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiMongodb size={20} />
+							</span>
+							MongoDB
+						</SpecialButton>
 					</li>
 				</ul>
 			</div>
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">DevOps</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiDocker size={20} />
-						</span>
-						Docker
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiDocker size={20} />
+							</span>
+							Docker
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiGithubactions size={20} />
-						</span>
-						GitHub Actions
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiGithubactions size={20} />
+							</span>
+							GitHub Actions
+						</SpecialButton>
 					</li>
-					<li
-						class="tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						<span class="mr-4">
-							<SiBuddy size={20} />
-						</span>
-						Buddy
+					<li>
+						<SpecialButton>
+							<span class="mr-4">
+								<SiBuddy size={20} />
+							</span>
+							Buddy
+						</SpecialButton>
 					</li>
 				</ul>
 			</div>
@@ -673,26 +672,15 @@
 						theme('colors.emerald.500 / 0.9')
 					)
 					border-box;
-					opacity: 1;
-					transition: opacity 300ms ease-in-out;
+			opacity: 1;
+			transition: opacity 300ms ease-in-out;
 		}
 		.tag-highlighter::before {
 			opacity: 0;
 			background:
-				linear-gradient(
-						to bottom,
-						transparent,
-						transparent,
-					)
-					padding-box,
-				conic-gradient(
-						from var(--bg-angle),
-						transparent,
-						transparent
-					)
-					border-box;
+				linear-gradient(to bottom, transparent, transparent) padding-box,
+				conic-gradient(from var(--bg-angle), transparent, transparent) border-box;
 			animation: paused;
-			
 		}
 	}
 </style>
