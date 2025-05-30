@@ -8,4 +8,5 @@ export interface Work {
     image?: string
     startDate?: Date,
     endDate?: Date,
+    tags?: string[]
 }

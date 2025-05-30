@@ -66,6 +66,7 @@ export async function load(): Promise<LoadResults> {
         isCurrent: page.properties.Dates.date.end === null,
         startDate: page.properties.Dates.date.start ? new Date(page.properties.Dates.date.start) : undefined,
         endDate: page.properties.Dates.date.end ? new Date(page.properties.Dates.date.end) : undefined,
+        tags: page.properties.Tags.multi_select?.map(tag => tag.name)
     })) as unknown as Work[]
 
     const techResults = tech.results.map(page => {
