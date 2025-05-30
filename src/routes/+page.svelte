@@ -40,6 +40,7 @@
 		SiBuddy
 	} from '@icons-pack/svelte-simple-icons';
 	import SpecialButton from '../components/SpecialButton.svelte';
+	import TagIcon from '../components/TagIcon.svelte';
 
 	export let data;
 
@@ -80,9 +81,8 @@
 				elegant, user-focused solutions.
 			</p>
 			<p class="leading-relaxed">
-				When I'm not <code>coding</code>, you can find me <span
-					class="font-bold text-emerald-700 dark:text-emerald-400">reading</span
-				>
+				When I'm not <code>coding</code>, you can find me
+				<span class="font-bold text-emerald-700 dark:text-emerald-400">reading</span>
 				📚,
 				<span class="font-bold text-emerald-700 dark:text-emerald-400">skiing</span>
 				⛷️, playing <span class="font-bold text-emerald-700 dark:text-emerald-400">Halo</span> 🎮,
@@ -152,6 +152,15 @@
 						</h3>
 						<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
 						<div class="flex flex-grow"></div>
+						{#if work.tags}
+							<ul class="flex flex-row flex-wrap gap-2 mt-2">
+								{#each work.tags as tag}
+									<li class="opacity-80 justify-center items-center flex w-8 h-8">
+										<TagIcon tag={tag} size={24}  />
+									</li>
+								{/each}
+							</ul>
+						{/if}
 						<ul
 							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
 						>
@@ -277,7 +286,7 @@
 				{/each}
 			</ul>
 		</Section> -->
-		<Section title="Tech">
+		<!-- <Section title="Tech">
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
@@ -511,7 +520,7 @@
 					</li>
 				</ul>
 			</div>
-		</Section>
+		</Section> -->
 	</main>
 	<footer class="mt-10">
 		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">
