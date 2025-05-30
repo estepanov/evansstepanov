@@ -30,6 +30,8 @@
 		SiBuddy,
 		SiAmazonwebservices
 	} from '@icons-pack/svelte-simple-icons';
+	import Playwright from './icons/Playwright.svelte';
+
 	export let tag = '';
 	export let size = 20;
 
@@ -132,7 +134,7 @@
 </script>
 
 {#if icon === 'playwright'}
-	<img src="/playwright-logo.svg" alt="Playwright" />
+	<Playwright />
 {:else if icon}
 	<svelte:component this={icon} {size} />
 {/if}

@@ -13,34 +13,8 @@
 		SiGithub,
 		SiReact,
 		SiTypescript,
-		SiNextdotjs,
-		SiReactquery,
-		SiTrpc,
-		SiHono,
-		SiDrizzle,
-		SiNodedotjs,
-		SiBun,
-		SiStyledcomponents,
-		SiTailwindcss,
-		SiChakraui,
-		SiExpress,
-		SiPostgresql,
-		SiSvelte,
-		SiSqlite,
-		SiAmazondynamodb,
-		SiMongodb,
-		SiPrisma,
-		SiMongoose,
-		SiDocker,
-		SiGithubactions,
-		SiCypress,
-		SiJest,
-		SiVitest,
-		SiMockserviceworker,
-		SiBuddy
 	} from '@icons-pack/svelte-simple-icons';
-	import SpecialButton from '../components/SpecialButton.svelte';
-	import TagIcon from '../components/TagIcon.svelte';
+	import ScrollingTags from '../components/ScrollingTags.svelte';
 
 	export let data;
 
@@ -153,13 +127,7 @@
 						<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
 						<div class="flex flex-grow"></div>
 						{#if work.tags}
-							<ul class="flex flex-row flex-wrap gap-2 mt-2">
-								{#each work.tags as tag}
-									<li class="opacity-80 justify-center items-center flex w-8 h-8">
-										<TagIcon tag={tag} size={24}  />
-									</li>
-								{/each}
-							</ul>
+							<ScrollingTags tags={work.tags} />
 						{/if}
 						<ul
 							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
