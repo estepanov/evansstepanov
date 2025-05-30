@@ -58,31 +58,36 @@
 	<main class="w-full space-y-12">
 		<Section title="About me">
 			<p class="leading-relaxed">
-				I'm a software engineer with a passion for building scalable, high-performance <span
-					class="font-bold text-indigo-800 dark:text-indigo-200">web applications</span
-				>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
-				full-stack initiatives, from architecting monorepos and optimizing legacy systems to
+				<img
+					src="/small.png"
+					alt="me"
+					class="profile-image opacity-80 grayscale ml-2 mb-2 w-24 h-24 sm:w-36 sm:h-36 rounded-full border-4 border-gray-300 dark:border-gray-700 float-right"
+				/>
+				I'm a software engineer with a passion for building scalable, high-performance
+				<span class="font-bold text-purple-700 dark:text-purple-400">web applications</span>. With
+				experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and full-stack
+				initiatives, from architecting frontend applications and optimizing legacy systems to
 				enhancing accessibility and streamlining cloud infrastructure.
 			</p>
 			<p class="leading-relaxed">
-				I primarily work in <span class="font-bold text-indigo-800 dark:text-indigo-200">
+				I primarily work in <span class="font-bold text-purple-700 dark:text-purple-400">
 					TypeScript <span class="inline-block"><SiTypescript size={16} /></span>
 				</span>
 				and specialize in
-				<span class="font-bold text-indigo-800 dark:text-indigo-200">
+				<span class="font-bold text-purple-700 dark:text-purple-400">
 					React <span class="inline-block"><SiReact size={16} /></span>
 				</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with
 				elegant, user-focused solutions.
 			</p>
 			<p class="leading-relaxed">
-				When I'm not coding, you can find me <span
-					class="font-bold text-emerald-800 dark:text-emerald-200">reading</span
+				When I'm not <code>coding</code>, you can find me <span
+					class="font-bold text-emerald-700 dark:text-emerald-400">reading</span
 				>
 				📚,
-				<span class="font-bold text-emerald-800 dark:text-emerald-200">skiing</span>
-				⛷️, playing <span class="font-bold text-emerald-800 dark:text-emerald-200">Halo</span> 🎮,
+				<span class="font-bold text-emerald-700 dark:text-emerald-400">skiing</span>
+				⛷️, playing <span class="font-bold text-emerald-700 dark:text-emerald-400">Halo</span> 🎮,
 				or
-				<span class="font-bold text-emerald-800 dark:text-emerald-200">sleeping</span> 🛌.
+				<span class="font-bold text-emerald-700 dark:text-emerald-400">sleeping</span> 🛌.
 			</p>
 		</Section>
 		<Section title="Links">
@@ -603,6 +608,11 @@
 	.project-active-border:nth-child(3)::before { animation-delay: 3s }
 	.project-active-border:nth-child(4)::before { animation-delay: 4s }
 	.project-active-border:nth-child(5)::before { animation-delay: 5s } */
+
+	.profile-image {
+		shape-outside: circle();
+		shape-margin: 0.5rem;
+	}
 
 	.tag-highlighter {
 		position: relative;
