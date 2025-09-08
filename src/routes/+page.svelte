@@ -13,33 +13,8 @@
 		SiGithub,
 		SiReact,
 		SiTypescript,
-		SiNextdotjs,
-		SiReactquery,
-		SiTrpc,
-		SiHono,
-		SiDrizzle,
-		SiNodedotjs,
-		SiBun,
-		SiStyledcomponents,
-		SiTailwindcss,
-		SiChakraui,
-		SiExpress,
-		SiPostgresql,
-		SiSvelte,
-		SiSqlite,
-		SiAmazondynamodb,
-		SiMongodb,
-		SiPrisma,
-		SiMongoose,
-		SiDocker,
-		SiGithubactions,
-		SiCypress,
-		SiJest,
-		SiVitest,
-		SiMockserviceworker,
-		SiBuddy
 	} from '@icons-pack/svelte-simple-icons';
-	import SpecialButton from '../components/SpecialButton.svelte';
+	import ScrollingTags from '../components/ScrollingTags.svelte';
 
 	export let data;
 
@@ -80,9 +55,8 @@
 				elegant, user-focused solutions.
 			</p>
 			<p class="leading-relaxed">
-				When I'm not <code>coding</code>, you can find me <span
-					class="font-bold text-emerald-700 dark:text-emerald-400">reading</span
-				>
+				When I'm not <code>coding</code>, you can find me
+				<span class="font-bold text-emerald-700 dark:text-emerald-400">reading</span>
 				📚,
 				<span class="font-bold text-emerald-700 dark:text-emerald-400">skiing</span>
 				⛷️, playing <span class="font-bold text-emerald-700 dark:text-emerald-400">Halo</span> 🎮,
@@ -152,6 +126,9 @@
 						</h3>
 						<p class="leading-tight dark:text-gray-200 text-gray-600">{work.description}</p>
 						<div class="flex flex-grow"></div>
+						{#if work.tags}
+							<ScrollingTags tags={work.tags} />
+						{/if}
 						<ul
 							class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 text-gray-500 items-center"
 						>
@@ -277,7 +254,7 @@
 				{/each}
 			</ul>
 		</Section> -->
-		<Section title="Tech">
+		<!-- <Section title="Tech">
 			<div class="space-y-2">
 				<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
 				<ul class="flex flex-row flex-wrap gap-2">
@@ -511,7 +488,7 @@
 					</li>
 				</ul>
 			</div>
-		</Section>
+		</Section> -->
 	</main>
 	<footer class="mt-10">
 		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">
