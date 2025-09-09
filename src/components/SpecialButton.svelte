@@ -22,7 +22,7 @@
 	}
 
 	.tag-highlighter {
-
+		transform: scale(1);
 		position: relative;
 		background: transparent;
 		z-index: 0;
@@ -31,8 +31,10 @@
 	}
 
 	.tag-highlighter:hover {
+		transform: scale(1.03);
 		border-color: transparent;
 		@apply text-emerald-500;
+		@apply shadow-lg shadow-slate-300/30 dark:shadow-slate-900/50;
 	}
 
 	.tag-highlighter::before {
