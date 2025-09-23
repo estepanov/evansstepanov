@@ -5,38 +5,13 @@
 	import Section from '../components/Section.svelte';
 	import SpecialBadge from '../components/SpecialBadge.svelte';
 	import { getFormattedDate } from '../util/dates';
-	import { getColorFromWeight } from '../util/statusColors';
 	import MiniImageGallery from '../components/MiniImageGallery.svelte';
 	import { idHash } from '../util/id-hash-link-format';
-	import { GithubIcon, LinkedinIcon } from '@lucide/svelte';
+	import { getTechIcon } from '../util/tech-icons';
+	import { GithubIcon, MousePointer, ShoppingCart } from '@lucide/svelte';
 	import {
 		SiReact,
 		SiTypescript,
-		SiNextdotjs,
-		SiReactquery,
-		SiTrpc,
-		SiHono,
-		SiDrizzle,
-		SiNodedotjs,
-		SiBun,
-		SiStyledcomponents,
-		SiTailwindcss,
-		SiChakraui,
-		SiExpress,
-		SiPostgresql,
-		SiSvelte,
-		SiSqlite,
-		SiAmazondynamodb,
-		SiMongodb,
-		SiPrisma,
-		SiMongoose,
-		SiDocker,
-		SiGithubactions,
-		SiCypress,
-		SiJest,
-		SiVitest,
-		SiMockserviceworker,
-		SiBuddy
 	} from '@icons-pack/svelte-simple-icons';
 	import SpecialButton from '../components/SpecialButton.svelte';
 	import SocialLink from '../components/SocialLink.svelte';
@@ -63,11 +38,16 @@
 					alt="me"
 					class="profile-image opacity-80 grayscale ml-2 mb-2 w-24 h-24 sm:w-36 sm:h-36 rounded-full border-4 border-gray-300 dark:border-gray-700 float-right"
 				/>
-				I'm a software engineer with a passion for building scalable, high-performance
-				<span class="font-bold text-purple-700 dark:text-purple-400">web applications</span>. With
-				experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and full-stack
-				initiatives, from architecting frontend applications and optimizing legacy systems to
-				enhancing accessibility and streamlining cloud infrastructure.
+				I'm a
+				<span class="font-bold text-purple-700 dark:text-purple-400"
+					>product focused <span class="inline-block"><ShoppingCart size={16} /></span></span
+				>
+				software engineer with a passion for building scalable, high-performance
+				<span class="font-bold text-purple-700 dark:text-purple-400"
+					>web applications <span class="inline-block"><MousePointer size={16} /></span></span
+				>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
+				full-stack initiatives, from architecting frontend applications and optimizing legacy
+				systems to enhancing accessibility and streamlining cloud infrastructure.
 			</p>
 			<p class="leading-relaxed">
 				I primarily work in <span class="font-bold text-purple-700 dark:text-purple-400">
@@ -80,9 +60,8 @@
 				elegant, user-focused solutions.
 			</p>
 			<p class="leading-relaxed">
-				When I'm not <code>coding</code>, you can find me <span
-					class="font-bold text-emerald-700 dark:text-emerald-400">reading</span
-				>
+				When I'm not <code>coding</code>, you can find me
+				<span class="font-bold text-emerald-700 dark:text-emerald-400">reading</span>
 				📚,
 				<span class="font-bold text-emerald-700 dark:text-emerald-400">skiing</span>
 				⛷️, playing <span class="font-bold text-emerald-700 dark:text-emerald-400">Halo</span> 🎮,
@@ -245,251 +224,36 @@
 				{/each}
 			</ul>
 		</Section>
-		<!-- <Section title="Tech">
-			<ul class="flex flex-row flex-wrap gap-2">
-				{#each data.tech as tech, i}
-					<li
-						class="px-3 py-1.5 rounded-full text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200 ease-in-out"
-					>
-						{tech.name}
-					</li>
-				{/each}
-			</ul>
-		</Section> -->
 		<Section title="Tech">
-			<div class="space-y-2">
-				<h3 class="font-bold text-lg opacity-80">Runtimes</h3>
-				<ul class="flex flex-row flex-wrap gap-2">
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiNodedotjs size={20} />
-							</span>
-							NodeJS
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiBun size={20} />
-							</span>
-							Bun
-						</SpecialButton>
-					</li>
-				</ul>
-			</div>
-			<div class="space-y-2">
-				<h3 class="font-bold text-lg opacity-80">Testing</h3>
-				<ul class="flex flex-row flex-wrap gap-2">
-					<li>
-						<SpecialButton>Playwright</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiVitest size={20} />
-							</span>
-							Vitest
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiMockserviceworker size={20} />
-							</span>
-							Mock Service Worker
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiJest size={20} />
-							</span>
-							Jest
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiCypress size={20} />
-							</span>
-							Cypress
-						</SpecialButton>
-					</li>
-				</ul>
-			</div>
-			<div class="space-y-2">
-				<h3 class="font-bold text-lg opacity-80">Frontend</h3>
-				<ul class="flex flex-row flex-wrap gap-2">
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiNextdotjs size={20} />
-							</span>
-							NextJS
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiSvelte size={20} />
-							</span>
-							Svelte
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiReactquery size={20} />
-							</span>
-							React Query
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiStyledcomponents size={20} />
-							</span>
-							Styled Components
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiTailwindcss size={20} />
-							</span>
-							Tailwind CSS
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiChakraui size={20} />
-							</span>
-							Chakra UI
-						</SpecialButton>
-					</li>
-				</ul>
-			</div>
-			<div class="space-y-2">
-				<h3 class="font-bold text-lg opacity-80">Backend</h3>
-				<ul class="flex flex-row flex-wrap gap-2">
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiTrpc size={20} />
-							</span>
-							tRPC
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiHono size={20} />
-							</span>
-							Hono
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiExpress size={20} />
-							</span>
-							Express
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiDrizzle size={20} />
-							</span>
-							Drizzle ORM
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiPrisma size={20} />
-							</span>
-							Prisma ORM
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiMongoose size={20} />
-							</span>
-							Mongoose ORM
-						</SpecialButton>
-					</li>
-				</ul>
-			</div>
-			<div class="space-y-2">
-				<h3 class="font-bold text-lg opacity-80">Data stores</h3>
-				<ul class="flex flex-row flex-wrap gap-2">
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiPostgresql size={20} />
-							</span>
-							PostgreSQL
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiSqlite size={20} />
-							</span>
-							SQLite
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiAmazondynamodb size={20} />
-							</span>
-							DynamoDB
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiMongodb size={20} />
-							</span>
-							MongoDB
-						</SpecialButton>
-					</li>
-				</ul>
-			</div>
-			<div class="space-y-2">
-				<h3 class="font-bold text-lg opacity-80">DevOps</h3>
-				<ul class="flex flex-row flex-wrap gap-2">
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiDocker size={20} />
-							</span>
-							Docker
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiGithubactions size={20} />
-							</span>
-							GitHub Actions
-						</SpecialButton>
-					</li>
-					<li>
-						<SpecialButton>
-							<span class="mr-4">
-								<SiBuddy size={20} />
-							</span>
-							Buddy
-						</SpecialButton>
-					</li>
-				</ul>
-			</div>
+			<p>
+				Here are the technologies and tools I work with, organized by category. Choose any item to
+				learn more about my experience with it.
+			</p>
+			{#each ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'] as techType}
+				{@const techItems = data.tech.filter((tech) => tech.type === techType)}
+				{#if techItems.length > 0}
+					<div class="space-y-2">
+						<h3 class="font-bold text-lg opacity-80">{techType}s</h3>
+						<ul class="flex flex-row flex-wrap gap-2">
+							{#each techItems as tech}
+								{@const TechIcon = getTechIcon(tech.name)}
+								<li>
+									<a href="/tech/{tech.name}" class="block">
+										<SpecialButton className="hover:scale-105 transition-transform duration-200">
+											{#if TechIcon}
+												<span class="mr-4">
+													<svelte:component this={TechIcon} size={20} />
+												</span>
+											{/if}
+											{tech.name}
+										</SpecialButton>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
+			{/each}
 		</Section>
 	</main>
 	<footer class="mt-10">
