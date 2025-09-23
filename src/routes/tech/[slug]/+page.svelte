@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { getTechIcon } from '../../../util/tech-icons';
 	import { getColorFromWeight } from '../../../util/statusColors';
-	import Link from '../../../components/Link.svelte';
 	import Section from '../../../components/Section.svelte';
 	import GridItem from '../../../components/GridItem.svelte';
+	import ButtonContainer from '../../../components/ButtonContainer.svelte';
+	import AnchorButton from '../../../components/AnchorButton.svelte';
+	import { House, Table } from '@lucide/svelte';
 
 	export let data;
 
@@ -27,9 +29,9 @@
 				<div
 					class="flex md:flex-row flex-col items-start md:items-center justify-start md:justify-between w-full gap-2 md:gap-0"
 				>
-					<h2 class="font-bold text-xl dark:text-gray-400 tracking-widest text-gray-800 uppercase">
+					<h1 class="font-bold text-xl dark:text-gray-400 tracking-widest text-gray-800 uppercase">
 						{tech.name}
-					</h2>
+					</h1>
 					<div class="flex flex-row items-center gap-x-2">
 						<span
 							class="px-3 py-1 text-xs font-bold tracking-widest uppercase rounded-full border {proficiencyStyle}"
@@ -42,7 +44,7 @@
 			</svelte:fragment>
 			<div class="flex flex-col space-y-6">
 				<div
-					class="p-4 rounded-lg bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 flex flex-row"
+					class="p-4 rounded-lg bg-slate-200/50 dark:bg-slate-800/50 border-slate-300/50 dark:border-slate-700/50 flex flex-row"
 				>
 					{#if TechIcon}
 						<div class="text-6xl text-gray-700 dark:text-gray-300 mr-4">
@@ -76,15 +78,16 @@
 			</div>
 		</Section>
 
-		<div class="text-center">
-			<Link href="/">
-				<span
-					class="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium"
-				>
-					← Back to Home
-				</span>
-			</Link>
-		</div>
+		<ButtonContainer>
+			<AnchorButton href="/">
+				<House />
+				Back to Home
+			</AnchorButton>
+			<AnchorButton href="/tech">
+				<Table />
+				View all Tech
+			</AnchorButton>
+		</ButtonContainer>
 
 		<!-- Related Work Section -->
 		{#if relatedWork.length > 0}
@@ -109,4 +112,3 @@
 		{/if}
 	</main>
 </div>
-

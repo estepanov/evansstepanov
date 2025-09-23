@@ -28,7 +28,7 @@
 	class={`relative transition-all ease-in${type === 'project' ? '-out' : ''} p-6 rounded-xl flex flex-col ${
 		isActive
 			? `project-active-border`
-			: `border border-slate-500/20 dark:border-slate-300/10`
+			: `border border-slate-500/20 dark:border-slate-800/80`
 	}`}
 >
 	{#if type === 'work'}

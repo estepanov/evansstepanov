@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { getTechIcon } from '../../util/tech-icons';
 	import { getColorFromWeight } from '../../util/statusColors';
-	import Link from '../../components/Link.svelte';
 	import Section from '../../components/Section.svelte';
+	import ButtonContainer from '../../components/ButtonContainer.svelte';
+	import AnchorButton from '../../components/AnchorButton.svelte';
+	import { House } from '@lucide/svelte';
 
 	export let data;
 
@@ -60,12 +62,11 @@
 			{/each}
 		</Section>
 
-		<div class="text-center">
-			<Link href="/">
-				<span class="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium">
-					← Back to Home
-				</span>
-			</Link>
-		</div>
+		<ButtonContainer>
+			<AnchorButton href="/">
+				<House />
+				Back to Home
+			</AnchorButton>
+		</ButtonContainer>
 	</main>
 </div>
