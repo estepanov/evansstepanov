@@ -3,7 +3,7 @@
 </script>
 
 <div
-	class={`tag-highlighter px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/70 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 ${className}`}
+	class={`tag-highlighter flex-1 px-4 flex flex-row justify-center items-center py-2 rounded-md text-sm font-medium tracking-wide bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/70 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 ${className}`}
 >
 	<slot />
 </div>

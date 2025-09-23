@@ -94,7 +94,7 @@
 				{@const techItems = data.tech.filter((tech) => tech.type === techType)}
 				{#if techItems.length > 0}
 					<div class="space-y-2">
-						<h3 class="font-bold text-lg opacity-80">{techType}s</h3>
+						<h3 class="font-bold text-lg opacity-80">{techType}</h3>
 						<ul class="flex flex-row flex-wrap gap-2">
 							{#each techItems as tech}
 								{@const TechIcon = getTechIcon(tech.name)}
