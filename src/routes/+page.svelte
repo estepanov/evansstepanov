@@ -26,11 +26,32 @@
 	<main class="w-full space-y-12">
 		<Section title="About me">
 			<p class="leading-relaxed">
-				<img
-					src="/small.png"
-					alt="me"
-					class="profile-image opacity-80 grayscale ml-2 mb-2 w-24 h-24 sm:w-36 sm:h-36 rounded-full border-4 border-gray-300 dark:border-gray-700 float-right"
-				/>
+				<svg
+					viewBox="0 0 160 240"
+					role="img"
+					aria-label="me"
+					class="profile-image opacity-80 grayscale ml-2 mb-2 w-24 h-36 sm:w-36 sm:h-56 text-gray-300 dark:text-gray-700 float-right"
+				>
+					<defs>
+						<clipPath id="diamond-clip" clipPathUnits="userSpaceOnUse">
+							<path d="M80 0 L160 120 L80 240 L0 120 Z" />
+						</clipPath>
+					</defs>
+					<image
+						href="/small.png"
+						width="160"
+						height="240"
+						preserveAspectRatio="xMidYMid slice"
+						clip-path="url(#diamond-clip)"
+					/>
+					<path
+						d="M80 0 L160 120 L80 240 L0 120 Z"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="4"
+						stroke-linejoin="round"
+					/>
+				</svg>
 				I'm a
 				<span class="font-bold text-purple-700 dark:text-purple-400"
 					>product focused <span class="inline-block"><ShoppingCart size={16} /></span></span
@@ -127,7 +148,7 @@
 
 <style>
 	.profile-image {
-		shape-outside: circle();
-		shape-margin: 0.5rem;
+		shape-outside: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+		shape-margin: 0.75rem;
 	}
 </style>
