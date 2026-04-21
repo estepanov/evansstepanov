@@ -27,7 +27,7 @@
 	id={type === 'project' && idHash ? idHash(item.name) : undefined}
 	class={`relative transition-all ease-in${type === 'project' ? '-out' : ''} p-6 rounded-xl flex flex-col ${
 		isActive
-			? `project-active-border`
+			? type === 'project' ? `project-active-border-subtle` : `project-active-border`
 			: `border border-slate-500/20 dark:border-slate-800/80`
 	}`}
 >
@@ -106,7 +106,7 @@
 
 	{#if isActive}
 		<span class="absolute -bottom-3 dark:bg-black bg-white rounded-full">
-			<SpecialBadge className="-ml-2">{badgeText}</SpecialBadge>
+			<SpecialBadge className="-ml-2" variant={type === 'project' ? 'subtle' : 'emerald'}>{badgeText}</SpecialBadge>
 		</span>
 	{/if}
 </li>
@@ -167,6 +167,49 @@
 		animation: spinnner 20s linear infinite;
 	}
 
+	.project-active-border-subtle {
+		position: relative;
+		background: transparent;
+		z-index: 0;
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+	}
+
+	.project-active-border-subtle::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		border-radius: inherit;
+		border: 1px solid transparent;
+		background:
+			linear-gradient(
+				to bottom,
+				theme('colors.slate.400 / 0.05'),
+				theme('colors.slate.400 / 0.35'),
+				theme('colors.slate.400 / 0.05')
+			)
+			padding-box,
+		conic-gradient(
+			from var(--bg-angle),
+			theme('colors.slate.400 / 0.05'),
+			theme('colors.slate.400 / 0.4')
+		)
+		border-box;
+		-webkit-mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		mask:
+			linear-gradient(#fff 0 0) content-box,
+			linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
+		animation: spinnner 30s linear infinite;
+	}
+
 	@media (prefers-color-scheme: dark) {
 		.project-active-border::before {
 			background:
@@ -184,6 +227,24 @@
 			)
 			border-box;
 			animation: spinnner 20s linear infinite;
+		}
+
+		.project-active-border-subtle::before {
+			background:
+				linear-gradient(
+					to bottom,
+					theme('colors.slate.500 / 0.05'),
+					theme('colors.slate.400 / 0.3'),
+					theme('colors.slate.500 / 0.05')
+				)
+				padding-box,
+			conic-gradient(
+				from var(--bg-angle),
+				theme('colors.slate.500 / 0.05'),
+				theme('colors.slate.400 / 0.35')
+			)
+			border-box;
+			animation: spinnner 30s linear infinite;
 		}
 	}
 </style>
