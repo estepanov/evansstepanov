@@ -47,8 +47,8 @@ export async function load(): Promise<LoadResults> {
             source: (page.properties.Source as any).url,
             media: formatNotionFiles((page.properties.Media as any).files),
             isActive: (page.properties.Active as any).checkbox,
-            startDate: (page.properties.Dates as any).date.start ? new Date((page.properties.Dates as any).date.start) : undefined,
-            endDate: (page.properties.Dates as any).date.end ? new Date((page.properties.Dates as any).date.end) : undefined
+            startDate: (page.properties.Dates as any).date?.start ? new Date((page.properties.Dates as any).date.start) : undefined,
+            endDate: (page.properties.Dates as any).date?.end ? new Date((page.properties.Dates as any).date.end) : undefined
         })) as unknown as Project[]
 
     const workResults = work.results
@@ -60,8 +60,8 @@ export async function load(): Promise<LoadResults> {
             url: (page.properties.URL as any).url,
             techTags: (page.properties['Tech Tags'] as any)?.relation?.map((relation: any) => relation.id) || [],
             isCurrent: (page.properties.Dates as any).date.end === null,
-            startDate: (page.properties.Dates as any).date.start ? new Date((page.properties.Dates as any).date.start) : undefined,
-            endDate: (page.properties.Dates as any).date.end ? new Date((page.properties.Dates as any).date.end) : undefined,
+            startDate: (page.properties.Dates as any).date?.start ? new Date((page.properties.Dates as any).date.start) : undefined,
+            endDate: (page.properties.Dates as any).date?.end ? new Date((page.properties.Dates as any).date.end) : undefined,
         })) as unknown as Work[]
 
     const techResults = tech.results
