@@ -82,31 +82,29 @@
 		opacity: 1;
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.tag-highlighter:hover:before {
-			animation: spinnner 3s linear infinite;
-			background:
-				linear-gradient(
-						to bottom,
-						theme('colors.emerald.500 / 0.1'),
-						theme('colors.emerald.500 / 0.7'),
-						theme('colors.emerald.500 / 0.1')
-					)
-					padding-box,
-				conic-gradient(
-						from var(--bg-angle),
-						theme('colors.emerald.500 / 0.1'),
-						theme('colors.emerald.500 / 0.7')
-					)
-					border-box;
-			opacity: 1;
-		}
-		.tag-highlighter::before {
-			opacity: 0;
-			background:
-				linear-gradient(to bottom, transparent, transparent) padding-box,
-				conic-gradient(from var(--bg-angle), transparent, transparent) border-box;
-			animation: paused;
-		}
+	:global(html.dark) .tag-highlighter:hover:before {
+		animation: spinnner 3s linear infinite;
+		background:
+			linear-gradient(
+					to bottom,
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.7'),
+					theme('colors.emerald.500 / 0.1')
+				)
+				padding-box,
+			conic-gradient(
+					from var(--bg-angle),
+					theme('colors.emerald.500 / 0.1'),
+					theme('colors.emerald.500 / 0.7')
+				)
+				border-box;
+		opacity: 1;
+	}
+	:global(html.dark) .tag-highlighter::before {
+		opacity: 0;
+		background:
+			linear-gradient(to bottom, transparent, transparent) padding-box,
+			conic-gradient(from var(--bg-angle), transparent, transparent) border-box;
+		animation: paused;
 	}
 </style>

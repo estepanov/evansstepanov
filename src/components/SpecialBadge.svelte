@@ -15,7 +15,7 @@
         /* @apply shadow-sm; */
         text-shadow: 1px 1px white;
 		@apply px-3 py-1 text-xs ml-2 uppercase rounded-full;
-		@apply text-emerald-600 dark:text-emerald-100;
+		@apply text-emerald-600 dark:text-white;
 		@apply border border-emerald-300 dark:border-emerald-600;
 		@apply relative;
 		background: linear-gradient(
@@ -36,7 +36,7 @@
 	}
 
 	.animated-badge.subtle {
-		@apply text-slate-600 dark:text-slate-200;
+		@apply text-slate-600 dark:text-slate-50;
 		@apply border-slate-400/50 dark:border-slate-500/50;
 		background: linear-gradient(
 			90deg,
@@ -80,56 +80,54 @@
 		}
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.animated-badge {
-            text-shadow: 1px 1px black;
-			background: linear-gradient(
-				45deg,
-				theme('colors.emerald.900 / 0.3'),
-				theme('colors.emerald.600 / 0.4'),
-				theme('colors.emerald.900 / 0.3')
-			);
-			background-size: 200% 100%;
-			animation: gradient-slide 3s linear infinite;
-		}
+	:global(html.dark) .animated-badge {
+		text-shadow: 1px 1px black;
+		background: linear-gradient(
+			45deg,
+			theme('colors.emerald.900 / 0.3'),
+			theme('colors.emerald.600 / 0.4'),
+			theme('colors.emerald.900 / 0.3')
+		);
+		background-size: 200% 100%;
+		animation: gradient-slide 3s linear infinite;
+	}
 
-		.animated-badge::after {
-			box-shadow: 0 0 10px theme('colors.emerald.400 / 0.3');
-			animation: glow-dark 1.5s ease-in-out infinite alternate;
-		}
+	:global(html.dark) .animated-badge::after {
+		box-shadow: 0 0 10px theme('colors.emerald.400 / 0.3');
+		animation: glow-dark 1.5s ease-in-out infinite alternate;
+	}
 
-		@keyframes glow-dark {
-			0% {
-				box-shadow: 0 0 5px theme('colors.emerald.400 / 0.2');
-			}
-			100% {
-				box-shadow: 0 0 15px theme('colors.emerald.400 / 0.4');
-			}
+	@keyframes glow-dark {
+		0% {
+			box-shadow: 0 0 5px theme('colors.emerald.400 / 0.2');
 		}
-
-		.animated-badge.subtle {
-			background: linear-gradient(
-				45deg,
-				theme('colors.slate.700 / 0.25'),
-				theme('colors.slate.500 / 0.35'),
-				theme('colors.slate.700 / 0.25')
-			);
-			background-size: 200% 100%;
-			animation: gradient-slide 5s linear infinite;
+		100% {
+			box-shadow: 0 0 15px theme('colors.emerald.400 / 0.4');
 		}
+	}
 
-		.animated-badge.subtle::after {
-			box-shadow: 0 0 8px theme('colors.slate.400 / 0.2');
-			animation: glow-subtle-dark 3s ease-in-out infinite alternate;
+	:global(html.dark) .animated-badge.subtle {
+		background: linear-gradient(
+			45deg,
+			theme('colors.slate.700 / 0.25'),
+			theme('colors.slate.500 / 0.35'),
+			theme('colors.slate.700 / 0.25')
+		);
+		background-size: 200% 100%;
+		animation: gradient-slide 5s linear infinite;
+	}
+
+	:global(html.dark) .animated-badge.subtle::after {
+		box-shadow: 0 0 8px theme('colors.slate.400 / 0.2');
+		animation: glow-subtle-dark 3s ease-in-out infinite alternate;
+	}
+
+	@keyframes glow-subtle-dark {
+		0% {
+			box-shadow: 0 0 4px theme('colors.slate.400 / 0.15');
 		}
-
-		@keyframes glow-subtle-dark {
-			0% {
-				box-shadow: 0 0 4px theme('colors.slate.400 / 0.15');
-			}
-			100% {
-				box-shadow: 0 0 12px theme('colors.slate.400 / 0.3');
-			}
+		100% {
+			box-shadow: 0 0 12px theme('colors.slate.400 / 0.3');
 		}
 	}
 </style>

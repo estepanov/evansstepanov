@@ -5,12 +5,13 @@
 	import GridItem from '../../../components/GridItem.svelte';
 	import ButtonContainer from '../../../components/ButtonContainer.svelte';
 	import AnchorButton from '../../../components/AnchorButton.svelte';
+	import TechIcon from '../../../components/TechIcon.svelte';
 	import { House, Table } from '@lucide/svelte';
 
 	export let data;
 
 	const { tech, relatedProjects, relatedWork } = data;
-	const TechIcon = getTechIcon(tech.name);
+	const techIcon = getTechIcon(tech.name);
 	const proficiencyStyle = getColorFromWeight(tech.proficiency);
 </script>
 
@@ -46,9 +47,9 @@
 				<div
 					class="p-4 rounded-lg bg-slate-200/50 dark:bg-slate-800/50 border-slate-300/50 dark:border-slate-700/50 flex flex-row"
 				>
-					{#if TechIcon}
+					{#if techIcon}
 						<div class="text-6xl text-gray-700 dark:text-gray-300 mr-4">
-							<svelte:component this={TechIcon} size={60} />
+							<TechIcon icon={techIcon} size={60} />
 						</div>
 					{/if}
 					<div>

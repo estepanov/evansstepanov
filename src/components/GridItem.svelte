@@ -210,41 +210,39 @@
 		animation: spinnner 30s linear infinite;
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.project-active-border::before {
-			background:
-				linear-gradient(
-					to bottom,
-					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.9'),
-					theme('colors.emerald.500 / 0.1')
-				)
-				padding-box,
-			conic-gradient(
-				from var(--bg-angle),
+	:global(html.dark) .project-active-border::before {
+		background:
+			linear-gradient(
+				to bottom,
 				theme('colors.emerald.500 / 0.1'),
-				theme('colors.emerald.500 / 0.9')
+				theme('colors.emerald.500 / 0.9'),
+				theme('colors.emerald.500 / 0.1')
 			)
-			border-box;
-			animation: spinnner 20s linear infinite;
-		}
+			padding-box,
+		conic-gradient(
+			from var(--bg-angle),
+			theme('colors.emerald.500 / 0.1'),
+			theme('colors.emerald.500 / 0.9')
+		)
+		border-box;
+		animation: spinnner 20s linear infinite;
+	}
 
-		.project-active-border-subtle::before {
-			background:
-				linear-gradient(
-					to bottom,
-					theme('colors.slate.500 / 0.05'),
-					theme('colors.slate.400 / 0.3'),
-					theme('colors.slate.500 / 0.05')
-				)
-				padding-box,
-			conic-gradient(
-				from var(--bg-angle),
+	:global(html.dark) .project-active-border-subtle::before {
+		background:
+			linear-gradient(
+				to bottom,
 				theme('colors.slate.500 / 0.05'),
-				theme('colors.slate.400 / 0.35')
+				theme('colors.slate.400 / 0.3'),
+				theme('colors.slate.500 / 0.05')
 			)
-			border-box;
-			animation: spinnner 30s linear infinite;
-		}
+			padding-box,
+		conic-gradient(
+			from var(--bg-angle),
+			theme('colors.slate.500 / 0.05'),
+			theme('colors.slate.400 / 0.35')
+		)
+		border-box;
+		animation: spinnner 30s linear infinite;
 	}
 </style>

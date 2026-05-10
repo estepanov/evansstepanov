@@ -4,6 +4,7 @@
 	import Section from '../components/Section.svelte';
 	import { idHash } from '../util/id-hash-link-format';
 	import { getTechIcon } from '../util/tech-icons';
+	import TechIcon from '../components/TechIcon.svelte';
 	import { MousePointer, ShoppingCart } from '@lucide/svelte';
 	import {
 		SiReact,
@@ -51,6 +52,8 @@
 			</p>
 			<p class="leading-relaxed">
 				When I'm not <code>coding</code>, you can find me
+				<span class="font-bold text-emerald-700 dark:text-emerald-400">dading</span>
+				🍼,
 				<span class="font-bold text-emerald-700 dark:text-emerald-400">reading</span>
 				📚,
 				<span class="font-bold text-emerald-700 dark:text-emerald-400">skiing</span>
@@ -94,13 +97,13 @@
 						<h3 class="font-bold text-lg opacity-80">{techType}</h3>
 						<ul class="flex flex-row flex-wrap gap-2">
 							{#each techItems as tech}
-								{@const TechIcon = getTechIcon(tech.name)}
+								{@const techIcon = getTechIcon(tech.name)}
 								<li>
 									<a href="/tech/{tech.name}" class="block">
 										<SpecialButton className="hover:scale-105 transition-transform duration-200">
-											{#if TechIcon}
+											{#if techIcon}
 												<span class="mr-4">
-													<svelte:component this={TechIcon} size={20} />
+													<TechIcon icon={techIcon} size={20} />
 												</span>
 											{/if}
 											{tech.name}

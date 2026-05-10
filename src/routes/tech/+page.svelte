@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getTechIcon } from '../../util/tech-icons';
+	import TechIcon from '../../components/TechIcon.svelte';
 	import { getColorFromWeight } from '../../util/statusColors';
 	import Section from '../../components/Section.svelte';
 	import ButtonContainer from '../../components/ButtonContainer.svelte';
@@ -31,7 +32,7 @@
 						<h3 class="font-bold text-xl opacity-80">{techType}</h3>
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 							{#each techItems as techItem}
-								{@const TechIcon = getTechIcon(techItem.name)}
+								{@const techIcon = getTechIcon(techItem.name)}
 								{@const proficiencyColor = getColorFromWeight(techItem.proficiency)}
 								<a href="/tech/{techItem.name}" class="block">
 									<div
@@ -39,9 +40,9 @@
 									>
 										<div class="flex items-center justify-between">
 											<div class="flex items-center space-x-3">
-												{#if TechIcon}
+												{#if techIcon}
 													<div class="text-2xl text-gray-700 dark:text-gray-300">
-														<svelte:component this={TechIcon} size={24} />
+														<TechIcon icon={techIcon} size={24} />
 													</div>
 												{/if}
 												<h4 class="font-semibold text-gray-900 dark:text-white">{techItem.name}</h4>

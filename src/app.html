@@ -1,7 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" class="dark:bg-black bg-white">
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<script>
+			(function () {
+				try {
+					var stored = localStorage.getItem('theme');
+					var mode = stored === 'light' || stored === 'dark' ? stored : 'system';
+					var dark =
+						mode === 'dark' ||
+						(mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+					var root = document.documentElement;
+					root.classList.toggle('dark', dark);
+					root.style.colorScheme = dark ? 'dark' : 'light';
+					root.dataset.themeMode = mode;
+				} catch (e) {}
+			})();
+		</script>
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
