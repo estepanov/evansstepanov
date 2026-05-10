@@ -36,8 +36,8 @@
 	}
 
 	.animated-badge.subtle {
-		@apply text-slate-600 dark:text-slate-50;
-		@apply border-slate-400/50 dark:border-slate-500/50;
+		@apply text-slate-600 dark:text-white;
+		@apply border-slate-400/50 dark:border-slate-400/60;
 		background: linear-gradient(
 			90deg,
 			theme('colors.slate.400 / 0.08'),
@@ -107,11 +107,13 @@
 	}
 
 	:global(html.dark) .animated-badge.subtle {
+		text-shadow: 0 1px 2px theme('colors.black / 0.6');
+		@apply text-slate-100 border-slate-300/70;
 		background: linear-gradient(
 			45deg,
-			theme('colors.slate.700 / 0.25'),
-			theme('colors.slate.500 / 0.35'),
-			theme('colors.slate.700 / 0.25')
+			theme('colors.slate.600 / 0.85'),
+			theme('colors.slate.500 / 0.9'),
+			theme('colors.slate.600 / 0.85')
 		);
 		background-size: 200% 100%;
 		animation: gradient-slide 5s linear infinite;

@@ -2,6 +2,7 @@ import { JavaIcon } from '@hugeicons/core-free-icons';
 import DropwizardIcon from '../components/icons/DropwizardIcon.svelte';
 import PlaywrightIcon from '../components/icons/PlaywrightIcon.svelte';
 import AwsIcon from '../components/icons/AwsIcon.svelte';
+import EmotionIcon from '../components/icons/EmotionIcon.svelte';
 import {
 	SiReact,
 	SiTypescript,
@@ -51,6 +52,7 @@ export const techIconMap: Record<string, TechIcon> = {
 	'Testing Library': simple(SiTestinglibrary),
 	'AWS CDK': simple(AwsIcon),
 	AWS: simple(AwsIcon),
+	Emotion: simple(EmotionIcon),
 	TailwindCSS: simple(SiTailwindcss),
 	Redis: simple(SiRedis),
 	React: simple(SiReact),

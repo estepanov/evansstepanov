@@ -5,12 +5,29 @@
 	import { idHash } from '../util/id-hash-link-format';
 	import { getTechIcon } from '../util/tech-icons';
 	import TechIcon from '../components/TechIcon.svelte';
-	import { MousePointer, ShoppingCart } from '@lucide/svelte';
+	import { MousePointer, ShoppingCart, ArrowUpRight, Cpu, Code2, Boxes, Library, Database, Wrench } from '@lucide/svelte';
+
+	const categoryMeta: Record<string, { icon: any; label: string }> = {
+		Runtime: { icon: Cpu, label: 'Runtime' },
+		Language: { icon: Code2, label: 'Language' },
+		Framework: { icon: Boxes, label: 'Framework' },
+		Library: { icon: Library, label: 'Library' },
+		Database: { icon: Database, label: 'Database' },
+		DevOps: { icon: Wrench, label: 'DevOps' }
+	};
+
+	const techOrder = ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'];
+
+	const proficiencyLevel: Record<string, number> = {
+		Beginner: 1,
+		Intermediate: 2,
+		Advanced: 3,
+		Expert: 4
+	};
 	import {
 		SiReact,
 		SiTypescript,
 	} from '@icons-pack/svelte-simple-icons';
-	import SpecialButton from '../components/SpecialButton.svelte';
 	import SocialLink from '../components/SocialLink.svelte';
 	import GridItem from '../components/GridItem.svelte';
 	import ProfileDiamond from '../components/ProfileDiamond.svelte';
@@ -86,35 +103,68 @@
 			</ul>
 		</Section>
 		<Section title="Tech">
-			<p>
-				Here are the technologies and tools I work with, organized by category. Choose any item to
-				learn more about my experience with it.
-			</p>
-			{#each ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'] as techType}
-				{@const techItems = data.tech.filter((tech) => tech.type === techType)}
-				{#if techItems.length > 0}
-					<div class="space-y-2">
-						<h3 class="font-bold text-lg opacity-80">{techType}</h3>
-						<ul class="flex flex-row flex-wrap gap-2">
-							{#each techItems as tech}
-								{@const techIcon = getTechIcon(tech.name)}
-								<li>
-									<a href="/tech/{tech.name}" class="block">
-										<SpecialButton className="hover:scale-105 transition-transform duration-200">
-											{#if techIcon}
-												<span class="mr-4">
-													<TechIcon icon={techIcon} size={20} />
-												</span>
-											{/if}
-											{tech.name}
-										</SpecialButton>
-									</a>
-								</li>
-							{/each}
-						</ul>
-					</div>
-				{/if}
-			{/each}
+			<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-3">
+				{#each techOrder as techType}
+					{@const techItems = data.tech.filter((tech) => tech.type === techType)}
+					{@const meta = categoryMeta[techType]}
+					{#if techItems.length > 0}
+						<a
+							href="/tech/#{techType.toLowerCase()}"
+							title="View all {meta.label} tech"
+							class="group aspect-square overflow-hidden flex flex-col items-center justify-center text-center p-2 rounded-xl bg-slate-500/5 dark:bg-slate-400/5 text-slate-900 dark:text-slate-100 hover:bg-slate-500/10 dark:hover:bg-slate-400/10 transition-colors duration-200"
+						>
+							<svelte:component this={meta.icon} size={24} strokeWidth={1.75} />
+							<span class="mt-2 text-[11px] font-semibold tracking-wider uppercase">
+								{meta.label}
+							</span>
+						</a>
+						{#each techItems as tech}
+							{@const techIcon = getTechIcon(tech.name)}
+							{@const level = proficiencyLevel[tech.proficiency] ?? 0}
+							<a
+								href="/tech/{tech.name}"
+								title={tech.name}
+								class="tech-tile group relative aspect-square overflow-hidden flex flex-col items-center justify-center p-2 rounded-xl border border-slate-200/70 dark:border-slate-800/70 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200"
+							>
+								<span
+									class="absolute top-2 right-2 text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"
+								>
+									<ArrowUpRight size={14} strokeWidth={2} />
+								</span>
+								{#if techIcon}
+									<div class="text-slate-800 dark:text-slate-100">
+										<TechIcon icon={techIcon} size={38} />
+									</div>
+								{:else}
+									<div
+										class="w-10 h-10 rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-base font-semibold text-slate-500 dark:text-slate-400"
+									>
+										{tech.name.charAt(0)}
+									</div>
+								{/if}
+								<span
+									class="mt-2 text-xs font-medium text-slate-700 dark:text-slate-300 text-center line-clamp-1 w-full"
+								>
+									{tech.name}
+								</span>
+								<span
+									class="mt-1 flex gap-0.5"
+									title="{tech.proficiency}"
+									aria-label="Proficiency: {tech.proficiency}"
+								>
+									{#each [1, 2, 3, 4] as i}
+										<span
+											class="w-1 h-1 rounded-full {i <= level
+												? 'bg-slate-700 dark:bg-slate-300'
+												: 'bg-slate-300 dark:bg-slate-700'}"
+										></span>
+									{/each}
+								</span>
+							</a>
+						{/each}
+					{/if}
+				{/each}
+			</div>
 		</Section>
 	</main>
 	<footer class="mt-10">
@@ -124,4 +174,58 @@
 		</div>
 	</footer>
 </div>
+
+<style>
+	.tech-tile {
+		isolation: isolate;
+		will-change: transform;
+	}
+
+	.tech-tile::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		width: 200%;
+		height: 100%;
+		background: linear-gradient(
+			115deg,
+			transparent 40%,
+			rgba(255, 255, 255, 0.55) 50%,
+			transparent 60%
+		);
+		transform: translate3d(-75%, 0, 0);
+		opacity: 0;
+		transition:
+			transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.25s ease-out;
+		pointer-events: none;
+		z-index: -1;
+	}
+
+	:global(.dark) .tech-tile::before {
+		background: linear-gradient(
+			115deg,
+			transparent 40%,
+			rgba(226, 232, 240, 0.14) 50%,
+			transparent 60%
+		);
+	}
+
+	.tech-tile:hover::before,
+	.tech-tile:focus-visible::before {
+		transform: translate3d(25%, 0, 0);
+		opacity: 1;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tech-tile::before {
+			transition: opacity 0.25s ease-out;
+			transform: translate3d(0, 0, 0);
+		}
+		.tech-tile:hover::before,
+		.tech-tile:focus-visible::before {
+			transform: translate3d(0, 0, 0);
+		}
+	}
+</style>
 

@@ -10,6 +10,15 @@
 	let targetX = 0;
 	let targetY = 0;
 
+	// Emojis cycled while the bottle is hidden behind the diamond, so a
+	// fresh one re-emerges from the top-left each lap. Period must match
+	// the planet-orbit animation duration in CSS (16s).
+	const orbitEmojis = ['🍼', '📚', '⛷️', '🎮', '🛌'] as const;
+	const ORBIT_MS = 16000;
+	// 75% mark of the orbit = deep behind the diamond (top-left arc).
+	const SWAP_OFFSET_MS = ORBIT_MS * 0.75;
+	let emojiIdx = $state(0);
+
 	function handleMove(e: MouseEvent) {
 		if (!wrapper) return;
 		const rect = wrapper.getBoundingClientRect();
@@ -33,25 +42,31 @@
 	onMount(() => {
 		window.addEventListener('mousemove', handleMove, { passive: true });
 		raf = requestAnimationFrame(tick);
+
+		const swapEmoji = () => {
+			emojiIdx = (emojiIdx + 1) % orbitEmojis.length;
+		};
+		const swapTimeout = setTimeout(() => {
+			swapEmoji();
+			swapInterval = setInterval(swapEmoji, ORBIT_MS);
+		}, SWAP_OFFSET_MS);
+		let swapInterval: ReturnType<typeof setInterval> | undefined;
+
 		return () => {
 			window.removeEventListener('mousemove', handleMove);
 			cancelAnimationFrame(raf);
+			clearTimeout(swapTimeout);
+			if (swapInterval) clearInterval(swapInterval);
 		};
 	});
 
-	const sparkle =
-		'M 0 -10 C 0 -4, 4 0, 10 0 C 4 0, 0 4, 0 10 C 0 4, -4 0, -10 0 C -4 0, 0 -4, 0 -10 Z';
-
-	// Icons + emojis from the About Me copy, in orbit order
-	const orbitItems = [
-		{ kind: 'icon', component: ShoppingCart, tone: 'purple' },
-		{ kind: 'emoji', char: '📚' },
-		{ kind: 'icon', component: SiTypescript, tone: 'purple' },
-		{ kind: 'emoji', char: '⛷️' },
-		{ kind: 'icon', component: MousePointer, tone: 'purple' },
-		{ kind: 'emoji', char: '🎮' },
-		{ kind: 'icon', component: SiReact, tone: 'purple' },
-		{ kind: 'emoji', char: '🛌' }
+	// Icons placed around the diamond like the old sparkles — larger,
+	// different sizes, twinkling. Position is wrapper-relative %.
+	const sparkleIcons = [
+		{ component: SiReact, size: 36, top: '4%', left: '78%', dur: 2.4, delay: 0, scale: 1, dx: 1, dy: 1 },
+		{ component: SiTypescript, size: 28, top: '46%', left: '102%', dur: 3.1, delay: 0.6, scale: 0.9, dx: 1, dy: 1 },
+		{ component: MousePointer, size: 24, top: '86%', left: '74%', dur: 2.7, delay: 1.2, scale: 1.1, dx: 1, dy: -1 },
+		{ component: ShoppingCart, size: 32, top: '80%', left: '12%', dur: 2.9, delay: 0.3, scale: 0.85, dx: -1, dy: -1 }
 	] as const;
 </script>
 
@@ -60,7 +75,7 @@
 		viewBox="-40 -40 240 320"
 		role="img"
 		aria-label="me"
-		class="profile-image opacity-90 text-gray-300 dark:text-gray-700"
+		class="profile-image text-gray-300 dark:text-gray-700"
 		overflow="visible"
 	>
 		<defs>
@@ -80,39 +95,30 @@
 				clip-path="url(#diamond-clip)"
 				class="parallax-image grayscale"
 			/>
-			<path
+			<!-- <path
 				d="M80 0 L160 120 L80 240 L0 120 Z"
 				fill="none"
 				stroke="currentColor"
 				stroke-width="4"
 				stroke-linejoin="round"
-			/>
+			/> -->
 		</g>
 
-		<g class="sparkle sparkle-1" transform="translate(178 -10)">
-			<path d={sparkle} fill="currentColor" />
-		</g>
-		<g class="sparkle sparkle-2" transform="translate(-22 60)">
-			<path d={sparkle} fill="currentColor" />
-		</g>
-		<g class="sparkle sparkle-3" transform="translate(165 215)">
-			<path d={sparkle} fill="currentColor" />
-		</g>
 	</svg>
 
-	<span class="orbit" aria-hidden="true">
-		{#each orbitItems as item, i}
-			<span class="orbit-item" class:is-emoji={item.kind === 'emoji'} style="--i:{i}">
-				<span class="orbit-content">
-					{#if item.kind === 'icon'}
-						<svelte:component this={item.component} size={18} />
-					{:else}
-						<span class="emoji">{item.char}</span>
-					{/if}
-				</span>
-			</span>
-		{/each}
+	<span class="planet" aria-hidden="true">
+		<span class="planet-body">{orbitEmojis[emojiIdx]}</span>
 	</span>
+
+	{#each sparkleIcons as s, i}
+		<span
+			class="sparkle-icon"
+			aria-hidden="true"
+			style="--top:{s.top}; --left:{s.left}; --dur:{s.dur}s; --delay:{s.delay}s; --scale:{s.scale}; --dx:{s.dx}; --dy:{s.dy};"
+		>
+			<svelte:component this={s.component} size={s.size} />
+		</span>
+	{/each}
 </span>
 
 <style>
@@ -144,139 +150,167 @@
 		transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px));
 	}
 
-	.sparkle {
-		transform-box: fill-box;
-		transform-origin: center;
-		color: rgb(168 85 247);
+	.profile-image {
+		position: relative;
+		z-index: 1;
 	}
-	:global(.dark) .sparkle {
+
+	.sparkle-icon {
+		position: absolute;
+		top: var(--top);
+		left: var(--left);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
+		color: rgb(126 34 206); /* purple-700 */
+		z-index: 2;
+		transform: translate(
+				calc(-50% + var(--mx) * 14px * var(--dx)),
+				calc(-50% + var(--my) * 12px * var(--dy))
+			)
+			rotate(calc(var(--mx) * 16deg * var(--dx))) scale(var(--scale));
+		animation: twinkle var(--dur) ease-in-out infinite var(--delay);
+		filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.4));
+	}
+	:global(.dark) .sparkle-icon {
 		color: rgb(192 132 252);
 	}
 
-	.sparkle-1 {
-		animation: twinkle 2.4s ease-in-out infinite;
-		transform: translate(calc(178px + var(--mx) * 14px), calc(-10px + var(--my) * 14px))
-			rotate(calc(var(--mx) * 20deg));
-	}
-	.sparkle-2 {
-		animation: twinkle 3.1s ease-in-out infinite 0.6s;
-		transform: translate(calc(-22px + var(--mx) * -18px), calc(60px + var(--my) * 10px))
-			rotate(calc(var(--my) * -15deg)) scale(0.9);
-	}
-	.sparkle-3 {
-		animation: twinkle 2.7s ease-in-out infinite 1.2s;
-		transform: translate(calc(165px + var(--mx) * 10px), calc(215px + var(--my) * -16px))
-			rotate(calc(var(--mx) * -25deg)) scale(0.75);
-	}
-
-	/* Orbit overlay sized to the diamond's rendered bounding box.
-	   Wrapper aspect 2:3, viewBox aspect 3:4 → SVG letterboxes vertically.
-	   Diamond covers the inner 66.67% × 66.67% centered area. */
-	.orbit {
+	.planet {
 		position: absolute;
-		left: 16.67%;
-		top: 16.67%;
-		width: 66.67%;
-		height: 66.67%;
-		pointer-events: none;
-	}
-
-	.orbit-item {
-		position: absolute;
-		top: 0;
-		left: 0;
+		top: 50%;
+		left: 50%;
 		width: 28px;
 		height: 28px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		offset-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-		offset-rotate: 0deg;
-		offset-anchor: 50% 50%;
-		color: rgb(126 34 206); /* purple-700 */
-		animation: orbit 28s linear infinite;
-		animation-delay: calc(var(--i) * -3.5s);
-	}
-	:global(.dark) .orbit-item {
-		color: rgb(192 132 252);
+		margin-left: -14px;
+		margin-top: -14px;
+		pointer-events: none;
+		--rx: 46px;
+		--ry: 11px;
+		animation: planet-orbit 16s linear infinite;
+		will-change: transform, z-index;
 	}
 
-	/* Inner element gets its own wobble so the path isn't perfectly linear,
-	   plus the staggered fade-in entry. */
-	.orbit-content {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		opacity: 0;
-		transform-origin: center;
-		animation:
-			wobble 6.4s ease-in-out infinite,
-			orbit-in 0.7s ease-out forwards;
-		animation-delay:
-			calc(var(--i) * -1.1s),
-			calc(0.15s + var(--i) * 0.08s);
-	}
-
-	.orbit-item.is-emoji {
-		font-size: 16px;
-		line-height: 1;
-	}
-	.orbit-item :global(svg) {
-		filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.35));
-	}
-	.emoji {
-		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+	.planet-body {
+		display: block;
+		width: 100%;
+		height: 100%;
+		font-size: 20px;
+		line-height: 28px;
+		text-align: center;
+		animation: planet-spin 9s ease-in-out infinite;
+		filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
 	}
 
 	@media (min-width: 640px) {
-		.orbit-item {
-			width: 34px;
-			height: 34px;
+		.planet {
+			--rx: 82px;
+			--ry: 18px;
 		}
-		.orbit-item.is-emoji {
-			font-size: 20px;
-		}
-	}
-
-	@keyframes orbit {
-		to {
-			offset-distance: 100%;
+		.planet-body {
+			font-size: 26px;
 		}
 	}
 
-	@keyframes orbit-in {
-		from {
-			opacity: 0;
-			scale: 0.4;
-		}
-		to {
-			opacity: 0.9;
-			scale: 1;
-		}
-	}
-
-	/* Per-item drift — small translate + rotate so the orbit looks organic,
-	   not a stiff polygon trace. */
-	@keyframes wobble {
+	/* Tilted elliptical orbit: major axis runs top-left → bottom-right.
+	   The leading rotate(45deg) puts the translate axes in that diagonal
+	   frame, so x-translate moves along TL↔BR and y-translate along the
+	   perpendicular BL↔TR. 8 sin/cos samples at 45° increments give a
+	   smooth ellipse rather than a polygon. Front (z above diamond) is
+	   the bottom-right arc (0%–50%); back is the top-left arc. */
+	/* 16-step ellipse so linear interpolation between samples follows
+	   the curve closely — fewer/coarser samples produce visible kinks
+	   at sample boundaries that read as "bouncy". Scale held at 1 for
+	   a steady glide; perspective is implied by the path alone. */
+	@keyframes planet-orbit {
 		0% {
-			translate: 0 0;
-			rotate: -6deg;
+			transform: rotate(45deg) translate(var(--rx), 0);
+			z-index: 2;
+		}
+		6.25% {
+			transform: rotate(45deg) translate(calc(var(--rx) * 0.924), calc(var(--ry) * 0.383));
+			z-index: 2;
+		}
+		12.5% {
+			transform: rotate(45deg) translate(calc(var(--rx) * 0.707), calc(var(--ry) * 0.707));
+			z-index: 2;
+		}
+		18.75% {
+			transform: rotate(45deg) translate(calc(var(--rx) * 0.383), calc(var(--ry) * 0.924));
+			z-index: 2;
 		}
 		25% {
-			translate: 3px -4px;
-			rotate: 4deg;
+			transform: rotate(45deg) translate(0, var(--ry));
+			z-index: 2;
+		}
+		31.25% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -0.383), calc(var(--ry) * 0.924));
+			z-index: 2;
+		}
+		37.5% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -0.707), calc(var(--ry) * 0.707));
+			z-index: 2;
+		}
+		43.75% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -0.924), calc(var(--ry) * 0.383));
+			z-index: 2;
+		}
+		49.99% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -1), 0);
+			z-index: 2;
 		}
 		50% {
-			translate: -2px 3px;
-			rotate: -3deg;
+			transform: rotate(45deg) translate(calc(var(--rx) * -1), 0);
+			z-index: 0;
+		}
+		56.25% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -0.924), calc(var(--ry) * -0.383));
+			z-index: 0;
+		}
+		62.5% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -0.707), calc(var(--ry) * -0.707));
+			z-index: 0;
+		}
+		68.75% {
+			transform: rotate(45deg) translate(calc(var(--rx) * -0.383), calc(var(--ry) * -0.924));
+			z-index: 0;
 		}
 		75% {
-			translate: -4px -2px;
-			rotate: 6deg;
+			transform: rotate(45deg) translate(0, calc(var(--ry) * -1));
+			z-index: 0;
+		}
+		81.25% {
+			transform: rotate(45deg) translate(calc(var(--rx) * 0.383), calc(var(--ry) * -0.924));
+			z-index: 0;
+		}
+		87.5% {
+			transform: rotate(45deg) translate(calc(var(--rx) * 0.707), calc(var(--ry) * -0.707));
+			z-index: 0;
+		}
+		93.75% {
+			transform: rotate(45deg) translate(calc(var(--rx) * 0.924), calc(var(--ry) * -0.383));
+			z-index: 0;
+		}
+		99.99% {
+			transform: rotate(45deg) translate(var(--rx), 0);
+			z-index: 0;
 		}
 		100% {
-			translate: 0 0;
-			rotate: -6deg;
+			transform: rotate(45deg) translate(var(--rx), 0);
+			z-index: 2;
+		}
+	}
+
+	/* Counter-rotates the parent's 45° tilt so the emoji glyph stays
+	   roughly upright on screen, with a gentle swing for life. */
+	@keyframes planet-spin {
+		0%,
+		100% {
+			transform: rotate(-57deg);
+		}
+		50% {
+			transform: rotate(-31deg);
 		}
 	}
 
@@ -302,15 +336,10 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.diamond,
-		.sparkle-1,
-		.sparkle-2,
-		.sparkle-3,
-		.orbit-item,
-		.orbit-content {
+		.sparkle-icon,
+		.planet,
+		.planet-body {
 			animation: none;
-		}
-		.orbit-content {
-			opacity: 0.7;
 		}
 	}
 </style>

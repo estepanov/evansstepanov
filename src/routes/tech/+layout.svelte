@@ -9,9 +9,9 @@
 
 <div class="min-h-screen bg-white dark:bg-black">
 	<header class="w-full flex justify-center items-center p-5">
-		<div class="w-40">
+		<a href="/" class="w-40" aria-label="Back to home">
 			<Logo />
-		</div>
+		</a>
 	</header>
 	
 	<main>

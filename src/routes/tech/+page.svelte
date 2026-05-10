@@ -28,7 +28,7 @@
 			{#each ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'] as techType}
 				{@const techItems = tech.filter((tech) => tech.type === techType)}
 				{#if techItems.length > 0}
-					<div class="space-y-4 mb-8">
+					<div id={techType.toLowerCase()} class="space-y-4 mb-8 scroll-mt-24">
 						<h3 class="font-bold text-xl opacity-80">{techType}</h3>
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 							{#each techItems as techItem}
@@ -38,17 +38,15 @@
 									<div
 										class="p-4 rounded-lg bg-slate-100/50 dark:bg-slate-800/30 border border-slate-300/50 dark:border-slate-700/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors duration-200"
 									>
-										<div class="flex items-center justify-between">
-											<div class="flex items-center space-x-3">
-												{#if techIcon}
-													<div class="text-2xl text-gray-700 dark:text-gray-300">
-														<TechIcon icon={techIcon} size={24} />
-													</div>
-												{/if}
-												<h4 class="font-semibold text-gray-900 dark:text-white">{techItem.name}</h4>
-											</div>
-											<div class="flex items-center">
-												<div class="px-2 py-1 text-xs font-bold rounded-full {proficiencyColor}">
+										<div class="flex items-center space-x-3">
+											{#if techIcon}
+												<div class="text-2xl text-gray-700 dark:text-gray-300">
+													<TechIcon icon={techIcon} size={24} />
+												</div>
+											{/if}
+											<div class="flex flex-col items-start">
+												<h4 class="font-semibold text-gray-900 dark:text-white leading-tight">{techItem.name}</h4>
+												<div class="text-xs font-bold {proficiencyColor}">
 													{techItem.proficiency}
 												</div>
 											</div>
