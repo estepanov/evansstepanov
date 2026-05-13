@@ -1,5 +1,6 @@
 <script>
 	import LogoIcon from "../../components/LogoIcon.svelte";
+	import PageContainer from "../../components/PageContainer.svelte";
 
 	export let data;
 </script>
@@ -9,7 +10,7 @@
 	<meta name="robots" content="noindex, nofollow, noarchive">
 </svelte:head>
 
-<div class="h-screen text-base">
+<PageContainer class="text-base">
 	<div class="flex flex-row justify-center items-center">
 		<a href="/" class="inline-flex text-gray-900 dark:text-gray-100 justify-center items-center h-12 w-12 mr-2">
 			<LogoIcon />
@@ -19,7 +20,7 @@
 		</h1>
 	</div>
 	{#if data && data.tags}
-		<div class="columns-1 md:columns-2 lg:columns-4 max-w-6xl mx-auto p-4 space-y-4 text-black dark:text-white">
+		<div class="w-full columns-1 md:columns-2 lg:columns-4 p-4 space-y-4 text-black dark:text-white">
 			{#each data.tags as tag}
 				<div
 					class="break-inside-avoid group py-4 px-4 rounded-xl border-2 border-gray-200 dark:border-gray-800 overflow-hidden hover:border-purple-400 shadow-none hover:shadow-md shadow-purple-500 dark:shadow-purple-100 transition-all ease-in"
@@ -42,4 +43,4 @@
 		</div>
 		<div class="text-sm text-center italic p-4 text-gray-500 dark:text-gray-400">Data as of {data.lastChecked}</div>
 	{/if}
-</div>
+</PageContainer>

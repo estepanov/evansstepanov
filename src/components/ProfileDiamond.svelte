@@ -29,6 +29,17 @@
 		targetY = Math.max(-1, Math.min(1, (e.clientY - cy) / r));
 	}
 
+	function handleScroll() {
+		if (!wrapper) return;
+		const rect = wrapper.getBoundingClientRect();
+		const cy = rect.top + rect.height / 2;
+		// Progress: -1 when element center is at top of viewport, +1 at bottom.
+		const progress = Math.max(-1, Math.min(1, (cy / window.innerHeight) * 2 - 1));
+		targetY = progress;
+		// Subtle horizontal sway driven by the same progress for life.
+		targetX = Math.sin(progress * Math.PI) * 0.4;
+	}
+
 	function tick() {
 		mx += (targetX - mx) * 0.08;
 		my += (targetY - my) * 0.08;
@@ -40,7 +51,13 @@
 	}
 
 	onMount(() => {
-		window.addEventListener('mousemove', handleMove, { passive: true });
+		const coarse = window.matchMedia('(pointer: coarse)').matches;
+		if (coarse) {
+			window.addEventListener('scroll', handleScroll, { passive: true });
+			handleScroll();
+		} else {
+			window.addEventListener('mousemove', handleMove, { passive: true });
+		}
 		raf = requestAnimationFrame(tick);
 
 		const swapEmoji = () => {
@@ -54,6 +71,7 @@
 
 		return () => {
 			window.removeEventListener('mousemove', handleMove);
+			window.removeEventListener('scroll', handleScroll);
 			cancelAnimationFrame(raf);
 			clearTimeout(swapTimeout);
 			if (swapInterval) clearInterval(swapInterval);
@@ -63,10 +81,10 @@
 	// Icons placed around the diamond like the old sparkles — larger,
 	// different sizes, twinkling. Position is wrapper-relative %.
 	const sparkleIcons = [
-		{ component: SiReact, size: 36, top: '4%', left: '78%', dur: 2.4, delay: 0, scale: 1, dx: 1, dy: 1 },
-		{ component: SiTypescript, size: 28, top: '46%', left: '102%', dur: 3.1, delay: 0.6, scale: 0.9, dx: 1, dy: 1 },
-		{ component: MousePointer, size: 24, top: '86%', left: '74%', dur: 2.7, delay: 1.2, scale: 1.1, dx: 1, dy: -1 },
-		{ component: ShoppingCart, size: 32, top: '80%', left: '12%', dur: 2.9, delay: 0.3, scale: 0.85, dx: -1, dy: -1 }
+		{ component: SiReact, size: 36, top: '8%', left: '70%', dur: 2.4, delay: 0, scale: 1, dx: 1, dy: 1, driftDur: 7.5, driftDelay: 0, spin: 1 },
+		{ component: SiTypescript, size: 28, top: '54%', left: '94%', dur: 3.1, delay: 0.6, scale: 0.9, dx: 1, dy: 1, driftDur: 9.2, driftDelay: 1.3, spin: -1 },
+		{ component: MousePointer, size: 24, top: '88%', left: '38%', dur: 2.7, delay: 1.2, scale: 1.1, dx: 1, dy: -1, driftDur: 6.8, driftDelay: 2.1, spin: 1 },
+		{ component: ShoppingCart, size: 32, top: '22%', left: '10%', dur: 2.9, delay: 0.3, scale: 0.85, dx: -1, dy: -1, driftDur: 8.4, driftDelay: 0.7, spin: -1 }
 	] as const;
 </script>
 
@@ -110,13 +128,15 @@
 		<span class="planet-body">{orbitEmojis[emojiIdx]}</span>
 	</span>
 
-	{#each sparkleIcons as s, i}
+	{#each sparkleIcons as s, i (i)}
 		<span
 			class="sparkle-icon"
 			aria-hidden="true"
-			style="--top:{s.top}; --left:{s.left}; --dur:{s.dur}s; --delay:{s.delay}s; --scale:{s.scale}; --dx:{s.dx}; --dy:{s.dy};"
+			style="--top:{s.top}; --left:{s.left}; --dur:{s.dur}s; --delay:{s.delay}s; --scale:{s.scale}; --dx:{s.dx}; --dy:{s.dy}; --drift-dur:{s.driftDur}s; --drift-delay:{s.driftDelay}s; --spin:{s.spin};"
 		>
-			<svelte:component this={s.component} size={s.size} />
+			<span class="sparkle-inner">
+				<svelte:component this={s.component} size={s.size} />
+			</span>
 		</span>
 	{/each}
 </span>
@@ -175,6 +195,31 @@
 	}
 	:global(.dark) .sparkle-icon {
 		color: rgb(192 132 252);
+	}
+
+	.sparkle-inner {
+		display: inline-flex;
+		transform-origin: center;
+		animation: sparkle-drift var(--drift-dur, 8s) ease-in-out infinite var(--drift-delay, 0s);
+		will-change: transform;
+	}
+
+	@keyframes sparkle-drift {
+		0% {
+			transform: translate(0, 0) rotate(0deg) scale(1);
+		}
+		25% {
+			transform: translate(2px, -3px) rotate(calc(var(--spin, 1) * 4deg)) scale(1.04);
+		}
+		50% {
+			transform: translate(0, 1px) rotate(0deg) scale(0.97);
+		}
+		75% {
+			transform: translate(-2px, -2px) rotate(calc(var(--spin, 1) * -3deg)) scale(1.02);
+		}
+		100% {
+			transform: translate(0, 0) rotate(0deg) scale(1);
+		}
 	}
 
 	.planet {
@@ -337,6 +382,7 @@
 	@media (prefers-reduced-motion: reduce) {
 		.diamond,
 		.sparkle-icon,
+		.sparkle-inner,
 		.planet,
 		.planet-body {
 			animation: none;

@@ -33,6 +33,21 @@ export async function load({ params }): Promise<{ tech: Tech, relatedProjects: P
         throw error(404, 'Tech item not found');
     }
     const techId = techPage.id;
+
+    const allTech = await notion.databases.query({
+        database_id: TECH_NOTION_DB_ID as string
+    });
+    const techIdToName = new Map<string, string>();
+    for (const page of allTech.results) {
+        if ('properties' in page) {
+            const name = ((page as any).properties.Name as any).title[0]?.plain_text;
+            if (name) techIdToName.set((page as any).id, name);
+        }
+    }
+    const resolveTechTags = (relations: any[] | undefined): string[] =>
+        (relations || [])
+            .map((r: any) => techIdToName.get(r.id))
+            .filter((n): n is string => Boolean(n));
     
     const tech: Tech = {
         name: (techPage.properties.Name as any).title[0].plain_text,
@@ -60,7 +75,7 @@ export async function load({ params }): Promise<{ tech: Tech, relatedProjects: P
             name: (page.properties.Name as any).title[0].plain_text,
             description: (page.properties.Description as any).rich_text[0].plain_text,
             tags: (page.properties.Tags as any).multi_select.map((tag: any) => tag.name),
-            techTags: (page.properties['Tech Tags'] as any)?.relation?.map((relation: any) => relation.id) || [],
+            techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
             url: (page.properties.URL as any).url,
             source: (page.properties.Source as any).url,
             media: formatNotionFiles((page.properties.Media as any).files),
@@ -87,7 +102,7 @@ export async function load({ params }): Promise<{ tech: Tech, relatedProjects: P
             title: (page.properties.Position as any).title[0].plain_text,
             description: (page.properties.Summary as any).rich_text[0].plain_text,
             url: (page.properties.URL as any).url,
-            techTags: (page.properties['Tech Tags'] as any)?.relation?.map((relation: any) => relation.id) || [],
+            techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
             isCurrent: (page.properties.Dates as any).date.end === null,
             startDate: (page.properties.Dates as any).date.start ? new Date((page.properties.Dates as any).date.start) : undefined,
             endDate: (page.properties.Dates as any).date.end ? new Date((page.properties.Dates as any).date.end) : undefined,

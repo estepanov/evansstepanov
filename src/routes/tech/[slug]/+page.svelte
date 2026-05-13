@@ -6,7 +6,9 @@
 	import ButtonContainer from '../../../components/ButtonContainer.svelte';
 	import AnchorButton from '../../../components/AnchorButton.svelte';
 	import TechIcon from '../../../components/TechIcon.svelte';
+	import TechBackdrop from '../../../components/TechBackdrop.svelte';
 	import { House, Table } from '@lucide/svelte';
+	import PageContainer from '../../../components/PageContainer.svelte';
 
 	export let data;
 
@@ -23,7 +25,7 @@
 	/>
 </svelte:head>
 
-<div class="flex justify-center items-center p-5 flex-col max-w-screen-md mx-auto">
+<PageContainer>
 	<main class="w-full space-y-12">
 		<Section>
 			<svelte:fragment slot="title">
@@ -45,14 +47,15 @@
 			</svelte:fragment>
 			<div class="flex flex-col space-y-6">
 				<div
-					class="p-4 rounded-lg bg-slate-200/50 dark:bg-slate-800/50 border-slate-300/50 dark:border-slate-700/50 flex flex-row"
+					class="tech-hero relative isolate p-6 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 border-slate-300/50 dark:border-slate-700/50 flex flex-row"
 				>
+					<TechBackdrop tags={[tech.name]} size={48} rows={5} cols={6} />
 					{#if techIcon}
-						<div class="text-6xl text-gray-700 dark:text-gray-300 mr-4">
+						<div class="relative z-[1] text-6xl text-gray-700 dark:text-gray-300 mr-4">
 							<TechIcon icon={techIcon} size={60} />
 						</div>
 					{/if}
-					<div>
+					<div class="relative z-[1]">
 						{#if tech.description}
 							<p class="text-gray-600 dark:text-gray-400 leading-relaxed">{tech.description}</p>
 						{/if}
@@ -88,7 +91,7 @@
 
 		{#if relatedWork.length > 0}
 			<Section title="Related Work Experience">
-				<ul class="grid grid-cols-1 md:grid-cols-2 gap-10 relative">
+				<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedWork as work}
 						<GridItem item={work} type="work" />
 					{/each}
@@ -98,7 +101,7 @@
 
 		{#if relatedProjects.length > 0}
 			<Section title="Related Projects">
-				<ul class="grid grid-cols-1 md:grid-cols-2 gap-10 relative">
+				<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedProjects as project}
 						<GridItem item={project} type="project" />
 					{/each}
@@ -120,4 +123,21 @@
 			</AnchorButton>
 		</ButtonContainer>
 	</div>
-</div>
+</PageContainer>
+
+<style>
+	.tech-hero {
+		--tech-shift: 0px;
+		transition: background-color 300ms ease;
+	}
+	.tech-hero:hover,
+	.tech-hero:focus-within {
+		--tech-shift: 22px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tech-hero:hover,
+		.tech-hero:focus-within {
+			--tech-shift: 0px;
+		}
+	}
+</style>

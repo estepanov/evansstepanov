@@ -31,6 +31,7 @@
 	import SocialLink from '../components/SocialLink.svelte';
 	import GridItem from '../components/GridItem.svelte';
 	import ProfileDiamond from '../components/ProfileDiamond.svelte';
+	import PageContainer from '../components/PageContainer.svelte';
 
 	export let data;
 
@@ -40,7 +41,7 @@
 	<title>Evans Stepanov</title>
 </svelte:head>
 
-<div class="flex justify-center items-center p-5 flex-col space-y-20 max-w-screen-md mx-auto mt-20">
+<PageContainer class="space-y-20 mt-20">
 	<div class="w-60 p-1"><Logo /></div>
 	<main class="w-full space-y-12">
 		<Section title="About me">
@@ -89,14 +90,14 @@
 			</ul>
 		</Section>
 		<Section title="Work">
-			<ul class="grid grid-cols-1 md:grid-cols-2 gap-10">
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
 					<GridItem item={work} type="work" />
 				{/each}
 			</ul>
 		</Section>
 		<Section title="Projects">
-			<ul class="grid grid-cols-1 md:grid-cols-2 gap-10">
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
 					<GridItem item={project} type="project" {idHash} />
 				{/each}
@@ -173,7 +174,7 @@
 			Thomas A. Edison
 		</div>
 	</footer>
-</div>
+</PageContainer>
 
 <style>
 	.tech-tile {

@@ -35,14 +35,25 @@ export async function load(): Promise<LoadResults> {
     const tech = await notion.databases.query({
         database_id: TECH_NOTION_DB_ID as string
     })
-// console.log(projects.results.map(p => p.properties.Media.files[0]))
+    const techIdToName = new Map<string, string>();
+    for (const page of tech.results) {
+        if ('properties' in page) {
+            const name = ((page as any).properties.Name as any).title[0]?.plain_text;
+            if (name) techIdToName.set((page as any).id, name);
+        }
+    }
+    const resolveTechTags = (relations: any[] | undefined): string[] =>
+        (relations || [])
+            .map((r: any) => techIdToName.get(r.id))
+            .filter((n): n is string => Boolean(n));
+
     const projectsResults = projects.results
         .filter((page): page is any => 'properties' in page)
         .map(page => ({
             name: (page.properties.Name as any).title[0].plain_text,
             description: (page.properties.Description as any).rich_text[0].plain_text,
             tags: (page.properties.Tags as any).multi_select.map((tag: any) => tag.name),
-            techTags: (page.properties['Tech Tags'] as any)?.relation?.map((relation: any) => relation.id) || [],
+            techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
             url: (page.properties.URL as any).url,
             source: (page.properties.Source as any).url,
             media: formatNotionFiles((page.properties.Media as any).files),
@@ -58,7 +69,7 @@ export async function load(): Promise<LoadResults> {
             title: (page.properties.Position as any).title[0].plain_text,
             description: (page.properties.Summary as any).rich_text[0].plain_text,
             url: (page.properties.URL as any).url,
-            techTags: (page.properties['Tech Tags'] as any)?.relation?.map((relation: any) => relation.id) || [],
+            techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
             isCurrent: (page.properties.Dates as any).date.end === null,
             startDate: (page.properties.Dates as any).date?.start ? new Date((page.properties.Dates as any).date.start) : undefined,
             endDate: (page.properties.Dates as any).date?.end ? new Date((page.properties.Dates as any).date.end) : undefined,

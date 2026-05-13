@@ -6,6 +6,7 @@
 	import ButtonContainer from '../../components/ButtonContainer.svelte';
 	import AnchorButton from '../../components/AnchorButton.svelte';
 	import { House } from '@lucide/svelte';
+	import PageContainer from '../../components/PageContainer.svelte';
 
 	export let data;
 
@@ -17,7 +18,7 @@
 	<meta name="description" content="Explore the technologies and tools I work with." />
 </svelte:head>
 
-<div class="flex justify-center items-center p-5 flex-col space-y-20 max-w-screen-md mx-auto mt-20">
+<PageContainer class="space-y-20 mt-20">
 	<main class="w-full space-y-12">
 		<Section title="Tech Stack">
 			<p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
@@ -72,4 +73,4 @@
 			</AnchorButton>
 		</ButtonContainer>
 	</main>
-</div>
+</PageContainer>
