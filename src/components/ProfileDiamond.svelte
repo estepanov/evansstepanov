@@ -4,11 +4,32 @@
 	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
 
 	let wrapper: HTMLElement;
-	let mx = 0;
-	let my = 0;
+	let mx = $state(0);
+	let my = $state(0);
+	let phase = $state(0);
 	let raf = 0;
 	let targetX = 0;
 	let targetY = 0;
+	let scrollY = 0; // smoothed -1..1 scroll progress through viewport
+	let targetScrollY = 0;
+
+	// Diamond path is derived from mx/my so the shape itself deforms with the
+	// cursor (mobile: scroll). Each vertex gets an asymmetric offset so the
+	// kite "leans" toward the pointer; a tiny sin/cos breathing keeps the
+	// silhouette alive when the pointer is still.
+	const pathD = $derived.by(() => {
+		const wob = Math.sin(phase) * 1.8;
+		const wob2 = Math.cos(phase * 0.83) * 1.8;
+		const tx = 80 + mx * 8 + wob;
+		const ty = 0 + my * 14 - wob2;
+		const rx = 160 + mx * 14 + wob2;
+		const ry = 120 + my * 8 + wob;
+		const bx = 80 + mx * 8 - wob;
+		const by = 240 + my * 14 + wob2;
+		const lx = 0 + mx * 14 - wob2;
+		const ly = 120 + my * 8 - wob;
+		return `M${tx.toFixed(2)} ${ty.toFixed(2)} L${rx.toFixed(2)} ${ry.toFixed(2)} L${bx.toFixed(2)} ${by.toFixed(2)} L${lx.toFixed(2)} ${ly.toFixed(2)} Z`;
+	});
 
 	// Emojis cycled while the bottle is hidden behind the diamond, so a
 	// fresh one re-emerges from the top-left each lap. Period must match
@@ -29,23 +50,36 @@
 		targetY = Math.max(-1, Math.min(1, (e.clientY - cy) / r));
 	}
 
-	function handleScroll() {
-		if (!wrapper) return;
+	function computeScrollProgress() {
+		if (!wrapper) return 0;
 		const rect = wrapper.getBoundingClientRect();
 		const cy = rect.top + rect.height / 2;
-		// Progress: -1 when element center is at top of viewport, +1 at bottom.
-		const progress = Math.max(-1, Math.min(1, (cy / window.innerHeight) * 2 - 1));
+		// -1 when element center is at top of viewport, +1 at bottom.
+		return Math.max(-1, Math.min(1, (cy / window.innerHeight) * 2 - 1));
+	}
+
+	function handleScrollCoarse() {
+		// Mobile/coarse: scroll drives the whole diamond morph + parallax.
+		const progress = computeScrollProgress();
 		targetY = progress;
-		// Subtle horizontal sway driven by the same progress for life.
 		targetX = Math.sin(progress * Math.PI) * 0.4;
+		targetScrollY = progress;
+	}
+
+	function handleScrollFine() {
+		// Desktop: scroll only drives inner-image parallax; morph stays on mouse.
+		targetScrollY = computeScrollProgress();
 	}
 
 	function tick() {
 		mx += (targetX - mx) * 0.08;
 		my += (targetY - my) * 0.08;
+		scrollY += (targetScrollY - scrollY) * 0.08;
+		phase += 0.018;
 		if (wrapper) {
 			wrapper.style.setProperty('--mx', mx.toFixed(3));
 			wrapper.style.setProperty('--my', my.toFixed(3));
+			wrapper.style.setProperty('--sy', scrollY.toFixed(3));
 		}
 		raf = requestAnimationFrame(tick);
 	}
@@ -53,10 +87,12 @@
 	onMount(() => {
 		const coarse = window.matchMedia('(pointer: coarse)').matches;
 		if (coarse) {
-			window.addEventListener('scroll', handleScroll, { passive: true });
-			handleScroll();
+			window.addEventListener('scroll', handleScrollCoarse, { passive: true });
+			handleScrollCoarse();
 		} else {
 			window.addEventListener('mousemove', handleMove, { passive: true });
+			window.addEventListener('scroll', handleScrollFine, { passive: true });
+			handleScrollFine();
 		}
 		raf = requestAnimationFrame(tick);
 
@@ -71,7 +107,8 @@
 
 		return () => {
 			window.removeEventListener('mousemove', handleMove);
-			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('scroll', handleScrollCoarse);
+			window.removeEventListener('scroll', handleScrollFine);
 			cancelAnimationFrame(raf);
 			clearTimeout(swapTimeout);
 			if (swapInterval) clearInterval(swapInterval);
@@ -98,7 +135,7 @@
 	>
 		<defs>
 			<clipPath id="diamond-clip" clipPathUnits="userSpaceOnUse">
-				<path d="M80 0 L160 120 L80 240 L0 120 Z" />
+				<path d={pathD} />
 			</clipPath>
 		</defs>
 
@@ -149,6 +186,7 @@
 		shape-margin: 0.75rem;
 		--mx: 0;
 		--my: 0;
+		--sy: 0;
 	}
 
 	.profile-image {
@@ -167,7 +205,10 @@
 	}
 
 	.parallax-image {
-		transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px));
+		transform: translate(
+			calc(var(--mx) * -10px),
+			calc(var(--my) * -10px + var(--sy) * -22px)
+		);
 	}
 
 	.profile-image {

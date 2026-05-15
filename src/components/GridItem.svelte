@@ -153,13 +153,13 @@
 					aria-label="View details for {titleField}"
 					aria-haspopup="dialog"
 					aria-expanded={detailsOpen}
-					class="details-btn group/details inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide text-slate-600 dark:text-slate-300 bg-white/60 dark:bg-slate-900/50 ring-1 ring-slate-200/80 dark:ring-slate-800/80 hover:text-emerald-700 dark:hover:text-emerald-300 hover:ring-emerald-500/40 dark:hover:ring-emerald-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 transition-colors duration-200"
+					class="details-btn group/details relative inline-flex items-center gap-1.5 py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-none focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200"
 				>
-					View details
+					<span class="details-btn__label">View details</span>
 					<ArrowUpRight
 						size={12}
-						strokeWidth={2}
-						class="transition-transform duration-200 group-hover/details:translate-x-0.5 group-hover/details:-translate-y-0.5"
+						strokeWidth={2.25}
+						class="details-btn__arrow"
 						aria-hidden="true"
 					/>
 				</button>
@@ -209,6 +209,44 @@
 		.tech-card:focus-within .details-btn-wrap {
 			opacity: 1;
 			transform: translateY(0);
+		}
+	}
+
+	.details-btn__label {
+		position: relative;
+	}
+
+	.details-btn__label::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -2px;
+		height: 1px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left center;
+		transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.details-btn:hover .details-btn__label::after,
+	.details-btn:focus-visible .details-btn__label::after {
+		transform: scaleX(1);
+	}
+
+	.details-btn :global(.details-btn__arrow) {
+		transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.details-btn:hover :global(.details-btn__arrow),
+	.details-btn:focus-visible :global(.details-btn__arrow) {
+		transform: translate(2px, -2px);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.details-btn__label::after,
+		.details-btn :global(.details-btn__arrow) {
+			transition: none;
 		}
 	}
 

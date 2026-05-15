@@ -4,12 +4,38 @@
 
 	let button = $state<HTMLButtonElement | null>(null);
 	let visible = $state(true);
+	let labelVisible = $state(false);
+	let labelMode = $state<ThemeMode>(theme.mode);
+	let hideTimer: ReturnType<typeof setTimeout> | null = null;
+	let initialized = false;
 
 	const label: Record<ThemeMode, string> = {
 		light: 'Theme: light. Click for dark.',
 		dark: 'Theme: dark. Click for system.',
 		system: 'Theme: system. Click for light.'
 	};
+
+	const modeName: Record<ThemeMode, string> = {
+		light: 'Light',
+		dark: 'Dark',
+		system: 'System'
+	};
+
+	$effect(() => {
+		const mode = theme.mode;
+		if (!initialized) {
+			initialized = true;
+			labelMode = mode;
+			return;
+		}
+		labelMode = mode;
+		labelVisible = true;
+		if (hideTimer) clearTimeout(hideTimer);
+		hideTimer = setTimeout(() => {
+			labelVisible = false;
+			hideTimer = null;
+		}, 1400);
+	});
 
 	onMount(() => {
 		if (!button || !('IntersectionObserver' in window)) return;
@@ -47,6 +73,14 @@
 	title={label[theme.mode]}
 	onclick={() => theme.cycle()}
 >
+	<span
+		class="mode-label"
+		class:is-visible={labelVisible}
+		aria-live="polite"
+		aria-atomic="true"
+	>
+		<span class="mode-label__text">{modeName[labelMode]}</span>
+	</span>
 	<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
 		<defs>
 			<mask id="moon-mask">
@@ -238,13 +272,19 @@
 
 	.orb {
 		fill: currentColor;
-		transition: r 420ms cubic-bezier(0.4, 0, 0.2, 1);
+		transform-origin: 16px 16px;
+		transition:
+			r 520ms cubic-bezier(0.65, 0, 0.35, 1),
+			transform 520ms cubic-bezier(0.65, 0, 0.35, 1);
+	}
+	.is-dark .orb {
+		transform: scale(1.05);
 	}
 
 	.mask-circle {
 		transform-origin: 24px 10px;
 		transform: scale(0);
-		transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 560ms cubic-bezier(0.34, 1.46, 0.5, 1);
 	}
 	.is-dark .mask-circle {
 		transform: scale(1);
@@ -255,21 +295,28 @@
 		stroke-width: 2;
 		stroke-linecap: round;
 		transform-origin: 16px 16px;
-		transition: opacity 320ms ease, transform 420ms cubic-bezier(0.4, 0, 0.2, 1);
+		transition:
+			opacity 340ms cubic-bezier(0.4, 0, 0.2, 1) 80ms,
+			transform 680ms cubic-bezier(0.34, 1.2, 0.5, 1);
 		opacity: 1;
+		transform: rotate(0deg) scale(1);
 	}
 	.is-dark .rays {
 		opacity: 0;
-		transform: scale(0.4);
+		transform: rotate(-180deg) scale(0.2);
+		transition:
+			opacity 260ms cubic-bezier(0.4, 0, 0.2, 1),
+			transform 620ms cubic-bezier(0.65, 0, 0.35, 1);
 	}
 
 	.stars {
 		fill: currentColor;
 		opacity: 0;
-		transition: opacity 320ms ease;
+		transition: opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
 	}
 	.is-dark .stars {
 		opacity: 1;
+		transition-delay: 160ms;
 	}
 
 	/* Ambient loop — paused unless visible AND in dark mode. */
@@ -325,7 +372,54 @@
 		to { transform: scale(1.06) rotate(8deg); }
 	}
 
+	/* Mode label — fades in on change, fades out after a beat */
+	.mode-label {
+		position: absolute;
+		top: 50%;
+		right: calc(100% + 0.5rem);
+		transform: translate(4px, -50%);
+		display: inline-flex;
+		align-items: center;
+		padding: 0.32rem 0.7rem;
+		border-radius: 9999px;
+		background: rgba(255, 255, 255, 0.78);
+		backdrop-filter: blur(12px) saturate(160%);
+		-webkit-backdrop-filter: blur(12px) saturate(160%);
+		border: 1px solid rgba(0, 0, 0, 0.06);
+		color: #1f2937;
+		font-family: 'Albert Sans', sans-serif;
+		font-size: 0.68rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		line-height: 1;
+		white-space: nowrap;
+		pointer-events: none;
+		opacity: 0;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.05),
+			0 8px 22px -14px rgba(0, 0, 0, 0.25);
+		transition:
+			opacity 360ms ease,
+			transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	:global(.dark) .mode-label {
+		background: rgba(17, 17, 17, 0.72);
+		border-color: rgba(255, 255, 255, 0.08);
+		color: #f3f4f6;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.4),
+			0 10px 26px -14px rgba(0, 0, 0, 0.7);
+	}
+	.mode-label.is-visible {
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
 	@media (prefers-reduced-motion: reduce) {
+		.mode-label {
+			transition: opacity 200ms linear;
+			transform: translate(0, -50%);
+		}
 		.orb,
 		.rays,
 		.mask-circle,

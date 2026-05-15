@@ -169,65 +169,79 @@
 					{data.tech.length}
 				</span>
 			</div>
-			<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-3">
-				{#each techOrder as techType}
+			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+				{#each techOrder as techType, cardIdx}
 					{@const techItems = data.tech.filter((tech) => tech.type === techType)}
 					{@const meta = categoryMeta[techType]}
 					{#if techItems.length > 0}
-						<a
-							href="/tech/#{techType.toLowerCase()}"
-							title="View all {meta.label} tech"
-							class="group aspect-square overflow-hidden flex flex-col items-center justify-center text-center p-2 rounded-xl bg-slate-500/5 dark:bg-slate-400/5 text-slate-900 dark:text-slate-100 hover:bg-slate-500/10 dark:hover:bg-slate-400/10 transition-colors duration-200"
+						<article
+							class="tech-card group/card relative rounded-xl overflow-hidden"
+							style="--card-delay: {cardIdx * 70}ms;"
 						>
-							<svelte:component this={meta.icon} size={24} strokeWidth={1.75} />
-							<span class="mt-2 text-[11px] font-semibold tracking-wider uppercase">
-								{meta.label}
-							</span>
-						</a>
-						{#each techItems as tech}
-							{@const techIcon = getTechIcon(tech.name)}
-							{@const level = proficiencyLevel[tech.proficiency] ?? 0}
-							<a
-								href="/tech/{tech.name}"
-								title={tech.name}
-								class="tech-tile group relative aspect-square overflow-hidden flex flex-col items-center justify-center p-2 rounded-xl border border-slate-200/70 dark:border-slate-800/70 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200"
-							>
-								<span
-									class="absolute top-2 right-2 text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"
+	<header class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-dashed border-slate-200/70 dark:border-slate-800/70">
+								<a
+									href="/tech/#{techType.toLowerCase()}"
+									class="flex items-center gap-2.5 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors"
 								>
-									<ArrowUpRight size={14} strokeWidth={2} />
-								</span>
-								{#if techIcon}
-									<div class="text-slate-800 dark:text-slate-100">
-										<TechIcon icon={techIcon} size={38} />
-									</div>
-								{:else}
-									<div
-										class="w-10 h-10 rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-base font-semibold text-slate-500 dark:text-slate-400"
-									>
-										{tech.name.charAt(0)}
-									</div>
-								{/if}
-								<span
-									class="mt-2 text-xs font-medium text-slate-700 dark:text-slate-300 text-center line-clamp-1 w-full"
-								>
-									{tech.name}
-								</span>
-								<span
-									class="mt-1 flex gap-0.5"
-									title="{tech.proficiency}"
-									aria-label="Proficiency: {tech.proficiency}"
-								>
-									{#each [1, 2, 3, 4] as i}
-										<span
-											class="w-1 h-1 rounded-full {i <= level
-												? 'bg-slate-700 dark:bg-slate-300'
-												: 'bg-slate-300 dark:bg-slate-700'}"
-										></span>
-									{/each}
-								</span>
-							</a>
-						{/each}
+									<span class="tech-card-icon inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300">
+										<svelte:component this={meta.icon} size={15} strokeWidth={1.75} />
+									</span>
+									<span class="text-[11px] font-semibold tracking-[0.18em] uppercase">
+										{meta.label}
+									</span>
+								</a>
+							</header>
+
+							<ul class="grid grid-cols-3 sm:grid-cols-4 gap-1 p-3">
+								{#each techItems as tech, i}
+									{@const techIcon = getTechIcon(tech.name)}
+									{@const level = proficiencyLevel[tech.proficiency] ?? 0}
+									<li class="contents">
+										<a
+											href="/tech/{tech.name}"
+											title="{tech.name} · {tech.proficiency}"
+											class="tech-tile group relative aspect-square flex flex-col items-center justify-center p-2 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors duration-200"
+											style="--tile-delay: {i * 25}ms;"
+										>
+											<span
+												class="absolute top-1.5 right-1.5 text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 -translate-x-0.5 translate-y-0.5 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200"
+											>
+												<ArrowUpRight size={11} strokeWidth={2} />
+											</span>
+											<div class="tech-tile-icon text-slate-800 dark:text-slate-100">
+												{#if techIcon}
+													<TechIcon icon={techIcon} size={30} />
+												{:else}
+													<div
+														class="w-[30px] h-[30px] rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-sm font-semibold text-slate-500 dark:text-slate-400"
+													>
+														{tech.name.charAt(0)}
+													</div>
+												{/if}
+											</div>
+											<span
+												class="mt-1.5 text-[10.5px] font-medium text-slate-600 dark:text-slate-400 text-center line-clamp-1 w-full leading-tight"
+											>
+												{tech.name}
+											</span>
+											<span
+												class="mt-1 flex gap-[3px]"
+												aria-label="Proficiency: {tech.proficiency}"
+											>
+												{#each [1, 2, 3, 4] as i}
+													<span
+														class="tech-dot w-[3px] h-[3px] rounded-full {i <= level
+															? 'bg-slate-600 dark:bg-slate-300'
+															: 'bg-slate-300 dark:bg-slate-700'}"
+														style="--dot-i: {i};"
+													></span>
+												{/each}
+											</span>
+										</a>
+									</li>
+								{/each}
+							</ul>
+						</article>
 					{/if}
 				{/each}
 			</div>
@@ -244,6 +258,7 @@
 <style>
 	.section-header {
 		isolation: isolate;
+		width: 100%;
 	}
 
 	.section-title {
@@ -295,55 +310,104 @@
 		}
 	}
 
+	/* Tech section — category cards (aligned with Work/Project cards) */
+	.tech-card {
+		isolation: isolate;
+		border: 1px solid theme('colors.slate.500 / 0.2');
+		opacity: 0;
+		transform: translateY(8px);
+		animation: tech-card-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: var(--card-delay, 0ms);
+		transition:
+			color 300ms ease,
+			background-color 300ms ease,
+			transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	:global(html.dark) .tech-card {
+		border-color: theme('colors.slate.800 / 0.8');
+	}
+
+	.tech-card:hover,
+	.tech-card:focus-within {
+		transform: translateY(-2px);
+		box-shadow:
+			0 1px 0 rgba(15, 23, 42, 0.02),
+			0 10px 30px -18px rgba(15, 23, 42, 0.18);
+	}
+
+	:global(html.dark) .tech-card:hover,
+	:global(html.dark) .tech-card:focus-within {
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.02),
+			0 10px 30px -18px rgba(0, 0, 0, 0.6);
+	}
+
+	@keyframes tech-card-in {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+
+	.tech-card:hover .tech-card-icon {
+		background-color: rgb(15 23 42);
+		color: rgb(248 250 252);
+	}
+
+	:global(.dark) .tech-card:hover .tech-card-icon {
+		background-color: rgb(241 245 249);
+		color: rgb(15 23 42);
+	}
+
+	.tech-card-icon {
+		transition:
+			background-color 0.3s ease,
+			color 0.3s ease;
+	}
+
 	.tech-tile {
 		isolation: isolate;
-		will-change: transform;
 	}
 
-	.tech-tile::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		width: 200%;
-		height: 100%;
-		background: linear-gradient(
-			115deg,
-			transparent 40%,
-			rgba(255, 255, 255, 0.55) 50%,
-			transparent 60%
-		);
-		transform: translate3d(-75%, 0, 0);
-		opacity: 0;
-		transition:
-			transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
-			opacity 0.25s ease-out;
-		pointer-events: none;
-		z-index: -1;
+	.tech-tile-icon {
+		transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	:global(.dark) .tech-tile::before {
-		background: linear-gradient(
-			115deg,
-			transparent 40%,
-			rgba(226, 232, 240, 0.14) 50%,
-			transparent 60%
-		);
+	.tech-tile:hover .tech-tile-icon {
+		transform: translateY(-2px) scale(1.06);
 	}
 
-	.tech-tile:hover::before,
-	.tech-tile:focus-visible::before {
-		transform: translate3d(25%, 0, 0);
-		opacity: 1;
+	/* Proficiency dots — gentle stagger pulse on card hover */
+	.tech-card:hover .tech-dot {
+		animation: dot-pulse 1.2s ease-out;
+		animation-delay: calc(var(--dot-i, 0) * 60ms);
+	}
+
+	@keyframes dot-pulse {
+		0%,
+		100% {
+			transform: scale(1);
+		}
+		40% {
+			transform: scale(1.6);
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.tech-tile::before {
-			transition: opacity 0.25s ease-out;
-			transform: translate3d(0, 0, 0);
+		.tech-card {
+			opacity: 1;
+			transform: none;
+			animation: none;
 		}
-		.tech-tile:hover::before,
-		.tech-tile:focus-visible::before {
-			transform: translate3d(0, 0, 0);
+		.tech-tile-icon,
+		.tech-tile:hover .tech-tile-icon,
+		.tech-card:hover .tech-dot {
+			transform: none;
+			animation: none;
+			transition: none;
 		}
 	}
 </style>

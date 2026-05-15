@@ -3,6 +3,4 @@
 	<meta name="description" content="Explore the technologies and tools I work with." />
 </svelte:head>
 
-<div class="min-h-screen bg-white dark:bg-black">
-	<slot />
-</div>
+<slot />

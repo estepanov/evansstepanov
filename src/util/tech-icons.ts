@@ -39,7 +39,8 @@ import {
 	SiTerraform,
 	SiCloudflare,
 	SiPulumi,
-	SiDatadog
+	SiDatadog,
+	SiGatsby
 } from '@icons-pack/svelte-simple-icons';
 import { siPulumi } from 'simple-icons';
 
@@ -57,6 +58,7 @@ export const techIconMap: Record<string, TechIcon> = {
 	'React Testing Library': simple(SiTestinglibrary),
 	'Testing Library': simple(SiTestinglibrary),
 	'AWS CDK': simple(AwsIcon),
+	'Amazon CloudWatch': simple(AwsIcon),
 	AWS: simple(AwsIcon),
 	'Amazon CloudWatch.': simple(AwsIcon),
 	Cloudflare: simple(SiCloudflare),
@@ -64,6 +66,7 @@ export const techIconMap: Record<string, TechIcon> = {
 	'Claude Code': huge(ClaudeIcon),
 	'Open Code': simple(OpenCodeIcon),
 	Datadog: simple(SiDatadog),
+	GatsbyJS: simple(SiGatsby),
 	Pulumi: simple(SiPulumi),
 	Emotion: simple(EmotionIcon),
 	TailwindCSS: simple(SiTailwindcss),
