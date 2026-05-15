@@ -270,6 +270,11 @@
 		contain-intrinsic-size: auto 320px;
 	}
 
+	.tech-card.active-border {
+		content-visibility: visible;
+		contain-intrinsic-size: none;
+	}
+
 	/* Decorative idle motion — only on devices with real hover (i.e. desktop).
 	 * On phones, 24 always-on transform animations is pure battery burn. */
 	@media (hover: hover) and (pointer: fine) {
