@@ -1,23 +1,23 @@
 <script lang="ts">
 	import SpecialBadge from './SpecialBadge.svelte';
 	import TechBackdrop from './TechBackdrop.svelte';
+	import DetailsModal from './DetailsModal.svelte';
 	import { getFormattedDate } from '../util/dates';
-	import { GithubIcon } from '@lucide/svelte';
+	import { GithubIcon, ArrowUpRight } from '@lucide/svelte';
 	import * as Fathom from 'fathom-client';
-
-	const MAX_VISIBLE_TAGS = 4;
 
 	export let item: any;
 	export let type: 'work' | 'project' = 'work';
 	export let idHash: ((name: string) => string) | undefined = undefined;
+	export let tech: Array<{ name: string; type?: string }> = [];
+
+	let detailsOpen = false;
 
 	$: isActive = type === 'work' ? item.isCurrent : item.isActive;
 	$: badgeText = type === 'work' ? 'Current' : 'Active';
 	$: titleField = type === 'work' ? item.title : item.name;
 	$: companyOrUrl = type === 'work' ? item.companyName : undefined;
 	$: techTags = (item.techTags as string[] | undefined) ?? [];
-	$: visibleTags = techTags.slice(0, MAX_VISIBLE_TAGS);
-	$: hiddenTagCount = Math.max(0, techTags.length - MAX_VISIBLE_TAGS);
 
 	const handleLinkClick = (_linkType: string, itemName: string) => {
 		const eventName =
@@ -27,6 +27,13 @@
 
 	const handleSourceClick = (itemName: string) => {
 		Fathom.trackEvent(`click_project_source-${itemName}`);
+	};
+
+	const handleDetailsClick = () => {
+		const eventName =
+			type === 'work' ? `click_work_details-${titleField}` : `click_project_details-${titleField}`;
+		Fathom.trackEvent(eventName);
+		detailsOpen = true;
 	};
 </script>
 
@@ -46,8 +53,8 @@
 					{titleField}
 				</h3>
 				{#if companyOrUrl}
-					<p class="mt-0.5 text-sm italic text-gray-500 dark:text-gray-400">
-						at
+					<p class="mt-2 text-sm italic text-gray-500 dark:text-gray-400">
+						<span class="mr-1">at</span>
 						{#if item.url}
 							<a
 								target="_blank"
@@ -94,34 +101,11 @@
 			{item.description}
 		</p>
 
-		{#if visibleTags.length > 0}
-			<ul class="mt-4 flex flex-wrap items-center gap-1.5 max-w-[85%]" aria-label="Tech stack">
-				{#each visibleTags as tag (tag)}
-					<li>
-						<a
-							href="/tech/{tag}"
-							title={tag}
-							class="tech-tag group/tag inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium tracking-wide bg-white/50 dark:bg-slate-900/40 text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-500/5 dark:hover:bg-emerald-400/10 transition-colors duration-200"
-						>
-							{tag}
-						</a>
-					</li>
-				{/each}
-				{#if hiddenTagCount > 0}
-					<li
-						class="inline-flex items-center px-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400"
-						aria-label="{hiddenTagCount} more"
-					>
-						+{hiddenTagCount}
-					</li>
-				{/if}
-			</ul>
-		{/if}
-
 		<div class="flex flex-grow"></div>
 
 		<ul
-			class="text-xs mt-4 flex flex-row space-x-4 dark:text-gray-300 items-center {type === 'work'
+			class="text-xs mt-4 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
+			'work'
 				? 'text-gray-500'
 				: 'text-gray-700'}"
 		>
@@ -151,8 +135,39 @@
 					</a>
 				</li>
 			{/if}
+			<li class="sm:hidden special">
+				<button
+					type="button"
+					on:click={handleDetailsClick}
+					aria-haspopup="dialog"
+					aria-expanded={detailsOpen}
+					class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 rounded-sm"
+				>
+					Details
+				</button>
+			</li>
+			<li class="details-btn-wrap hidden sm:inline-flex sm:ml-auto">
+				<button
+					type="button"
+					on:click={handleDetailsClick}
+					aria-label="View details for {titleField}"
+					aria-haspopup="dialog"
+					aria-expanded={detailsOpen}
+					class="details-btn group/details inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide text-slate-600 dark:text-slate-300 bg-white/60 dark:bg-slate-900/50 ring-1 ring-slate-200/80 dark:ring-slate-800/80 hover:text-emerald-700 dark:hover:text-emerald-300 hover:ring-emerald-500/40 dark:hover:ring-emerald-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 transition-colors duration-200"
+				>
+					View details
+					<ArrowUpRight
+						size={12}
+						strokeWidth={2}
+						class="transition-transform duration-200 group-hover/details:translate-x-0.5 group-hover/details:-translate-y-0.5"
+						aria-hidden="true"
+					/>
+				</button>
+			</li>
 		</ul>
 	</div>
+
+	<DetailsModal bind:open={detailsOpen} {item} {type} {tech} />
 
 	{#if isActive}
 		<span class="absolute -bottom-3 dark:bg-black bg-white rounded-full z-[2]">
@@ -179,6 +194,29 @@
 	.card-heading {
 		font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem);
 		line-height: 1.2;
+	}
+
+	@media (min-width: 640px) and (hover: hover) {
+		.details-btn-wrap {
+			opacity: 0;
+			transform: translateY(2px);
+			transition:
+				opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+				transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.tech-card:hover .details-btn-wrap,
+		.tech-card:focus-within .details-btn-wrap {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.details-btn-wrap {
+			transition: opacity 220ms ease;
+			transform: none;
+		}
 	}
 
 	.tech-card {
@@ -225,15 +263,6 @@
 		.tech-card:focus-within {
 			transform: none;
 		}
-	}
-
-	.tech-card:hover .tech-tag,
-	.tech-card:focus-within .tech-tag {
-		background-color: theme('colors.white');
-	}
-	:global(html.dark) .tech-card:hover .tech-tag,
-	:global(html.dark) .tech-card:focus-within .tech-tag {
-		background-color: theme('colors.slate.900');
 	}
 
 	.idle-border {

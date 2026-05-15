@@ -119,7 +119,7 @@
 			</div>
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
-					<GridItem item={work} type="work" />
+					<GridItem item={work} type="work" tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
@@ -135,7 +135,7 @@
 			</div>
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
-					<GridItem item={project} type="project" {idHash} />
+					<GridItem item={project} type="project" {idHash} tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
