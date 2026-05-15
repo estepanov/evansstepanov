@@ -1,17 +1,5 @@
 <script lang="ts">
-	import {
-		X,
-		ExternalLink,
-		Calendar,
-		Cpu,
-		Code2,
-		Boxes,
-		Library,
-		Database,
-		Wrench,
-		Tag,
-		ArrowUpRight
-	} from '@lucide/svelte';
+	import { X, ArrowUpRight } from '@lucide/svelte';
 	import { GithubIcon } from '@lucide/svelte';
 	import { onDestroy } from 'svelte';
 	import { getFormattedDate } from '../util/dates';
@@ -23,23 +11,13 @@
 	export let onClose: () => void = () => {};
 
 	const CATEGORY_ORDER = ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'];
-	const CATEGORY_META: Record<string, { icon: any; label: string }> = {
-		Runtime: { icon: Cpu, label: 'Runtime' },
-		Language: { icon: Code2, label: 'Language' },
-		Framework: { icon: Boxes, label: 'Framework' },
-		Library: { icon: Library, label: 'Library' },
-		Database: { icon: Database, label: 'Database' },
-		DevOps: { icon: Wrench, label: 'DevOps' },
-		Other: { icon: Tag, label: 'Other' }
-	};
 
 	let dialog: HTMLDialogElement | null = null;
 	let closing = false;
-	const EXIT_MS = 220;
+	const EXIT_MS = 200;
 
 	$: title = type === 'work' ? item?.title : item?.name;
 	$: subtitle = type === 'work' ? item?.companyName : undefined;
-	$: kicker = type === 'work' ? 'Case · Work' : 'Case · Project';
 	$: techTags = (item?.techTags as string[] | undefined) ?? [];
 	$: techTypeByName = new Map(tech.map((t) => [t.name, t.type ?? 'Other']));
 	$: groupedTech = (() => {
@@ -63,14 +41,12 @@
 	$: heroImage = type === 'work' ? item?.image : undefined;
 	$: primaryUrl = item?.url as string | undefined;
 	$: sourceUrl = type === 'project' ? (item?.source as string | undefined) : undefined;
-	$: yearRange = (() => {
+	$: dateRange = (() => {
 		if (!item?.startDate) return null;
-		const startYear = new Date(item.startDate).getFullYear();
-		if (item.endDate) {
-			const endYear = new Date(item.endDate).getFullYear();
-			return startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
-		}
-		return type === 'work' ? `${startYear}–Now` : `${startYear}`;
+		const start = getFormattedDate(item.startDate);
+		if (item.endDate) return `${start} — ${getFormattedDate(item.endDate)}`;
+		if (type === 'work') return `${start} — Present`;
+		return start;
 	})();
 
 	$: if (dialog) {
@@ -149,180 +125,95 @@
 	aria-labelledby="details-modal-title"
 	class="details-dialog"
 	class:is-closing={closing}
-	class:is-project={type === 'project'}
-	class:is-work={type === 'work'}
 >
 	{#if (open || closing) && item}
-		<div class="modal-panel relative flex w-full max-w-3xl max-h-[90vh]" role="document">
-			<!-- decorative tinted gradient blobs (behind frosted glass) -->
-			<div class="glass-tint" aria-hidden="true">
-				<span class="tint tint-a"></span>
-				<span class="tint tint-b"></span>
-				<span class="tint tint-c"></span>
-			</div>
-
-			<div class="glass-card relative flex flex-1 overflow-hidden rounded-2xl">
-				<!-- left accent rail -->
-				<aside class="accent-rail shrink-0" aria-hidden="true">
-					<div class="rail-mark">
-						<span class="rail-kicker">{type === 'work' ? 'W' : 'P'}</span>
-					</div>
-					<div class="rail-line"></div>
-					{#if yearRange}
-						<div class="rail-year">{yearRange}</div>
+		<div class="glass-card flex flex-col w-full max-w-2xl max-h-[90vh]" role="document">
+			<header class="modal-header">
+				<div class="flex-1 min-w-0">
+					{#if subtitle}
+						<p class="eyebrow">{subtitle}</p>
+					{:else if dateRange && type === 'project'}
+						<p class="eyebrow">Project</p>
 					{/if}
-				</aside>
-
-				<div class="flex flex-col flex-1 min-w-0">
-					<header class="relative flex items-start gap-4 px-6 sm:px-8 pt-6 pb-5">
-						<div class="flex-1 min-w-0">
-							<div class="kicker">
-								<span class="kicker-dot"></span>
-								{kicker}
-							</div>
-							<h2 id="details-modal-title" class="modal-title">
-								{title}
-							</h2>
-							{#if subtitle}
-								<p class="modal-subtitle">
-									at <span class="subtitle-strong">{subtitle}</span>
-								</p>
-							{/if}
-							{#if item.startDate}
-								<p class="modal-date">
-									<Calendar size={12} strokeWidth={2} aria-hidden="true" />
-									<span class="tabular-nums">
-										{getFormattedDate(item.startDate)}
-										{#if item.endDate}
-											<span class="mx-1.5 opacity-60">→</span>{getFormattedDate(item.endDate)}
-										{:else if type === 'work'}
-											<span class="mx-1.5 opacity-60">→</span>Present
-										{/if}
-									</span>
-								</p>
-							{/if}
-						</div>
-						<button
-							type="button"
-							class="close-btn"
-							on:click={handleClose}
-							aria-label="Close details"
-						>
-							<X size={16} strokeWidth={2.2} aria-hidden="true" />
-						</button>
-					</header>
-
-					<div class="modal-body overflow-y-auto px-6 sm:px-8 pb-6 space-y-7">
-						{#if heroImage}
-							<figure class="hero-frame">
-								<img src={heroImage} alt={mediaAlt(0)} loading="lazy" />
-								<figcaption class="hero-badge">01 · Cover</figcaption>
-							</figure>
-						{/if}
-
-						{#if media.length > 0}
-							<section aria-label="Media gallery">
-								<div class="section-label">
-									<span class="section-index">01</span>
-									<span class="section-name">Gallery</span>
-									<span class="section-rule"></span>
-									<span class="section-count tabular-nums">{media.length}</span>
-								</div>
-								<ul class="media-grid">
-									{#each media as src, i (src)}
-										<li class="media-tile" style="--i: {i}">
-											<img src="/{src}" alt={mediaAlt(i)} loading="lazy" />
-										</li>
-									{/each}
-								</ul>
-							</section>
-						{/if}
-
-						{#if item.description}
-							<section aria-label="Description">
-								<div class="section-label">
-									<span class="section-index">{media.length > 0 || heroImage ? '02' : '01'}</span>
-									<span class="section-name">Overview</span>
-									<span class="section-rule"></span>
-								</div>
-								<p class="description-text">
-									{item.description}
-								</p>
-							</section>
-						{/if}
-
-						{#if techTags.length > 0}
-							<section aria-labelledby="modal-tech-heading">
-								<div class="section-label">
-									<span class="section-index"
-										>{((heroImage || media.length > 0 ? 1 : 0) + (item.description ? 1 : 0) + 1)
-											.toString()
-											.padStart(2, '0')}</span
-									>
-									<span id="modal-tech-heading" class="section-name">Stack</span>
-									<span class="section-rule"></span>
-									<span class="section-count tabular-nums">{techTags.length}</span>
-								</div>
-								<div class="stack-groups">
-									{#each groupedTech as group (group.category)}
-										{@const meta = CATEGORY_META[group.category] ?? CATEGORY_META.Other}
-										<div class="stack-row">
-											<div class="stack-cat">
-												<svelte:component
-													this={meta.icon}
-													size={12}
-													strokeWidth={2}
-													aria-hidden="true"
-												/>
-												<span>{meta.label}</span>
-											</div>
-											<ul class="stack-chips" aria-label="{meta.label} technologies">
-												{#each group.tags as tag (tag)}
-													<li>
-														<a href="/tech/{tag}" class="chip">
-															<span class="chip-dot"></span>
-															{tag}
-														</a>
-													</li>
-												{/each}
-											</ul>
-										</div>
-									{/each}
-								</div>
-							</section>
-						{/if}
-					</div>
-
-					{#if primaryUrl || sourceUrl}
-						<footer class="modal-footer">
-							{#if sourceUrl}
-								<a
-									href={sourceUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="btn btn-ghost"
-								>
-									{#if sourceUrl.includes('github.com')}
-										<GithubIcon class="w-4 h-4" aria-hidden="true" />
-									{/if}
-									Source
-								</a>
-							{/if}
-							{#if primaryUrl}
-								<a
-									href={primaryUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="btn btn-primary"
-								>
-									<span>Visit {hostFromUrl(primaryUrl)}</span>
-									<ArrowUpRight size={15} strokeWidth={2.2} aria-hidden="true" />
-								</a>
-							{/if}
-						</footer>
+					<h2 id="details-modal-title" class="modal-title">{title}</h2>
+					{#if dateRange}
+						<p class="modal-meta">{dateRange}</p>
 					{/if}
 				</div>
+				<button
+					type="button"
+					class="close-btn"
+					on:click={handleClose}
+					aria-label="Close details"
+				>
+					<X size={16} strokeWidth={1.75} aria-hidden="true" />
+				</button>
+			</header>
+
+			<div class="modal-body">
+				{#if heroImage}
+					<figure class="hero-frame">
+						<img src={heroImage} alt={mediaAlt(0)} loading="lazy" />
+					</figure>
+				{/if}
+
+				{#if media.length > 0}
+					<section aria-label="Media gallery">
+						<ul class="media-grid">
+							{#each media as src, i (src)}
+								<li class="media-tile">
+									<img src="/{src}" alt={mediaAlt(i)} loading="lazy" />
+								</li>
+							{/each}
+						</ul>
+					</section>
+				{/if}
+
+				{#if item.description}
+					<section aria-label="Description">
+						<p class="description-text">{item.description}</p>
+					</section>
+				{/if}
+
+				{#if techTags.length > 0}
+					<section aria-labelledby="modal-tech-heading">
+						<h3 id="modal-tech-heading" class="section-label">Stack</h3>
+						<div class="stack-groups">
+							{#each groupedTech as group (group.category)}
+								<div class="stack-row">
+									<div class="stack-cat">{group.category}</div>
+									<ul class="stack-chips" aria-label="{group.category} technologies">
+										{#each group.tags as tag (tag)}
+											<li>
+												<a href="/tech/{tag}" class="chip">{tag}</a>
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/each}
+						</div>
+					</section>
+				{/if}
 			</div>
+
+			{#if primaryUrl || sourceUrl}
+				<footer class="modal-footer">
+					{#if sourceUrl}
+						<a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+							{#if sourceUrl.includes('github.com')}
+								<GithubIcon class="w-4 h-4" aria-hidden="true" />
+							{/if}
+							Source
+						</a>
+					{/if}
+					{#if primaryUrl}
+						<a href={primaryUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+							<span>{hostFromUrl(primaryUrl)}</span>
+							<ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />
+						</a>
+					{/if}
+				</footer>
+			{/if}
 		</div>
 	{/if}
 </dialog>
@@ -349,212 +240,82 @@
 	}
 
 	.details-dialog::backdrop {
-		background:
-			radial-gradient(60% 50% at 50% 40%, rgba(16, 185, 129, 0.08), transparent 70%),
-			rgba(8, 12, 22, 0.55);
-		backdrop-filter: blur(10px) saturate(140%);
-		-webkit-backdrop-filter: blur(10px) saturate(140%);
+		background: rgba(15, 23, 42, 0.45);
+		backdrop-filter: blur(8px) saturate(120%);
+		-webkit-backdrop-filter: blur(8px) saturate(120%);
 		opacity: 0;
-		animation: backdrop-in 260ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation: backdrop-in 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 	}
 
 	.details-dialog.is-closing::backdrop {
-		animation: backdrop-out 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation: backdrop-out 200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 	}
 
-	/* Outer panel holds the tint blobs + the glass card */
-	.modal-panel {
-		opacity: 0;
-		transform: translateY(14px) scale(0.985);
-		animation: panel-in 320ms cubic-bezier(0.22, 1, 0.36, 1) 40ms forwards;
+	.glass-card {
+		position: relative;
 		margin: 1rem;
-		filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.35));
+		border-radius: 18px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.72);
+		backdrop-filter: blur(24px) saturate(160%);
+		-webkit-backdrop-filter: blur(24px) saturate(160%);
+		border: 1px solid rgba(255, 255, 255, 0.6);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.7),
+			0 20px 50px -20px rgba(15, 23, 42, 0.25);
+		color: rgb(15 23 42);
+		opacity: 0;
+		transform: translateY(10px) scale(0.99);
+		animation: panel-in 280ms cubic-bezier(0.22, 1, 0.36, 1) 40ms forwards;
 	}
 	@media (max-width: 640px) {
-		.modal-panel {
-			margin: 1.25rem 1rem;
-			max-height: calc(100dvh - 2.5rem);
+		.glass-card {
+			margin: 1rem;
+			max-height: calc(100dvh - 2rem);
 		}
 	}
 
-	.details-dialog.is-closing .modal-panel {
-		animation: panel-out 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	}
-
-	/* Tinted gradient blobs that sit behind the frosted glass */
-	.glass-tint {
-		position: absolute;
-		inset: -10%;
-		pointer-events: none;
-		border-radius: 2rem;
-		overflow: hidden;
-		z-index: 0;
-	}
-	.tint {
-		position: absolute;
-		display: block;
-		border-radius: 50%;
-		filter: blur(60px);
-		opacity: 0.55;
-	}
-	.tint-a {
-		width: 55%;
-		height: 55%;
-		left: -10%;
-		top: -10%;
-		background: radial-gradient(circle, #34d399, transparent 65%);
-	}
-	.tint-b {
-		width: 50%;
-		height: 50%;
-		right: -8%;
-		top: 20%;
-		background: radial-gradient(circle, #60a5fa, transparent 65%);
-	}
-	.tint-c {
-		width: 45%;
-		height: 45%;
-		left: 20%;
-		bottom: -15%;
-		background: radial-gradient(circle, #f472b6, transparent 65%);
-		opacity: 0.4;
-	}
-	.is-work .tint-a {
-		background: radial-gradient(circle, #f59e0b, transparent 65%);
-	}
-	.is-work .tint-b {
-		background: radial-gradient(circle, #34d399, transparent 65%);
-	}
-	.is-work .tint-c {
-		background: radial-gradient(circle, #818cf8, transparent 65%);
-	}
-
-	/* The actual frosted glass surface */
-	.glass-card {
-		position: relative;
-		z-index: 1;
-		background: rgba(255, 255, 255, 0.62);
-		backdrop-filter: blur(28px) saturate(180%);
-		-webkit-backdrop-filter: blur(28px) saturate(180%);
-		border: 1px solid rgba(255, 255, 255, 0.55);
-		box-shadow:
-			inset 0 1px 0 rgba(255, 255, 255, 0.65),
-			inset 0 -1px 0 rgba(15, 23, 42, 0.04),
-			0 1px 0 rgba(15, 23, 42, 0.04);
-		color: rgb(15 23 42);
-	}
 	:global(.dark) .glass-card {
-		background: rgba(10, 14, 24, 0.55);
-		border: 1px solid rgba(148, 163, 184, 0.18);
+		background: rgba(15, 20, 30, 0.65);
+		border-color: rgba(255, 255, 255, 0.08);
 		box-shadow:
 			inset 0 1px 0 rgba(255, 255, 255, 0.06),
-			inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+			0 20px 50px -20px rgba(0, 0, 0, 0.5);
 		color: rgb(241 245 249);
 	}
 
-	/* Left accent rail */
-	.accent-rail {
-		width: 56px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 1.25rem 0 1rem;
-		border-right: 1px solid rgba(15, 23, 42, 0.08);
-		background: linear-gradient(
-			180deg,
-			rgba(16, 185, 129, 0.12),
-			rgba(16, 185, 129, 0.02) 60%,
-			transparent
-		);
-	}
-	.is-work .accent-rail {
-		background: linear-gradient(
-			180deg,
-			rgba(245, 158, 11, 0.14),
-			rgba(245, 158, 11, 0.02) 60%,
-			transparent
-		);
-	}
-	:global(.dark) .accent-rail {
-		border-right-color: rgba(148, 163, 184, 0.15);
-	}
-	.rail-mark {
-		width: 28px;
-		height: 28px;
-		border-radius: 8px;
-		display: grid;
-		place-items: center;
-		background: rgba(16, 185, 129, 0.18);
-		color: rgb(4 120 87);
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 11px;
-		font-weight: 700;
-		letter-spacing: 0.05em;
-	}
-	.is-work .rail-mark {
-		background: rgba(245, 158, 11, 0.2);
-		color: rgb(146 64 14);
-	}
-	:global(.dark) .rail-mark {
-		background: rgba(52, 211, 153, 0.18);
-		color: rgb(110 231 183);
-	}
-	:global(.dark) .is-work .rail-mark {
-		background: rgba(251, 191, 36, 0.2);
-		color: rgb(253 224 71);
-	}
-	.rail-line {
-		flex: 1;
-		width: 1px;
-		margin: 0.75rem 0;
-		background: linear-gradient(180deg, rgba(15, 23, 42, 0.15), transparent);
-	}
-	:global(.dark) .rail-line {
-		background: linear-gradient(180deg, rgba(148, 163, 184, 0.35), transparent);
-	}
-	.rail-year {
-		writing-mode: vertical-rl;
-		transform: rotate(180deg);
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 10px;
-		letter-spacing: 0.2em;
-		color: rgb(100 116 139);
-		text-transform: uppercase;
-	}
-	:global(.dark) .rail-year {
-		color: rgb(148 163 184);
+	.details-dialog.is-closing .glass-card {
+		animation: panel-out 200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 	}
 
-	.kicker {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 10px;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		color: rgb(71 85 105);
+	/* Header */
+	.modal-header {
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		padding: 1.75rem 1.75rem 1.25rem;
 	}
-	:global(.dark) .kicker {
+	@media (min-width: 640px) {
+		.modal-header {
+			padding: 2rem 2.25rem 1.5rem;
+		}
+	}
+
+	.eyebrow {
+		font-size: 0.75rem;
+		font-weight: 500;
+		letter-spacing: 0.01em;
+		color: rgb(100 116 139);
+		margin-bottom: 0.4rem;
+	}
+	:global(.dark) .eyebrow {
 		color: rgb(148 163 184);
-	}
-	.kicker-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: rgb(16 185 129);
-		box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
-	}
-	.is-work .kicker-dot {
-		background: rgb(245 158 11);
-		box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
 	}
 
 	.modal-title {
-		margin-top: 0.5rem;
 		font-size: 1.5rem;
-		line-height: 1.15;
-		font-weight: 700;
+		line-height: 1.2;
+		font-weight: 600;
 		letter-spacing: -0.02em;
 		color: rgb(15 23 42);
 	}
@@ -563,41 +324,17 @@
 	}
 	@media (min-width: 640px) {
 		.modal-title {
-			font-size: 1.875rem;
+			font-size: 1.75rem;
 		}
 	}
 
-	.modal-subtitle {
-		margin-top: 0.375rem;
-		font-size: 0.875rem;
-		color: rgb(71 85 105);
+	.modal-meta {
+		margin-top: 0.5rem;
+		font-size: 0.8125rem;
+		color: rgb(100 116 139);
 	}
-	:global(.dark) .modal-subtitle {
+	:global(.dark) .modal-meta {
 		color: rgb(148 163 184);
-	}
-	.subtitle-strong {
-		font-weight: 600;
-		color: rgb(30 41 59);
-	}
-	:global(.dark) .subtitle-strong {
-		color: rgb(226 232 240);
-	}
-
-	.modal-date {
-		margin-top: 0.75rem;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		font-size: 11px;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		color: rgb(71 85 105);
-		background: rgba(15, 23, 42, 0.05);
-		padding: 0.3rem 0.55rem;
-		border-radius: 999px;
-	}
-	:global(.dark) .modal-date {
-		color: rgb(148 163 184);
-		background: rgba(148, 163, 184, 0.08);
 	}
 
 	.close-btn {
@@ -605,45 +342,54 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 34px;
-		height: 34px;
+		width: 32px;
+		height: 32px;
 		border-radius: 999px;
 		color: rgb(71 85 105);
-		background: rgba(255, 255, 255, 0.5);
-		border: 1px solid rgba(15, 23, 42, 0.08);
-		backdrop-filter: blur(6px);
+		background: transparent;
+		border: 1px solid rgba(15, 23, 42, 0.1);
 		transition:
 			background 160ms,
 			color 160ms,
-			transform 160ms;
+			border-color 160ms;
 	}
 	.close-btn:hover {
-		background: rgba(15, 23, 42, 0.08);
+		background: rgba(15, 23, 42, 0.06);
 		color: rgb(15 23 42);
-		transform: rotate(90deg);
+		border-color: rgba(15, 23, 42, 0.18);
 	}
 	:global(.dark) .close-btn {
 		color: rgb(148 163 184);
-		background: rgba(15, 23, 42, 0.4);
-		border-color: rgba(148, 163, 184, 0.2);
+		border-color: rgba(255, 255, 255, 0.12);
 	}
 	:global(.dark) .close-btn:hover {
-		background: rgba(148, 163, 184, 0.15);
+		background: rgba(255, 255, 255, 0.06);
 		color: rgb(241 245 249);
+		border-color: rgba(255, 255, 255, 0.2);
+	}
+
+	/* Body */
+	.modal-body {
+		overflow-y: auto;
+		padding: 0 1.75rem 1.75rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.75rem;
+	}
+	@media (min-width: 640px) {
+		.modal-body {
+			padding: 0 2.25rem 2rem;
+		}
 	}
 
 	/* Hero image */
 	.hero-frame {
-		position: relative;
-		border-radius: 14px;
+		border-radius: 10px;
 		overflow: hidden;
 		border: 1px solid rgba(15, 23, 42, 0.08);
-		box-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.5) inset,
-			0 20px 40px -20px rgba(15, 23, 42, 0.25);
 	}
 	:global(.dark) .hero-frame {
-		border-color: rgba(148, 163, 184, 0.18);
+		border-color: rgba(255, 255, 255, 0.08);
 	}
 	.hero-frame img {
 		display: block;
@@ -651,70 +397,12 @@
 		height: auto;
 		object-fit: cover;
 	}
-	.hero-badge {
-		position: absolute;
-		top: 0.75rem;
-		left: 0.75rem;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 10px;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		padding: 0.3rem 0.55rem;
-		border-radius: 6px;
-		color: rgb(255 255 255);
-		background: rgba(15, 23, 42, 0.55);
-		backdrop-filter: blur(6px);
-	}
-
-	/* Section labels */
-	.section-label {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-		margin-bottom: 0.9rem;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 10px;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		color: rgb(100 116 139);
-	}
-	:global(.dark) .section-label {
-		color: rgb(148 163 184);
-	}
-	.section-index {
-		color: rgb(16 185 129);
-		font-weight: 700;
-	}
-	.is-work .section-index {
-		color: rgb(217 119 6);
-	}
-	:global(.dark) .is-work .section-index {
-		color: rgb(251 191 36);
-	}
-	.section-name {
-		color: rgb(30 41 59);
-		font-weight: 700;
-	}
-	:global(.dark) .section-name {
-		color: rgb(226 232 240);
-	}
-	.section-rule {
-		flex: 1;
-		height: 1px;
-		background: linear-gradient(90deg, rgba(15, 23, 42, 0.12), transparent);
-	}
-	:global(.dark) .section-rule {
-		background: linear-gradient(90deg, rgba(148, 163, 184, 0.25), transparent);
-	}
-	.section-count {
-		color: rgb(100 116 139);
-	}
 
 	/* Media grid */
 	.media-grid {
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: 0.65rem;
+		gap: 0.5rem;
 	}
 	@media (min-width: 640px) {
 		.media-grid {
@@ -722,19 +410,12 @@
 		}
 	}
 	.media-tile {
-		border-radius: 12px;
+		border-radius: 8px;
 		overflow: hidden;
 		border: 1px solid rgba(15, 23, 42, 0.08);
-		transition:
-			transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-			box-shadow 240ms;
-	}
-	.media-tile:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 12px 28px -14px rgba(15, 23, 42, 0.4);
 	}
 	:global(.dark) .media-tile {
-		border-color: rgba(148, 163, 184, 0.18);
+		border-color: rgba(255, 255, 255, 0.08);
 	}
 	.media-tile img {
 		display: block;
@@ -743,13 +424,25 @@
 		object-fit: cover;
 	}
 
+	/* Section labels */
+	.section-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgb(100 116 139);
+		margin-bottom: 0.9rem;
+	}
+	:global(.dark) .section-label {
+		color: rgb(148 163 184);
+	}
+
 	/* Description */
 	.description-text {
-		font-size: 0.95rem;
+		font-size: 0.9375rem;
 		line-height: 1.65;
 		color: rgb(51 65 85);
 		white-space: pre-line;
-		max-width: 60ch;
 	}
 	:global(.dark) .description-text {
 		color: rgb(203 213 225);
@@ -759,11 +452,11 @@
 	.stack-groups {
 		display: flex;
 		flex-direction: column;
-		gap: 0.85rem;
+		gap: 0.75rem;
 	}
 	.stack-row {
 		display: grid;
-		grid-template-columns: 110px 1fr;
+		grid-template-columns: 96px 1fr;
 		gap: 0.75rem;
 		align-items: start;
 	}
@@ -774,14 +467,8 @@
 		}
 	}
 	.stack-cat {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		padding-top: 0.3rem;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 10px;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
+		padding-top: 0.35rem;
+		font-size: 0.75rem;
 		color: rgb(100 116 139);
 	}
 	:global(.dark) .stack-cat {
@@ -790,53 +477,37 @@
 	.stack-chips {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.375rem;
+		gap: 0.35rem;
 	}
 	.chip {
-		position: relative;
 		display: inline-flex;
 		align-items: center;
-		gap: 0.4rem;
-		padding: 0.3rem 0.65rem 0.3rem 0.55rem;
+		padding: 0.25rem 0.6rem;
 		border-radius: 999px;
-		font-size: 11.5px;
+		font-size: 0.75rem;
 		font-weight: 500;
-		color: rgb(30 41 59);
-		background: rgba(255, 255, 255, 0.6);
-		border: 1px solid rgba(15, 23, 42, 0.1);
+		color: rgb(51 65 85);
+		background: rgba(15, 23, 42, 0.04);
+		border: 1px solid rgba(15, 23, 42, 0.08);
 		transition:
-			color 160ms,
-			border-color 160ms,
 			background 160ms,
-			transform 160ms;
+			border-color 160ms,
+			color 160ms;
 	}
 	.chip:hover {
-		color: rgb(4 120 87);
-		border-color: rgba(16, 185, 129, 0.5);
-		background: rgba(16, 185, 129, 0.08);
-		transform: translateY(-1px);
+		background: rgba(15, 23, 42, 0.08);
+		border-color: rgba(15, 23, 42, 0.15);
+		color: rgb(15 23 42);
 	}
 	:global(.dark) .chip {
-		color: rgb(226 232 240);
-		background: rgba(15, 23, 42, 0.5);
-		border-color: rgba(148, 163, 184, 0.2);
+		color: rgb(203 213 225);
+		background: rgba(255, 255, 255, 0.04);
+		border-color: rgba(255, 255, 255, 0.08);
 	}
 	:global(.dark) .chip:hover {
-		color: rgb(110 231 183);
-		border-color: rgba(52, 211, 153, 0.55);
-		background: rgba(16, 185, 129, 0.14);
-	}
-	.chip-dot {
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background: rgba(15, 23, 42, 0.3);
-	}
-	.chip:hover .chip-dot {
-		background: rgb(16 185 129);
-	}
-	:global(.dark) .chip-dot {
-		background: rgba(148, 163, 184, 0.5);
+		background: rgba(255, 255, 255, 0.08);
+		border-color: rgba(255, 255, 255, 0.16);
+		color: rgb(241 245 249);
 	}
 
 	/* Footer */
@@ -845,67 +516,64 @@
 		flex-wrap: wrap;
 		gap: 0.5rem;
 		justify-content: flex-end;
-		padding: 0.95rem 1.5rem;
-		border-top: 1px solid rgba(15, 23, 42, 0.08);
-		background: rgba(255, 255, 255, 0.35);
-		backdrop-filter: blur(10px);
+		padding: 1rem 1.75rem;
+		border-top: 1px solid rgba(15, 23, 42, 0.06);
+		background: rgba(255, 255, 255, 0.3);
 	}
 	@media (min-width: 640px) {
 		.modal-footer {
-			padding: 0.95rem 2rem;
+			padding: 1rem 2.25rem;
 		}
 	}
 	:global(.dark) .modal-footer {
-		border-top-color: rgba(148, 163, 184, 0.15);
-		background: rgba(10, 14, 24, 0.45);
+		border-top-color: rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.02);
 	}
 	.btn {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
-		padding: 0.5rem 0.9rem;
-		border-radius: 10px;
-		font-size: 0.875rem;
+		padding: 0.45rem 0.85rem;
+		border-radius: 8px;
+		font-size: 0.8125rem;
 		font-weight: 500;
 		transition:
-			transform 160ms,
 			background 160ms,
 			color 160ms,
 			border-color 160ms;
 	}
-	.btn:hover {
-		transform: translateY(-1px);
-	}
 	.btn-ghost {
-		color: rgb(30 41 59);
-		background: rgba(255, 255, 255, 0.65);
-		border: 1px solid rgba(15, 23, 42, 0.1);
+		color: rgb(51 65 85);
+		background: transparent;
+		border: 1px solid rgba(15, 23, 42, 0.12);
 	}
 	.btn-ghost:hover {
-		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(15, 23, 42, 0.18);
+		background: rgba(15, 23, 42, 0.05);
+		color: rgb(15 23 42);
 	}
 	:global(.dark) .btn-ghost {
-		color: rgb(226 232 240);
-		background: rgba(15, 23, 42, 0.55);
-		border-color: rgba(148, 163, 184, 0.22);
+		color: rgb(203 213 225);
+		border-color: rgba(255, 255, 255, 0.12);
 	}
 	:global(.dark) .btn-ghost:hover {
-		background: rgba(30, 41, 59, 0.7);
+		background: rgba(255, 255, 255, 0.06);
+		color: rgb(241 245 249);
 	}
 	.btn-primary {
 		color: white;
-		background: linear-gradient(135deg, rgb(16 185 129), rgb(5 150 105));
-		border: 1px solid rgba(5, 150, 105, 0.5);
-		box-shadow: 0 8px 20px -8px rgba(16, 185, 129, 0.6);
+		background: rgb(15 23 42);
+		border: 1px solid rgb(15 23 42);
 	}
 	.btn-primary:hover {
-		background: linear-gradient(135deg, rgb(5 150 105), rgb(4 120 87));
+		background: rgb(30 41 59);
 	}
 	:global(.dark) .btn-primary {
-		color: rgb(2 44 34);
-		background: linear-gradient(135deg, rgb(52 211 153), rgb(16 185 129));
-		border-color: rgba(52, 211, 153, 0.5);
+		color: rgb(15 23 42);
+		background: rgb(241 245 249);
+		border-color: rgb(241 245 249);
+	}
+	:global(.dark) .btn-primary:hover {
+		background: rgb(226 232 240);
 	}
 
 	@keyframes backdrop-in {
@@ -934,15 +602,14 @@
 		}
 		to {
 			opacity: 0;
-			transform: translateY(8px) scale(0.985);
+			transform: translateY(6px) scale(0.99);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.details-dialog::backdrop,
-		.modal-panel,
+		.glass-card,
 		.close-btn,
-		.media-tile,
 		.btn,
 		.chip {
 			animation: none;

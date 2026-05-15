@@ -264,7 +264,18 @@
 			background-color 300ms ease,
 			transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
 			box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
-		animation: card-breathe 9s ease-in-out infinite;
+		/* Let the browser skip layout/paint for cards far from the viewport.
+		 * intrinsic size keeps scrollbar + anchor positions stable. */
+		content-visibility: auto;
+		contain-intrinsic-size: auto 320px;
+	}
+
+	/* Decorative idle motion — only on devices with real hover (i.e. desktop).
+	 * On phones, 24 always-on transform animations is pure battery burn. */
+	@media (hover: hover) and (pointer: fine) {
+		.tech-card {
+			animation: card-breathe 9s ease-in-out infinite;
+		}
 	}
 
 	@keyframes card-breathe {

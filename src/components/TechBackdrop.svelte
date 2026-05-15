@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { getTechIcon, type TechIcon as TechIconT } from '../util/tech-icons';
+	import { registerParallax } from '../util/parallax-coordinator';
 	import TechIcon from './TechIcon.svelte';
 
 	export let tags: string[] = [];
@@ -9,45 +10,41 @@
 	export let rows: number = 8;
 	export let cols: number = 8;
 
-	$: icons = (tags.map(getTechIcon).filter(Boolean) as TechIconT[]);
-	$: grid = icons.length === 0
-		? []
-		: Array.from({ length: rows }, (_, r) =>
-				Array.from({ length: cols }, (_, c) => icons[(r * 3 + c) % icons.length])
-			);
+	// SSR-safe defaults are the *light* version: mobile-first hydration so we
+	// never paint a 64-icon grid only to tear it down on a phone. On desktop
+	// (verified after mount) we upgrade to the full density.
+	let activeRows = 4;
+	let activeCols = 4;
+
+	$: icons = tags.map(getTechIcon).filter(Boolean) as TechIconT[];
+	$: grid =
+		icons.length === 0
+			? []
+			: Array.from({ length: activeRows }, (_, r) =>
+					Array.from({ length: activeCols }, (_, c) => icons[(r * 3 + c) % icons.length])
+				);
 
 	let root: HTMLElement | null = null;
 
 	onMount(() => {
 		if (!root) return;
+
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (reduceMotion) return;
+		const coarse = window.matchMedia('(pointer: coarse)').matches;
+		const narrow = window.innerWidth < 640;
+		const isMobile = narrow || coarse;
 
-		let ticking = false;
-		const update = () => {
-			ticking = false;
-			if (!root) return;
-			const rect = root.getBoundingClientRect();
-			const vh = window.innerHeight || document.documentElement.clientHeight;
-			// progress: +1 when card is entering at bottom, 0 centered, -1 exiting top.
-			const centerY = rect.top + rect.height / 2;
-			const denom = vh / 2 + rect.height / 2;
-			const p = Math.max(-1, Math.min(1, (vh / 2 - centerY) / denom));
-			root.style.setProperty('--parallax', p.toFixed(4));
-		};
-		const onScroll = () => {
-			if (ticking) return;
-			ticking = true;
-			requestAnimationFrame(update);
-		};
+		// On phones the lattice is the most expensive part of the page — a
+		// large masked, rotated layer per card. Keep the light grid, skip
+		// parallax entirely; the static backdrop still reads as a textured
+		// accent without the GPU/scroll cost.
+		if (!isMobile) {
+			activeRows = rows;
+			activeCols = cols;
+		}
 
-		update();
-		window.addEventListener('scroll', onScroll, { passive: true });
-		window.addEventListener('resize', onScroll, { passive: true });
-		return () => {
-			window.removeEventListener('scroll', onScroll);
-			window.removeEventListener('resize', onScroll);
-		};
+		if (isMobile || reduceMotion) return;
+		return registerParallax(root);
 	});
 </script>
 
@@ -143,6 +140,15 @@
 		transform: rotate(-14deg) scale(var(--lattice-scale, 1));
 		transform-origin: 50% 50%;
 		transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	/* Only promote to its own GPU layer while actively scrolling or hovering —
+	 * keeping ~24 always-on composited layers is what crashes mid-range phones. */
+	.backdrop:global(.parallax-scrolling) .lattice,
+	:global(.tech-card:hover) .lattice,
+	:global(.tech-card:focus-within) .lattice,
+	:global(.tech-hero:hover) .lattice,
+	:global(.tech-hero:focus-within) .lattice {
 		will-change: transform, translate;
 	}
 
