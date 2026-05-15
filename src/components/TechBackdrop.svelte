@@ -53,16 +53,14 @@
 		border-radius: inherit;
 		pointer-events: none;
 		z-index: 0;
-		perspective: 900px;
-		perspective-origin: 50% 50%;
 		color: theme('colors.slate.900');
-		opacity: 0.09;
-		--mask-mid: 25%;
-		--mask-end: 70%;
+		opacity: 0.07;
+		--mask-mid: 28%;
+		--mask-end: 74%;
 		transition:
-			opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
-			--mask-mid 700ms cubic-bezier(0.22, 1, 0.36, 1),
-			--mask-end 700ms cubic-bezier(0.22, 1, 0.36, 1);
+			opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+			--mask-mid 500ms cubic-bezier(0.22, 1, 0.36, 1),
+			--mask-end 500ms cubic-bezier(0.22, 1, 0.36, 1);
 		-webkit-mask-image: linear-gradient(
 			315deg,
 			rgba(0, 0, 0, 1) 0%,
@@ -79,22 +77,22 @@
 
 	:global(html.dark) .backdrop {
 		color: theme('colors.slate.100');
-		opacity: 0.12;
+		opacity: 0.1;
 	}
 
 	:global(.tech-card:hover) .backdrop,
 	:global(.tech-card:focus-within) .backdrop,
 	:global(.tech-hero:hover) .backdrop,
 	:global(.tech-hero:focus-within) .backdrop {
-		opacity: 0.16;
-		--mask-mid: 32%;
-		--mask-end: 82%;
+		opacity: 0.13;
+		--mask-mid: 36%;
+		--mask-end: 88%;
 	}
 	:global(html.dark .tech-card:hover) .backdrop,
 	:global(html.dark .tech-card:focus-within) .backdrop,
 	:global(html.dark .tech-hero:hover) .backdrop,
 	:global(html.dark .tech-hero:focus-within) .backdrop {
-		opacity: 0.2;
+		opacity: 0.16;
 	}
 
 	.lattice {
@@ -107,89 +105,41 @@
 		flex-direction: column;
 		justify-content: center;
 		gap: 1.75rem;
-		transform:
-			rotateX(var(--lattice-rx, 38deg))
-			rotateY(var(--lattice-ry, -28deg))
-			rotate(-14deg)
-			scale(var(--lattice-scale, 1));
-		transform-style: preserve-3d;
-		transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+		transform: rotate(-14deg) scale(var(--lattice-scale, 1));
+		transform-origin: 50% 50%;
+		transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: transform;
 	}
 
 	:global(.tech-card:hover) .lattice,
 	:global(.tech-card:focus-within) .lattice,
 	:global(.tech-hero:hover) .lattice,
 	:global(.tech-hero:focus-within) .lattice {
-		--lattice-rx: 42deg;
-		--lattice-ry: -30deg;
-		--lattice-scale: 1.04;
+		--lattice-scale: 1.025;
 	}
 
 	.row {
 		display: flex;
 		gap: 2.25rem;
 		justify-content: center;
-		transform-style: preserve-3d;
 	}
 
 	.cell {
 		display: inline-flex;
 		flex: 0 0 auto;
-		transform: translate3d(0, 0, 0);
-		transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
-		transition-delay: 0ms;
-		will-change: transform;
 	}
 
 	.cell-inner {
 		display: inline-flex;
-		transform-origin: center;
-		transform: translateZ(0);
-		transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
-		transition-delay: 0ms;
 	}
 
-	/*
-	 * On enter (hover), each cell waits its turn so the lift reads as a soft
-	 * diagonal wave originating from the near corner of the tilted plane.
-	 * On exit, the delay resets to 0ms (default rule above) so every cell
-	 * settles back in unison — no laggy reverse stagger.
-	 */
-	:global(.tech-card:hover) .cell,
-	:global(.tech-card:focus-within) .cell,
-	:global(.tech-hero:hover) .cell,
-	:global(.tech-hero:focus-within) .cell,
-	:global(.tech-card:hover) .cell-inner,
-	:global(.tech-card:focus-within) .cell-inner,
-	:global(.tech-hero:hover) .cell-inner,
-	:global(.tech-hero:focus-within) .cell-inner {
-		transition-delay: calc(35ms * (var(--r, 0) + var(--c, 0)));
-	}
-
-	:global(.tech-card:hover) .cell,
-	:global(.tech-card:focus-within) .cell,
-	:global(.tech-hero:hover) .cell,
-	:global(.tech-hero:focus-within) .cell {
-		transform: translate3d(0, 0, 28px);
-	}
-
-	:global(.tech-card:hover) .cell-inner,
-	:global(.tech-card:focus-within) .cell-inner,
-	:global(.tech-hero:hover) .cell-inner,
-	:global(.tech-hero:focus-within) .cell-inner {
-		transform: translateZ(0) scale(1.05);
-	}
-
-@media (prefers-reduced-motion: reduce) {
+	@media (prefers-reduced-motion: reduce) {
+		.backdrop,
 		.lattice {
-			transition: none;
+			transition: opacity 200ms ease;
 		}
-		.row,
-		.cell,
-		.cell-inner {
-			transition: none;
-			transform: none;
-			animation: none;
+		.lattice {
+			transform: rotate(-14deg);
 		}
 	}
 </style>

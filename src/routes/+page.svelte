@@ -41,8 +41,12 @@
 	<title>Evans Stepanov</title>
 </svelte:head>
 
-<PageContainer class="space-y-20 mt-20">
-	<div class="w-60 p-1"><Logo /></div>
+<PageContainer class="space-y-20 mt-12">
+	<header class="text-slate-900 dark:text-slate-100">
+		<div class="w-56 md:w-64">
+			<Logo />
+		</div>
+	</header>
 	<main class="w-full space-y-12">
 		<Section title="About me">
 			<p class="leading-relaxed">

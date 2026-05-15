@@ -183,7 +183,6 @@
 
 	.tech-card {
 		isolation: isolate;
-		--tech-shift: 0px;
 		transition:
 			color 300ms ease,
 			background-color 300ms ease;
@@ -196,18 +195,6 @@
 	:global(html.dark) .tech-card:hover .tech-tag,
 	:global(html.dark) .tech-card:focus-within .tech-tag {
 		background-color: theme('colors.slate.900');
-	}
-
-	.tech-card:hover,
-	.tech-card:focus-within {
-		--tech-shift: 22px;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.tech-card:hover,
-		.tech-card:focus-within {
-			--tech-shift: 0px;
-		}
 	}
 
 	.idle-border {
