@@ -5,8 +5,8 @@
 	export let tags: string[] = [];
 
 	export let size: number = 40;
-	export let rows: number = 5;
-	export let cols: number = 6;
+	export let rows: number = 8;
+	export let cols: number = 8;
 
 	$: icons = (tags.map(getTechIcon).filter(Boolean) as TechIconT[]);
 	$: grid = icons.length === 0
@@ -20,9 +20,9 @@
 	<div class="backdrop" aria-hidden="true">
 		<div class="lattice">
 			{#each grid as row, r}
-				<div class="row" data-dir={r % 2 === 0 ? 'l' : 'r'}>
+				<div class="row" style="--r: {r}">
 					{#each row as icon, c (`${r}-${c}`)}
-						<span class="cell">
+						<span class="cell" style="--c: {c}">
 							<span class="cell-inner">
 								<TechIcon {icon} {size} />
 							</span>
@@ -99,143 +99,91 @@
 
 	.lattice {
 		position: absolute;
-		top: -35%;
-		left: -35%;
-		right: -35%;
-		bottom: -35%;
+		top: -55%;
+		left: -55%;
+		right: -55%;
+		bottom: -55%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		gap: 1.75rem;
-		transform: rotate(-14deg);
+		transform:
+			rotateX(var(--lattice-rx, 38deg))
+			rotateY(var(--lattice-ry, -28deg))
+			rotate(-14deg)
+			scale(var(--lattice-scale, 1));
 		transform-style: preserve-3d;
+		transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	:global(.tech-card:hover) .lattice,
+	:global(.tech-card:focus-within) .lattice,
+	:global(.tech-hero:hover) .lattice,
+	:global(.tech-hero:focus-within) .lattice {
+		--lattice-rx: 42deg;
+		--lattice-ry: -30deg;
+		--lattice-scale: 1.04;
 	}
 
 	.row {
 		display: flex;
 		gap: 2.25rem;
 		justify-content: center;
-		transform: translate3d(var(--row-shift, 0), 0, 0);
-		transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 		transform-style: preserve-3d;
-		will-change: transform;
-	}
-
-	.row[data-dir='l'] {
-		--row-shift: calc(-1 * var(--tech-shift, 0px));
-	}
-	.row[data-dir='r'] {
-		--row-shift: var(--tech-shift, 0px);
 	}
 
 	.cell {
 		display: inline-flex;
 		flex: 0 0 auto;
 		transform: translate3d(0, 0, 0);
-		transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+		transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+		transition-delay: 0ms;
 		will-change: transform;
 	}
 
 	.cell-inner {
 		display: inline-flex;
 		transform-origin: center;
+		transform: translateZ(0);
+		transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+		transition-delay: 0ms;
 	}
 
-	@keyframes cell-breath {
-		0%,
-		100% {
-			transform: rotate(-2.5deg) translateY(1px) scale(0.97);
-		}
-		50% {
-			transform: rotate(2.5deg) translateY(-2px) scale(1.03);
-		}
+	/*
+	 * On enter (hover), each cell waits its turn so the lift reads as a soft
+	 * diagonal wave originating from the near corner of the tilted plane.
+	 * On exit, the delay resets to 0ms (default rule above) so every cell
+	 * settles back in unison — no laggy reverse stagger.
+	 */
+	:global(.tech-card:hover) .cell,
+	:global(.tech-card:focus-within) .cell,
+	:global(.tech-hero:hover) .cell,
+	:global(.tech-hero:focus-within) .cell,
+	:global(.tech-card:hover) .cell-inner,
+	:global(.tech-card:focus-within) .cell-inner,
+	:global(.tech-hero:hover) .cell-inner,
+	:global(.tech-hero:focus-within) .cell-inner {
+		transition-delay: calc(35ms * (var(--r, 0) + var(--c, 0)));
+	}
+
+	:global(.tech-card:hover) .cell,
+	:global(.tech-card:focus-within) .cell,
+	:global(.tech-hero:hover) .cell,
+	:global(.tech-hero:focus-within) .cell {
+		transform: translate3d(0, 0, 28px);
 	}
 
 	:global(.tech-card:hover) .cell-inner,
 	:global(.tech-card:focus-within) .cell-inner,
 	:global(.tech-hero:hover) .cell-inner,
 	:global(.tech-hero:focus-within) .cell-inner {
-		animation: cell-breath 4.8s ease-in-out infinite;
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 1) .cell-inner,
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 1) .cell-inner,
-	:global(.tech-hero:hover) .cell:nth-child(5n + 1) .cell-inner,
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 1) .cell-inner {
-		animation-duration: 5.3s;
-		animation-delay: -0.4s;
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 2) .cell-inner,
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 2) .cell-inner,
-	:global(.tech-hero:hover) .cell:nth-child(5n + 2) .cell-inner,
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 2) .cell-inner {
-		animation-duration: 4.2s;
-		animation-delay: -1.1s;
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 3) .cell-inner,
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 3) .cell-inner,
-	:global(.tech-hero:hover) .cell:nth-child(5n + 3) .cell-inner,
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 3) .cell-inner {
-		animation-duration: 5.7s;
-		animation-delay: -2.2s;
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 4) .cell-inner,
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 4) .cell-inner,
-	:global(.tech-hero:hover) .cell:nth-child(5n + 4) .cell-inner,
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 4) .cell-inner {
-		animation-duration: 4.6s;
-		animation-delay: -0.9s;
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n) .cell-inner,
-	:global(.tech-card:focus-within) .cell:nth-child(5n) .cell-inner,
-	:global(.tech-hero:hover) .cell:nth-child(5n) .cell-inner,
-	:global(.tech-hero:focus-within) .cell:nth-child(5n) .cell-inner {
-		animation-duration: 5.1s;
-		animation-delay: -1.6s;
-	}
-
-	:global(.tech-card:hover) .cell:nth-child(5n + 1),
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 1) {
-		transform: translate3d(0, 0, 36px);
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 2),
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 2) {
-		transform: translate3d(0, 0, 10px);
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 3),
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 3) {
-		transform: translate3d(0, 0, 58px) scale(1.04);
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n + 4),
-	:global(.tech-card:focus-within) .cell:nth-child(5n + 4) {
-		transform: translate3d(0, 0, 22px);
-	}
-	:global(.tech-card:hover) .cell:nth-child(5n),
-	:global(.tech-card:focus-within) .cell:nth-child(5n) {
-		transform: translate3d(0, 0, 46px) scale(1.02);
-	}
-
-	:global(.tech-hero:hover) .cell:nth-child(5n + 1),
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 1) {
-		transform: translate3d(0, 0, 36px);
-	}
-	:global(.tech-hero:hover) .cell:nth-child(5n + 2),
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 2) {
-		transform: translate3d(0, 0, 10px);
-	}
-	:global(.tech-hero:hover) .cell:nth-child(5n + 3),
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 3) {
-		transform: translate3d(0, 0, 58px) scale(1.04);
-	}
-	:global(.tech-hero:hover) .cell:nth-child(5n + 4),
-	:global(.tech-hero:focus-within) .cell:nth-child(5n + 4) {
-		transform: translate3d(0, 0, 22px);
-	}
-	:global(.tech-hero:hover) .cell:nth-child(5n),
-	:global(.tech-hero:focus-within) .cell:nth-child(5n) {
-		transform: translate3d(0, 0, 46px) scale(1.02);
+		transform: translateZ(0) scale(1.05);
 	}
 
 @media (prefers-reduced-motion: reduce) {
+		.lattice {
+			transition: none;
+		}
 		.row,
 		.cell,
 		.cell-inner {

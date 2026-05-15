@@ -49,7 +49,7 @@
 				<div
 					class="tech-hero relative isolate p-6 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 border-slate-300/50 dark:border-slate-700/50 flex flex-row"
 				>
-					<TechBackdrop tags={[tech.name]} size={48} rows={5} cols={6} />
+					<TechBackdrop tags={[tech.name]} size={48} rows={5} cols={14} />
 					{#if techIcon}
 						<div class="relative z-[1] text-6xl text-gray-700 dark:text-gray-300 mr-4">
 							<TechIcon icon={techIcon} size={60} />
