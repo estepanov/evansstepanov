@@ -33,6 +33,26 @@
 
 	export let data;
 
+	function stuckDetect(node: HTMLElement) {
+		let raf = 0;
+		const update = () => {
+			raf = 0;
+			node.classList.toggle('is-stuck', node.getBoundingClientRect().top <= 0);
+		};
+		const onScroll = () => {
+			if (!raf) raf = requestAnimationFrame(update);
+		};
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll, { passive: true });
+		update();
+		return {
+			destroy: () => {
+				window.removeEventListener('scroll', onScroll);
+				window.removeEventListener('resize', onScroll);
+				if (raf) cancelAnimationFrame(raf);
+			}
+		};
+	}
 </script>
 
 <svelte:head>
@@ -50,8 +70,8 @@
 	</header>
 	<main class="w-full space-y-16">
 		<section class="space-y-6">
-			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
+				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
 					About
 				</h2>
 			</div>
@@ -94,8 +114,8 @@
 		</section>
 
 		<section class="space-y-6">
-			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
+				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
 					Links
 				</h2>
 			</div>
@@ -109,8 +129,8 @@
 		</section>
 
 		<section class="space-y-6">
-			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
+				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
 					Work
 				</h2>
 				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
@@ -125,8 +145,8 @@
 		</section>
 
 		<section class="space-y-6">
-			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
+				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
 					Projects
 				</h2>
 				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
@@ -141,8 +161,8 @@
 		</section>
 
 		<section class="space-y-6">
-			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
+				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
 					Tech
 				</h2>
 				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
@@ -222,6 +242,59 @@
 </PageContainer>
 
 <style>
+	.section-header {
+		isolation: isolate;
+	}
+
+	.section-title {
+		font-size: 1.5rem;
+		line-height: 1.2;
+		letter-spacing: 0.18em;
+		transition:
+			font-size 0.3s ease,
+			letter-spacing 0.3s ease;
+	}
+
+	.section-header:global(.is-stuck) .section-title {
+		font-size: 0.875rem;
+		letter-spacing: 0.15em;
+	}
+
+	.section-header::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: calc(50% - 50vw);
+		width: 100vw;
+		z-index: -1;
+		background-color: transparent;
+		border-bottom: 1px solid transparent;
+		transition:
+			background-color 0.25s ease,
+			border-color 0.25s ease,
+			backdrop-filter 0.25s ease;
+	}
+
+	.section-header:global(.is-stuck)::before {
+		background-color: rgb(255 255 255 / 0.75);
+		border-bottom-color: rgb(226 232 240 / 0.8);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+	}
+
+	:global(.dark) .section-header:global(.is-stuck)::before {
+		background-color: rgb(2 6 23 / 0.75);
+		border-bottom-color: rgb(30 41 59 / 0.8);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.section-header::before,
+		.section-title {
+			transition: none;
+		}
+	}
+
 	.tech-tile {
 		isolation: isolate;
 		will-change: transform;

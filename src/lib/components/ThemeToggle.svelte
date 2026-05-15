@@ -72,43 +72,159 @@
 		<g class="stars" aria-hidden="true">
 			<circle class="star star-a" cx="6" cy="8" r="0.9" />
 			<circle class="star star-b" cx="26" cy="22" r="0.7" />
+			<circle class="star star-c" cx="9" cy="25" r="0.55" />
 		</g>
 	</svg>
+	<span class="halo" aria-hidden="true"></span>
+	<span class="ripple" aria-hidden="true"></span>
+	{#if theme.mode === 'system'}
+		<span class="system-badge" aria-hidden="true">
+			<svg viewBox="0 0 12 12" focusable="false">
+				<rect x="1.25" y="2" width="9.5" height="6.5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.1" />
+				<line x1="4" y1="10" x2="8" y2="10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+			</svg>
+		</span>
+	{/if}
 </button>
 
 <style>
 	.theme-toggle {
 		position: fixed;
-		top: 1rem;
-		right: 1rem;
+		bottom: 1.25rem;
+		right: 1.25rem;
 		z-index: 50;
-		width: 2.5rem;
-		height: 2.5rem;
+		width: 2.75rem;
+		height: 2.75rem;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		border-radius: 9999px;
-		background: rgba(255, 255, 255, 0.6);
-		backdrop-filter: blur(6px);
+		background: rgba(255, 255, 255, 0.65);
+		backdrop-filter: blur(10px) saturate(140%);
+		-webkit-backdrop-filter: blur(10px) saturate(140%);
 		border: 1px solid rgba(0, 0, 0, 0.08);
 		color: #1f2937;
 		cursor: pointer;
-		transition: background 240ms ease, border-color 240ms ease, color 240ms ease;
+		transition:
+			background 240ms ease,
+			border-color 240ms ease,
+			color 240ms ease,
+			transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			box-shadow 380ms ease;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.06),
+			0 8px 24px -12px rgba(0, 0, 0, 0.18);
 		-webkit-tap-highlight-color: transparent;
+		isolation: isolate;
 	}
 	:global(.dark) .theme-toggle {
 		background: rgba(17, 17, 17, 0.55);
 		border-color: rgba(255, 255, 255, 0.1);
 		color: #f3f4f6;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.4),
+			0 10px 28px -12px rgba(0, 0, 0, 0.6),
+			0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+	}
+	.theme-toggle:hover {
+		box-shadow:
+			0 2px 4px rgba(0, 0, 0, 0.08),
+			0 14px 32px -14px rgba(0, 0, 0, 0.28);
+	}
+	:global(.dark) .theme-toggle:hover {
+		box-shadow:
+			0 2px 6px rgba(0, 0, 0, 0.5),
+			0 16px 36px -14px rgba(16, 185, 129, 0.25),
+			0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+	}
+	.theme-toggle:active {
+		transform: scale(0.94);
+		transition-duration: 120ms;
 	}
 	.theme-toggle:focus-visible {
 		outline: 2px solid currentColor;
 		outline-offset: 2px;
 	}
 
+	/* Soft ambient halo — neutral, tied to currentColor */
+	.halo {
+		position: absolute;
+		inset: -4px;
+		border-radius: inherit;
+		pointer-events: none;
+		z-index: -1;
+		background: radial-gradient(
+			closest-side,
+			currentColor,
+			transparent 70%
+		);
+		opacity: 0;
+		transform: scale(0.9);
+		transition: opacity 420ms ease, transform 420ms ease;
+	}
+	.theme-toggle:hover .halo {
+		opacity: 0.12;
+		transform: scale(1);
+	}
+	.is-dark:hover .halo {
+		opacity: 0.18;
+	}
+
+	/* Click ripple */
+	.ripple {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		background: radial-gradient(
+			circle at center,
+			currentColor 0%,
+			transparent 60%
+		);
+		opacity: 0;
+		transform: scale(0.4);
+	}
+	.theme-toggle:active .ripple {
+		animation: ripple 480ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	@keyframes ripple {
+		0% { opacity: 0.22; transform: scale(0.4); }
+		100% { opacity: 0; transform: scale(1.4); }
+	}
+
+	/* System-mode indicator: tiny monitor glyph clipped to bottom-right */
+	.system-badge {
+		position: absolute;
+		right: -2px;
+		bottom: -2px;
+		width: 14px;
+		height: 14px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 9999px;
+		background: rgba(255, 255, 255, 0.95);
+		color: #475569;
+		box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.1);
+		animation: badge-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	:global(.dark) .system-badge {
+		background: #1f2937;
+		color: #cbd5e1;
+		box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.5);
+	}
+	.system-badge svg {
+		width: 9px;
+		height: 9px;
+	}
+	@keyframes badge-in {
+		from { transform: scale(0); opacity: 0; }
+		to { transform: scale(1); opacity: 1; }
+	}
+
 	.theme-toggle svg {
-		width: 1.25rem;
-		height: 1.25rem;
+		width: 1.3rem;
+		height: 1.3rem;
 		overflow: visible;
 	}
 
@@ -172,6 +288,10 @@
 		animation-name: star-drift-b;
 		animation-duration: 17s;
 	}
+	.star-c {
+		animation-name: star-drift-c;
+		animation-duration: 9s;
+	}
 	.is-dark.is-visible .star {
 		animation-play-state: running;
 	}
@@ -186,6 +306,10 @@
 	@keyframes star-drift-b {
 		from { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
 		to { transform: translate3d(-2px, -1.5px, 0) scale(0.7); opacity: 0.5; }
+	}
+	@keyframes star-drift-c {
+		from { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0.3; }
+		to { transform: translate3d(1.5px, -2px, 0) scale(1.3); opacity: 0.9; }
 	}
 
 	/* Light-mode ambient — gentle ray pulse */

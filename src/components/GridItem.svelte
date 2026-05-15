@@ -104,7 +104,7 @@
 		<div class="flex flex-grow"></div>
 
 		<ul
-			class="text-xs mt-4 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
+			class="text-xs md:text-[13px] mt-4 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
 			'work'
 				? 'text-gray-500'
 				: 'text-gray-700'}"
