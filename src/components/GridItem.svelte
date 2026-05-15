@@ -177,7 +177,7 @@
 	}
 
 	.card-heading {
-		font-size: clamp(1rem, 0.95rem + 0.2vw, 1.175rem);
+		font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem);
 		line-height: 1.2;
 	}
 
@@ -185,7 +185,46 @@
 		isolation: isolate;
 		transition:
 			color 300ms ease,
-			background-color 300ms ease;
+			background-color 300ms ease,
+			transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
+		animation: card-breathe 9s ease-in-out infinite;
+	}
+
+	@keyframes card-breathe {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-1px);
+		}
+	}
+
+	.tech-card:hover,
+	.tech-card:focus-within {
+		transform: translateY(-2px);
+		animation-play-state: paused;
+		box-shadow:
+			0 1px 0 rgba(15, 23, 42, 0.02),
+			0 10px 30px -18px rgba(15, 23, 42, 0.18);
+	}
+
+	:global(html.dark) .tech-card:hover,
+	:global(html.dark) .tech-card:focus-within {
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.02),
+			0 10px 30px -18px rgba(0, 0, 0, 0.6);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tech-card {
+			animation: none;
+		}
+		.tech-card:hover,
+		.tech-card:focus-within {
+			transform: none;
+		}
 	}
 
 	.tech-card:hover .tech-tag,

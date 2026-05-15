@@ -25,57 +25,40 @@
 </svelte:head>
 
 <PageContainer class="mt-12">
-	<SiteHeader eyebrow="Tech Stack" title={tech.name} />
+	<SiteHeader eyebrow={tech.type || 'Tech Stack'} title={tech.name} />
 	<main class="w-full space-y-16">
-		<section class="tech-hero relative isolate overflow-hidden rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/40 dark:bg-slate-900/30 px-6 py-10 md:px-10 md:py-14">
-			{#if techIcon}
-				<div class="watermark" aria-hidden="true">
-					<TechIcon icon={techIcon} size={320} />
-				</div>
-			{/if}
-
-			<div class="relative z-[1] space-y-6 max-w-2xl">
-				{#if tech.type}
-					<p class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400">
-						{tech.type}
-					</p>
-				{/if}
-
-				<h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-					{tech.name}
-				</h1>
-
-				<div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-					<span
-						class="text-[10px] font-semibold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full border bg-transparent {proficiencyStyle}"
-					>
-						{tech.proficiency}
+		<section class="space-y-4 max-w-2xl">
+			<div class="flex items-center gap-3">
+				{#if techIcon}
+					<span class="text-slate-700 dark:text-slate-200 inline-flex">
+						<TechIcon icon={techIcon} size={28} />
 					</span>
-					<span class="tracking-wide">proficiency</span>
-				</div>
-
-				{#if tech.description}
-					<p class="text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-						{tech.description}
-					</p>
 				{/if}
-
+				<span
+					class="text-[10px] font-semibold tracking-[0.15em] uppercase px-2 py-0.5 rounded-full border bg-transparent {proficiencyStyle}"
+				>
+					{tech.proficiency}
+				</span>
 				{#if tech.url}
-					<div>
-						<a
-							href={tech.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors group"
-						>
-							<span class="underline underline-offset-4 decoration-emerald-600/30 group-hover:decoration-emerald-600">
-								Learn more about {tech.name}
-							</span>
-							<ArrowUpRight class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-						</a>
-					</div>
+					<a
+						href={tech.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="ml-auto inline-flex items-center gap-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors group"
+					>
+						<span class="underline underline-offset-4 decoration-emerald-600/30 group-hover:decoration-emerald-600">
+							Learn more
+						</span>
+						<ArrowUpRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+					</a>
 				{/if}
 			</div>
+
+			{#if tech.description}
+				<p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+					{tech.description}
+				</p>
+			{/if}
 		</section>
 
 		{#if relatedWork.length > 0}
@@ -129,49 +112,3 @@
 	</div>
 </PageContainer>
 
-<style>
-	.tech-hero {
-		transition:
-			background-color 300ms ease,
-			border-color 300ms ease;
-	}
-
-	.watermark {
-		position: absolute;
-		top: 50%;
-		right: -2rem;
-		transform: translateY(-50%);
-		z-index: 0;
-		pointer-events: none;
-		color: theme('colors.slate.900');
-		opacity: 0.06;
-		transition: opacity 400ms ease, transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-	}
-	:global(html.dark) .watermark {
-		color: theme('colors.slate.100');
-		opacity: 0.08;
-	}
-	.tech-hero:hover .watermark {
-		opacity: 0.1;
-		transform: translateY(-50%) scale(1.03);
-	}
-	:global(html.dark) .tech-hero:hover .watermark {
-		opacity: 0.12;
-	}
-
-	@media (max-width: 640px) {
-		.watermark :global(svg) {
-			width: 200px;
-			height: 200px;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.watermark {
-			transition: none;
-		}
-		.tech-hero:hover .watermark {
-			transform: translateY(-50%);
-		}
-	}
-</style>

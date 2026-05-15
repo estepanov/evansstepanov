@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { getTechIcon, type TechIcon as TechIconT } from '../util/tech-icons';
 	import TechIcon from './TechIcon.svelte';
 
@@ -14,10 +15,44 @@
 		: Array.from({ length: rows }, (_, r) =>
 				Array.from({ length: cols }, (_, c) => icons[(r * 3 + c) % icons.length])
 			);
+
+	let root: HTMLElement | null = null;
+
+	onMount(() => {
+		if (!root) return;
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (reduceMotion) return;
+
+		let ticking = false;
+		const update = () => {
+			ticking = false;
+			if (!root) return;
+			const rect = root.getBoundingClientRect();
+			const vh = window.innerHeight || document.documentElement.clientHeight;
+			// progress: +1 when card is entering at bottom, 0 centered, -1 exiting top.
+			const centerY = rect.top + rect.height / 2;
+			const denom = vh / 2 + rect.height / 2;
+			const p = Math.max(-1, Math.min(1, (vh / 2 - centerY) / denom));
+			root.style.setProperty('--parallax', p.toFixed(4));
+		};
+		const onScroll = () => {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(update);
+		};
+
+		update();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll, { passive: true });
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+			window.removeEventListener('resize', onScroll);
+		};
+	});
 </script>
 
 {#if icons.length > 0}
-	<div class="backdrop" aria-hidden="true">
+	<div class="backdrop" aria-hidden="true" bind:this={root}>
 		<div class="lattice">
 			{#each grid as row, r}
 				<div class="row" style="--r: {r}">
@@ -108,7 +143,7 @@
 		transform: rotate(-14deg) scale(var(--lattice-scale, 1));
 		transform-origin: 50% 50%;
 		transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-		will-change: transform;
+		will-change: transform, translate;
 	}
 
 	:global(.tech-card:hover) .lattice,
@@ -116,6 +151,15 @@
 	:global(.tech-hero:hover) .lattice,
 	:global(.tech-hero:focus-within) .lattice {
 		--lattice-scale: 1.025;
+	}
+
+	/* Scroll parallax: --parallax is updated from JS (range −1..+1) as the
+	 * card moves through the viewport. The icon plane translates opposite
+	 * to scroll direction so it reads as a deeper background layer.
+	 * Uses the `translate` property to compose cleanly with the lattice's
+	 * existing rotate/scale `transform`. */
+	.lattice {
+		translate: 0 calc(var(--parallax, 0) * 18%);
 	}
 
 	.row {
@@ -140,6 +184,7 @@
 		}
 		.lattice {
 			transform: rotate(-14deg);
+			animation: none;
 		}
 	}
 </style>
