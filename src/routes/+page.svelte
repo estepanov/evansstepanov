@@ -1,7 +1,5 @@
 <script lang="ts">
 	import Logo from '../components/Logo.svelte';
-	import Link from '../components/Link.svelte';
-	import Section from '../components/Section.svelte';
 	import { idHash } from '../util/id-hash-link-format';
 	import { getTechIcon } from '../util/tech-icons';
 	import TechIcon from '../components/TechIcon.svelte';
@@ -41,73 +39,116 @@
 	<title>Evans Stepanov</title>
 </svelte:head>
 
-<PageContainer class="space-y-20 mt-12">
-	<header class="text-slate-900 dark:text-slate-100">
+<PageContainer class="space-y-16 mt-12">
+	<header class="space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col">
 		<div class="w-56 md:w-64">
 			<Logo />
 		</div>
+		<!-- <p class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400">
+			Product-focused software engineer
+		</p> -->
 	</header>
-	<main class="w-full space-y-12">
-		<Section title="About me">
-			<p class="leading-relaxed">
-				<ProfileDiamond />
-				I'm a
-				<span class="font-bold text-purple-700 dark:text-purple-400"
-					>product focused <span class="inline-block"><ShoppingCart size={16} /></span></span
-				>
-				software engineer with a passion for building scalable, high-performance
-				<span class="font-bold text-purple-700 dark:text-purple-400"
-					>web applications <span class="inline-block"><MousePointer size={16} /></span></span
-				>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
-				full-stack initiatives, from architecting frontend applications and optimizing legacy
-				systems to enhancing accessibility and streamlining cloud infrastructure.
-			</p>
-			<p class="leading-relaxed">
-				I primarily work in <span class="font-bold text-purple-700 dark:text-purple-400">
-					TypeScript <span class="inline-block"><SiTypescript size={16} /></span>
-				</span>
-				and specialize in
-				<span class="font-bold text-purple-700 dark:text-purple-400">
-					React <span class="inline-block"><SiReact size={16} /></span>
-				</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with
-				elegant, user-focused solutions.
-			</p>
-			<p class="leading-relaxed">
-				When I'm not <code>coding</code>, you can find me
-				<span class="font-bold text-emerald-700 dark:text-emerald-400">dading</span>
-				🍼,
-				<span class="font-bold text-emerald-700 dark:text-emerald-400">reading</span>
-				📚,
-				<span class="font-bold text-emerald-700 dark:text-emerald-400">skiing</span>
-				⛷️, playing <span class="font-bold text-emerald-700 dark:text-emerald-400">Halo</span> 🎮,
-				or
-				<span class="font-bold text-emerald-700 dark:text-emerald-400">sleeping</span> 🛌.
-			</p>
-		</Section>
-		<Section title="Links">
-			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center space-x-6">
+	<main class="w-full space-y-16">
+		<section class="space-y-6">
+			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+					About
+				</h2>
+			</div>
+			<div class="space-y-4 text-slate-700 dark:text-slate-300">
+				<p class="leading-relaxed">
+					<ProfileDiamond />
+					I'm a
+					<span class="font-semibold text-purple-700 dark:text-purple-400"
+						>product focused <span class="inline-block"><ShoppingCart size={16} /></span></span
+					>
+					software engineer with a passion for building scalable, high-performance
+					<span class="font-semibold text-purple-700 dark:text-purple-400"
+						>web applications <span class="inline-block"><MousePointer size={16} /></span></span
+					>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
+					full-stack initiatives, from architecting frontend applications and optimizing legacy
+					systems to enhancing accessibility and streamlining cloud infrastructure.
+				</p>
+				<p class="leading-relaxed">
+					I primarily work in <span class="font-semibold text-purple-700 dark:text-purple-400">
+						TypeScript <span class="inline-block"><SiTypescript size={16} /></span>
+					</span>
+					and specialize in
+					<span class="font-semibold text-purple-700 dark:text-purple-400">
+						React <span class="inline-block"><SiReact size={16} /></span>
+					</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with
+					elegant, user-focused solutions.
+				</p>
+				<p class="leading-relaxed">
+					When I'm not <code>coding</code>, you can find me
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">dading</span>
+					🍼,
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">reading</span>
+					📚,
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">skiing</span>
+					⛷️, playing <span class="font-semibold text-emerald-700 dark:text-emerald-400">Halo</span>
+					🎮, or
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">sleeping</span> 🛌.
+				</p>
+			</div>
+		</section>
+
+		<section class="space-y-6">
+			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+					Links
+				</h2>
+			</div>
+			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center gap-x-6 gap-y-3">
 				{#each data.links as link}
 					<li class="inline-flex">
 						<SocialLink {link} />
 					</li>
 				{/each}
 			</ul>
-		</Section>
-		<Section title="Work">
+		</section>
+
+		<section class="space-y-6">
+			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+					Work
+				</h2>
+				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
+					{data.work.length}
+				</span>
+			</div>
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
 					<GridItem item={work} type="work" />
 				{/each}
 			</ul>
-		</Section>
-		<Section title="Projects">
+		</section>
+
+		<section class="space-y-6">
+			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+					Projects
+				</h2>
+				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
+					{data.projects.length}
+				</span>
+			</div>
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
 					<GridItem item={project} type="project" {idHash} />
 				{/each}
 			</ul>
-		</Section>
-		<Section title="Tech">
+		</section>
+
+		<section class="space-y-6">
+			<div class="flex items-baseline justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+				<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+					Tech
+				</h2>
+				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
+					{data.tech.length}
+				</span>
+			</div>
 			<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-3">
 				{#each techOrder as techType}
 					{@const techItems = data.tech.filter((tech) => tech.type === techType)}
@@ -170,7 +211,7 @@
 					{/if}
 				{/each}
 			</div>
-		</Section>
+		</section>
 	</main>
 	<footer class="mt-10">
 		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">

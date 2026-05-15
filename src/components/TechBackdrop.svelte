@@ -159,7 +159,7 @@
 	 * Uses the `translate` property to compose cleanly with the lattice's
 	 * existing rotate/scale `transform`. */
 	.lattice {
-		translate: 0 calc(var(--parallax, 0) * 18%);
+		translate: 0 calc(var(--parallax, 0) * 9%);
 	}
 
 	.row {
