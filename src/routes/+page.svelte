@@ -3,7 +3,17 @@
 	import { idHash } from '../util/id-hash-link-format';
 	import { getTechIcon } from '../util/tech-icons';
 	import TechIcon from '../components/TechIcon.svelte';
-	import { MousePointer, ShoppingCart, ArrowUpRight, Cpu, Code2, Boxes, Library, Database, Wrench } from '@lucide/svelte';
+	import {
+		MousePointer,
+		ShoppingCart,
+		ArrowUpRight,
+		Cpu,
+		Code2,
+		Boxes,
+		Library,
+		Database,
+		Wrench
+	} from '@lucide/svelte';
 
 	const categoryMeta: Record<string, { icon: any; label: string }> = {
 		Runtime: { icon: Cpu, label: 'Runtime' },
@@ -22,11 +32,8 @@
 		Advanced: 3,
 		Expert: 4
 	};
-	import {
-		SiReact,
-		SiTypescript,
-	} from '@icons-pack/svelte-simple-icons';
-	import SocialLink from '../components/SocialLink.svelte';
+	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
+	import LinksSection from '../components/links/LinksSection.svelte';
 	import GridItem from '../components/GridItem.svelte';
 	import ProfileDiamond from '../components/ProfileDiamond.svelte';
 	import PageContainer from '../components/PageContainer.svelte';
@@ -60,7 +67,9 @@
 </svelte:head>
 
 <PageContainer class="space-y-16 mt-12">
-	<header class="space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col">
+	<header
+		class="space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col"
+	>
 		<div class="w-56 md:w-64">
 			<Logo />
 		</div>
@@ -70,8 +79,13 @@
 	</header>
 	<main class="w-full space-y-16">
 		<section class="space-y-6">
-			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+			<div
+				use:stuckDetect
+				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+			>
+				<h2
+					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+				>
 					About
 				</h2>
 			</div>
@@ -114,28 +128,29 @@
 		</section>
 
 		<section class="space-y-6">
-			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+			<div
+				use:stuckDetect
+				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+			>
+				<h2
+					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+				>
 					Links
 				</h2>
 			</div>
-			<ul class="flex flex-row flex-wrap uppercase tracking-wide items-center gap-x-6 gap-y-3">
-				{#each data.links as link}
-					<li class="inline-flex">
-						<SocialLink {link} />
-					</li>
-				{/each}
-			</ul>
+			<LinksSection links={data.links} />
 		</section>
 
 		<section class="space-y-6">
-			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+			<div
+				use:stuckDetect
+				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+			>
+				<h2
+					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+				>
 					Work
 				</h2>
-				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-					{data.work.length}
-				</span>
 			</div>
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
@@ -145,13 +160,15 @@
 		</section>
 
 		<section class="space-y-6">
-			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+			<div
+				use:stuckDetect
+				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+			>
+				<h2
+					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+				>
 					Projects
 				</h2>
-				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-					{data.projects.length}
-				</span>
 			</div>
 			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
@@ -161,13 +178,15 @@
 		</section>
 
 		<section class="space-y-6">
-			<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-				<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+			<div
+				use:stuckDetect
+				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+			>
+				<h2
+					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+				>
 					Tech
 				</h2>
-				<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-					{data.tech.length}
-				</span>
 			</div>
 			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
 				{#each techOrder as techType, cardIdx}
@@ -175,15 +194,19 @@
 					{@const meta = categoryMeta[techType]}
 					{#if techItems.length > 0}
 						<article
-							class="tech-card group/card relative rounded-xl overflow-hidden"
+							class="card tech-group-card group/card relative overflow-hidden"
 							style="--card-delay: {cardIdx * 70}ms;"
 						>
-	<header class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-dashed border-slate-200/70 dark:border-slate-800/70">
+							<header
+								class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-dashed border-slate-200/70 dark:border-slate-800/70"
+							>
 								<a
 									href="/tech/#{techType.toLowerCase()}"
-									class="flex items-center gap-2.5 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors"
+									class="flex items-center gap-2.5 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
 								>
-									<span class="tech-card-icon inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300">
+									<span
+										class="tech-card-icon inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300"
+									>
 										<svelte:component this={meta.icon} size={15} strokeWidth={1.75} />
 									</span>
 									<span class="text-[11px] font-semibold tracking-[0.18em] uppercase">
@@ -200,7 +223,7 @@
 										<a
 											href="/tech/{tech.name}"
 											title="{tech.name} · {tech.proficiency}"
-											class="tech-tile group relative aspect-square flex flex-col items-center justify-center p-2 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors duration-200"
+											class="tech-tile group relative aspect-square flex flex-col items-center justify-center p-2 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
 											style="--tile-delay: {i * 25}ms;"
 										>
 											<span
@@ -310,38 +333,40 @@
 		}
 	}
 
-	/* Tech section — category cards (aligned with Work/Project cards) */
-	.tech-card {
-		isolation: isolate;
-		border: 1px solid theme('colors.slate.500 / 0.2');
+	/* Tech category cards — visual surface comes from the shared .card class.
+	 * Local rules cover entrance stagger, the lift, and tile micro-interactions. */
+	.tech-group-card {
 		opacity: 0;
 		transform: translateY(8px);
 		animation: tech-card-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 		animation-delay: var(--card-delay, 0ms);
 		transition:
-			color 300ms ease,
-			background-color 300ms ease,
-			transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
-			box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
+			color 200ms ease,
+			background-color 200ms ease,
+			border-color 200ms ease,
+			transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	:global(html.dark) .tech-card {
-		border-color: theme('colors.slate.800 / 0.8');
-	}
+	@media (hover: hover) and (pointer: fine) {
+		.tech-group-card:hover,
+		.tech-group-card:focus-within {
+			transform: translateY(-2px);
+			border-color: theme('colors.slate.300');
+			background-color: rgb(255 255 255 / 0.7);
+			box-shadow:
+				0 1px 0 rgba(15, 23, 42, 0.02),
+				0 10px 30px -18px rgba(15, 23, 42, 0.18);
+		}
 
-	.tech-card:hover,
-	.tech-card:focus-within {
-		transform: translateY(-2px);
-		box-shadow:
-			0 1px 0 rgba(15, 23, 42, 0.02),
-			0 10px 30px -18px rgba(15, 23, 42, 0.18);
-	}
-
-	:global(html.dark) .tech-card:hover,
-	:global(html.dark) .tech-card:focus-within {
-		box-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.02),
-			0 10px 30px -18px rgba(0, 0, 0, 0.6);
+		:global(html.dark) .tech-group-card:hover,
+		:global(html.dark) .tech-group-card:focus-within {
+			border-color: theme('colors.slate.700');
+			background-color: rgb(15 23 42 / 0.6);
+			box-shadow:
+				0 1px 0 rgba(255, 255, 255, 0.02),
+				0 10px 30px -18px rgba(0, 0, 0, 0.6);
+		}
 	}
 
 	@keyframes tech-card-in {
@@ -349,23 +374,6 @@
 			opacity: 1;
 			transform: translateY(0);
 		}
-	}
-
-
-	.tech-card:hover .tech-card-icon {
-		background-color: rgb(15 23 42);
-		color: rgb(248 250 252);
-	}
-
-	:global(.dark) .tech-card:hover .tech-card-icon {
-		background-color: rgb(241 245 249);
-		color: rgb(15 23 42);
-	}
-
-	.tech-card-icon {
-		transition:
-			background-color 0.3s ease,
-			color 0.3s ease;
 	}
 
 	.tech-tile {
@@ -381,7 +389,7 @@
 	}
 
 	/* Proficiency dots — gentle stagger pulse on card hover */
-	.tech-card:hover .tech-dot {
+	.tech-group-card:hover .tech-dot {
 		animation: dot-pulse 1.2s ease-out;
 		animation-delay: calc(var(--dot-i, 0) * 60ms);
 	}
@@ -397,18 +405,22 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.tech-card {
+		.tech-group-card {
 			opacity: 1;
 			transform: none;
 			animation: none;
+			transition-property: color, background-color, border-color;
+		}
+		.tech-group-card:hover,
+		.tech-group-card:focus-within {
+			transform: none;
 		}
 		.tech-tile-icon,
 		.tech-tile:hover .tech-tile-icon,
-		.tech-card:hover .tech-dot {
+		.tech-group-card:hover .tech-dot {
 			transform: none;
 			animation: none;
 			transition: none;
 		}
 	}
 </style>
-

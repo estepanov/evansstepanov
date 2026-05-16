@@ -6,7 +6,7 @@
 	import AnchorButton from '../../components/AnchorButton.svelte';
 	import { House } from '@lucide/svelte';
 	import PageContainer from '../../components/PageContainer.svelte';
-	import SiteHeader from '../../components/SiteHeader.svelte';
+	import LogoIcon from '../../components/LogoIcon.svelte';
 
 	export let data;
 
@@ -19,14 +19,32 @@
 	<meta name="description" content="Explore the technologies and tools I work with." />
 </svelte:head>
 
-<PageContainer class="space-y-20 mt-12">
-	<SiteHeader />
+<PageContainer class="space-y-12 mt-10">
+	<header class="w-full flex items-center gap-4">
+		<a
+			href="/"
+			aria-label="Evans Stepanov - back to home"
+			class="group inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg text-slate-900 transition-colors hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:text-slate-100 dark:hover:text-emerald-400"
+		>
+			<LogoIcon />
+		</a>
+		<nav
+			aria-label="Breadcrumb"
+			class="min-w-0 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400"
+		>
+			<span class="text-slate-700 dark:text-slate-300">Tech</span>
+		</nav>
+	</header>
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
-			<p class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400">
+			<p
+				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
+			>
 				Tech Stack
 			</p>
-			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+			<h1
+				class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+			>
 				Tools and technologies I build with
 			</h1>
 			<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -38,8 +56,12 @@
 			{@const techItems = tech.filter((t) => t.type === techType)}
 			{#if techItems.length > 0}
 				<section id={techType.toLowerCase()} class="scroll-mt-24">
-					<div class="flex items-baseline justify-between mb-6 pb-3 border-b border-slate-200 dark:border-slate-800">
-						<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+					<div
+						class="flex items-baseline justify-between mb-6 pb-3 border-b border-slate-200 dark:border-slate-800"
+					>
+						<h2
+							class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300"
+						>
 							{techType}
 						</h2>
 						<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
@@ -52,7 +74,7 @@
 							{@const proficiencyColor = getColorFromWeight(techItem.proficiency)}
 							<a
 								href="/tech/{techItem.name}"
-								class="tech-card group relative flex gap-4 p-5 rounded-xl border border-slate-200/70 dark:border-slate-800/70 bg-white/40 dark:bg-slate-900/30 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white/80 dark:hover:bg-slate-900/60 transition-all duration-200"
+								class="card card--interactive group relative flex gap-4 p-5"
 							>
 								{#if techIcon}
 									<span
@@ -73,7 +95,9 @@
 										</span>
 									</div>
 									{#if techItem.description}
-										<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
+										<p
+											class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2"
+										>
 											{techItem.description}
 										</p>
 									{/if}

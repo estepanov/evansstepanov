@@ -18,6 +18,8 @@
 	$: titleField = type === 'work' ? item.title : item.name;
 	$: companyOrUrl = type === 'work' ? item.companyName : undefined;
 	$: techTags = (item.techTags as string[] | undefined) ?? [];
+	$: detailsEventName =
+		type === 'work' ? `click_work_details-${titleField}` : `click_project_details-${titleField}`;
 
 	const handleLinkClick = (_linkType: string, itemName: string) => {
 		const eventName =
@@ -30,19 +32,16 @@
 	};
 
 	const handleDetailsClick = () => {
-		const eventName =
-			type === 'work' ? `click_work_details-${titleField}` : `click_project_details-${titleField}`;
-		Fathom.trackEvent(eventName);
+		Fathom.trackEvent(detailsEventName);
 		detailsOpen = true;
 	};
 </script>
 
 <li
 	id={type === 'project' && idHash ? idHash(item.name) : undefined}
-	class="tech-card relative p-6 rounded-xl flex flex-col transition-colors duration-300"
+	class="card card--interactive grid-card relative p-6 flex flex-col"
 	class:active-border={isActive}
 	class:active-border--subtle={isActive && type === 'project'}
-	class:idle-border={!isActive}
 >
 	<TechBackdrop tags={techTags} />
 
@@ -205,8 +204,8 @@
 				transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
 		}
 
-		.tech-card:hover .details-btn-wrap,
-		.tech-card:focus-within .details-btn-wrap {
+		.grid-card:hover .details-btn-wrap,
+		.grid-card:focus-within .details-btn-wrap {
 			opacity: 1;
 			transform: translateY(0);
 		}
@@ -257,73 +256,16 @@
 		}
 	}
 
-	.tech-card {
-		isolation: isolate;
-		transition:
-			color 300ms ease,
-			background-color 300ms ease,
-			transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
-			box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
+	.grid-card {
 		/* Let the browser skip layout/paint for cards far from the viewport.
 		 * intrinsic size keeps scrollbar + anchor positions stable. */
 		content-visibility: auto;
 		contain-intrinsic-size: auto 320px;
 	}
 
-	.tech-card.active-border {
+	.grid-card.active-border {
 		content-visibility: visible;
 		contain-intrinsic-size: none;
-	}
-
-	/* Decorative idle motion — only on devices with real hover (i.e. desktop).
-	 * On phones, 24 always-on transform animations is pure battery burn. */
-	@media (hover: hover) and (pointer: fine) {
-		.tech-card {
-			animation: card-breathe 9s ease-in-out infinite;
-		}
-	}
-
-	@keyframes card-breathe {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-1px);
-		}
-	}
-
-	.tech-card:hover,
-	.tech-card:focus-within {
-		transform: translateY(-2px);
-		animation-play-state: paused;
-		box-shadow:
-			0 1px 0 rgba(15, 23, 42, 0.02),
-			0 10px 30px -18px rgba(15, 23, 42, 0.18);
-	}
-
-	:global(html.dark) .tech-card:hover,
-	:global(html.dark) .tech-card:focus-within {
-		box-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.02),
-			0 10px 30px -18px rgba(0, 0, 0, 0.6);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.tech-card {
-			animation: none;
-		}
-		.tech-card:hover,
-		.tech-card:focus-within {
-			transform: none;
-		}
-	}
-
-	.idle-border {
-		border: 1px solid theme('colors.slate.500 / 0.2');
-	}
-	:global(html.dark) .idle-border {
-		border-color: theme('colors.slate.800 / 0.8');
 	}
 
 	.active-border {
@@ -331,6 +273,15 @@
 		--ab-mid: theme('colors.emerald.500 / 0.9');
 		--ab-duration: 20s;
 		position: relative;
+		/* The animated conic ring renders via ::before; suppress the static card border underneath. */
+		border-color: transparent;
+		border-width: 0px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.active-border::before {
+			animation: none;
+		}
 	}
 
 	.active-border--subtle {

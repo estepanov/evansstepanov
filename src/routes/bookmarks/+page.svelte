@@ -40,7 +40,7 @@
 				<div class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
 					{#each data.tags as tag}
 						<div
-							class="break-inside-avoid group p-5 rounded-xl border border-slate-200/70 dark:border-slate-800/70 bg-white/40 dark:bg-slate-900/30 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white/80 dark:hover:bg-slate-900/60 transition-all duration-200"
+							class="card card--interactive break-inside-avoid group p-5"
 						>
 							<div class="flex items-baseline justify-between gap-2 mb-3 pb-3 border-b border-slate-200/70 dark:border-slate-800/70">
 								<h3 class="text-[11px] font-semibold tracking-[0.15em] uppercase text-slate-600 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
@@ -57,7 +57,7 @@
 											href={bookmark.URL}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="group/link inline-flex items-start gap-1.5 text-sm text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+											class="group/link inline-flex items-start gap-1.5 text-sm text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
 										>
 											<span class="underline underline-offset-4 decoration-slate-300 dark:decoration-slate-700 group-hover/link:decoration-emerald-500/60">
 												{bookmark.Name}

@@ -141,12 +141,7 @@
 						<p class="modal-meta">{dateRange}</p>
 					{/if}
 				</div>
-				<button
-					type="button"
-					class="close-btn"
-					on:click={handleClose}
-					aria-label="Close details"
-				>
+				<button type="button" class="close-btn" on:click={handleClose} aria-label="Close details">
 					<X size={16} strokeWidth={1.75} aria-hidden="true" />
 				</button>
 			</header>
@@ -200,12 +195,7 @@
 			{#if primaryUrl || sourceUrl}
 				<footer class="modal-footer stagger" style="--d: 180ms">
 					{#if sourceUrl}
-						<a
-							href={sourceUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="link-out"
-						>
+						<a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="link-out">
 							{#if sourceUrl.includes('github.com')}
 								<GithubIcon class="w-3.5 h-3.5" aria-hidden="true" />
 							{/if}
@@ -600,7 +590,7 @@
 	.modal-footer {
 		display: flex;
 		flex-direction: column;
-		align-items: stretch;
+		align-items: flex-start;
 		gap: 0.5rem;
 		padding: 1rem 1.75rem;
 		border-top: 1px solid rgba(15, 23, 42, 0.06);
@@ -622,6 +612,8 @@
 		position: relative;
 		display: inline-flex;
 		align-items: center;
+		width: fit-content;
+		max-width: 100%;
 		gap: 0.4rem;
 		padding: 0.35rem 0.1rem;
 		font-size: 0.8125rem;

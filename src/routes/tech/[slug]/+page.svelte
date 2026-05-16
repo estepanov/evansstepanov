@@ -11,7 +11,7 @@
 
 	export let data;
 
-	const { tech, relatedProjects, relatedWork } = data;
+	const { tech, allTech, relatedProjects, relatedWork } = data;
 	const techIcon = getTechIcon(tech.name);
 
 	const proficiencyLevel: Record<string, number> = {
@@ -61,20 +61,28 @@
 		>
 			<LogoIcon />
 		</a>
-		<nav class="text-[11px] font-medium tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400 flex items-center gap-2 min-w-0">
-			<a href="/tech" class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Tech</a>
+		<nav
+			class="text-[11px] font-medium tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400 flex items-center gap-2 min-w-0"
+		>
+			<a href="/tech" class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+				>Tech</a
+			>
 			<span class="text-slate-300 dark:text-slate-700">/</span>
 			<span class="truncate text-slate-700 dark:text-slate-300">{tech.name}</span>
 		</nav>
 	</header>
 
 	<main class="w-full space-y-20">
-		<section class="tech-hero relative w-full rounded-2xl border border-slate-500/20 dark:border-slate-800/80 overflow-hidden">
+		<section
+			class="tech-hero relative w-full rounded-2xl border border-slate-500/20 dark:border-slate-800/80 overflow-hidden"
+		>
 			<TechBackdrop tags={[tech.name]} rows={6} cols={8} size={48} />
 			<div class="relative z-10 px-6 md:px-10 py-10 md:py-14 flex flex-col gap-8">
 				<div class="flex items-center justify-between gap-4">
 					{#if tech.type}
-						<span class="text-[10px] font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400">
+						<span
+							class="text-[10px] font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400"
+						>
 							{tech.type}
 						</span>
 					{/if}
@@ -85,26 +93,36 @@
 							rel="noopener noreferrer"
 							class="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors group"
 						>
-							<span class="underline underline-offset-4 decoration-emerald-600/30 group-hover:decoration-emerald-600">
+							<span
+								class="underline underline-offset-4 decoration-emerald-600/30 group-hover:decoration-emerald-600"
+							>
 								Learn more
 							</span>
-							<ArrowUpRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+							<ArrowUpRight
+								class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+							/>
 						</a>
 					{/if}
 				</div>
 
 				<div class="flex items-start gap-5 md:gap-7">
 					{#if techIcon}
-						<span class="hero-icon flex-shrink-0 inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 text-slate-800 dark:text-slate-100 shadow-sm backdrop-blur-sm">
+						<span
+							class="hero-icon flex-shrink-0 inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 text-slate-800 dark:text-slate-100 shadow-sm backdrop-blur-sm"
+						>
 							<TechIcon icon={techIcon} size={44} />
 						</span>
 					{/if}
 					<div class="min-w-0 flex-1">
-						<h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.05]">
+						<h1
+							class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.05]"
+						>
 							{tech.name}
 						</h1>
 						<div class="mt-4 flex items-center gap-3 flex-wrap">
-							<span class="text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400">
+							<span
+								class="text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400"
+							>
 								Proficiency
 							</span>
 							<span class="flex items-center gap-1.5" aria-label="Proficiency: {tech.proficiency}">
@@ -124,7 +142,9 @@
 				</div>
 
 				{#if tech.description}
-					<p class="max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+					<p
+						class="max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed"
+					>
 						{tech.description}
 					</p>
 				{/if}
@@ -133,17 +153,19 @@
 
 		{#if relatedWork.length > 0}
 			<section class="space-y-6">
-				<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-					<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+				<div
+					use:stuckDetect
+					class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+				>
+					<h2
+						class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+					>
 						Related Work
 					</h2>
-					<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-						{relatedWork.length}
-					</span>
 				</div>
 				<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedWork as work}
-						<GridItem item={work} type="work" />
+						<GridItem item={work} type="work" tech={allTech} />
 					{/each}
 				</ul>
 			</section>
@@ -151,17 +173,19 @@
 
 		{#if relatedProjects.length > 0}
 			<section class="space-y-6">
-				<div use:stuckDetect class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3">
-					<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+				<div
+					use:stuckDetect
+					class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+				>
+					<h2
+						class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+					>
 						Related Projects
 					</h2>
-					<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-						{relatedProjects.length}
-					</span>
 				</div>
 				<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedProjects as project}
-						<GridItem item={project} type="project" />
+						<GridItem item={project} type="project" tech={allTech} />
 					{/each}
 				</ul>
 			</section>
