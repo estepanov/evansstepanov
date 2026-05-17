@@ -28,5 +28,8 @@ export enum TechType {
     Library = 'Library',
     Framework = 'Framework',
     Database = 'Database',
-    DevOps = 'DevOps'
+    DevOps = 'DevOps',
+    AI = 'AI',
+    Cloud = 'Cloud',
+    Data = 'Data'
 }

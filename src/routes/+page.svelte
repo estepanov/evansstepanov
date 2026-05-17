@@ -12,7 +12,11 @@
 		Boxes,
 		Library,
 		Database,
-		Wrench
+		Wrench,
+		Sparkles,
+		Cloud,
+		BarChart3,
+		Tag
 	} from '@lucide/svelte';
 
 	const categoryMeta: Record<string, { icon: any; label: string }> = {
@@ -21,10 +25,23 @@
 		Framework: { icon: Boxes, label: 'Framework' },
 		Library: { icon: Library, label: 'Library' },
 		Database: { icon: Database, label: 'Database' },
-		DevOps: { icon: Wrench, label: 'DevOps' }
+		DevOps: { icon: Wrench, label: 'DevOps' },
+		AI: { icon: Sparkles, label: 'AI' },
+		Cloud: { icon: Cloud, label: 'Cloud' },
+		Data: { icon: BarChart3, label: 'Data' }
 	};
 
-	const techOrder = ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'];
+	const preferredTechOrder = [
+		'Runtime',
+		'Language',
+		'Framework',
+		'Library',
+		'Database',
+		'Data',
+		'Cloud',
+		'DevOps',
+		'AI'
+	];
 
 	const proficiencyLevel: Record<string, number> = {
 		Beginner: 1,
@@ -41,6 +58,15 @@
 	import PageContainer from '../components/PageContainer.svelte';
 
 	export let data;
+
+	$: techTypes = (() => {
+		const present = new Set<string>(
+			data.tech.map((t: { type?: string }) => t.type).filter((t): t is string => Boolean(t))
+		);
+		const ordered = preferredTechOrder.filter((t) => present.has(t));
+		const extras = [...present].filter((t) => !preferredTechOrder.includes(t)).sort();
+		return [...ordered, ...extras];
+	})();
 
 	const proficiencyOrder = ['Beginner', 'Intermediate', 'Advanced', 'Expert'] as const;
 	const proficiencyDisplay: Record<string, string> = {
@@ -280,12 +306,12 @@
 				</figcaption>
 			</figure>
 			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-				{#each techOrder as techType, cardIdx}
+				{#each techTypes as techType, cardIdx}
 					{@const techItems = data.tech
 						.filter((tech) => tech.type === techType)
 						.slice()
 						.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight)}
-					{@const meta = categoryMeta[techType]}
+					{@const meta = categoryMeta[techType] ?? { icon: Tag, label: techType }}
 					{#if techItems.length > 0}
 						<article
 							class="card tech-group-card group/card relative overflow-hidden flex flex-col p-5"

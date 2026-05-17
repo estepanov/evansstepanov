@@ -40,7 +40,8 @@ import {
 	SiCloudflare,
 	SiPulumi,
 	SiDatadog,
-	SiGatsby
+	SiGatsby,
+	SiApachekafka
 } from '@icons-pack/svelte-simple-icons';
 import { siPulumi } from 'simple-icons';
 
@@ -67,6 +68,8 @@ export const techIconMap: Record<string, TechIcon> = {
 	'Open Code': simple(OpenCodeIcon),
 	Datadog: simple(SiDatadog),
 	GatsbyJS: simple(SiGatsby),
+	Kafka: simple(SiApachekafka),
+	'Apache Kafka': simple(SiApachekafka),
 	Pulumi: simple(SiPulumi),
 	Emotion: simple(EmotionIcon),
 	TailwindCSS: simple(SiTailwindcss),

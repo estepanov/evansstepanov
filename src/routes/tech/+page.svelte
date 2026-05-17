@@ -11,7 +11,24 @@
 	export let data;
 
 	const { tech } = data;
-	const categories = ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'];
+	const preferredCategories = [
+		'Runtime',
+		'Language',
+		'Framework',
+		'Library',
+		'Database',
+		'Data',
+		'Cloud',
+		'DevOps',
+		'AI'
+	];
+	const presentTypes = new Set<string>(
+		tech.map((t) => t.type as string | undefined).filter((t): t is string => Boolean(t))
+	);
+	const categories = [
+		...preferredCategories.filter((t) => presentTypes.has(t)),
+		...[...presentTypes].filter((t) => !preferredCategories.includes(t)).sort()
+	];
 </script>
 
 <svelte:head>
