@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SpecialBadge from './SpecialBadge.svelte';
+	import StatusIndicator from './StatusIndicator.svelte';
 	import TechBackdrop from './TechBackdrop.svelte';
 	import DetailsModal from './DetailsModal.svelte';
 	import { getFormattedDate } from '../util/dates';
@@ -14,7 +14,8 @@
 	let detailsOpen = false;
 
 	$: isActive = type === 'work' ? item.isCurrent : item.isActive;
-	$: badgeText = type === 'work' ? 'Current' : 'Active';
+	$: statusLabel = type === 'work' ? 'Now' : 'In progress';
+	$: statusVariant = (type === 'work' ? 'emerald' : 'subtle') as 'emerald' | 'subtle';
 	$: titleField = type === 'work' ? item.title : item.name;
 	$: companyOrUrl = type === 'work' ? item.companyName : undefined;
 	$: techTags = (item.techTags as string[] | undefined) ?? [];
@@ -55,7 +56,7 @@
 
 <li
 	id={type === 'project' && idHash ? idHash(item.name) : undefined}
-	class="card card--interactive grid-card relative p-6 flex flex-col"
+	class="card card--interactive grid-card relative p-6 sm:p-7 flex flex-col"
 	class:active-border={isActive}
 	class:active-border--subtle={isActive && type === 'project'}
 	on:pointerenter={handleGlowMove}
@@ -64,14 +65,23 @@
 >
 	<TechBackdrop tags={techTags} />
 
+	{#if isActive}
+		<span class="status-anchor">
+			<StatusIndicator label={statusLabel} variant={statusVariant} />
+		</span>
+		<span class="active-glare" aria-hidden="true">
+			<span class="active-glare__spot"></span>
+		</span>
+	{/if}
+
 	<div class="relative z-[1] flex flex-col flex-grow">
 		{#if type === 'work'}
-			<div class="relative mb-4">
-				<h3 class="card-heading font-bold">
+			<div class="relative mb-7">
+				<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">
 					{titleField}
 				</h3>
 				{#if companyOrUrl}
-					<p class="mt-2 text-sm italic text-gray-500 dark:text-gray-400">
+					<p class="mt-2.5 text-sm italic text-gray-500 dark:text-gray-400">
 						<span class="mr-1">at</span>
 						{#if item.url}
 							<a
@@ -92,8 +102,10 @@
 				{/if}
 			</div>
 		{:else}
-			<div class="flex flex-row items-center mb-4 relative">
-				<h3 class="card-heading font-bold flex justify-center items-center">
+			<div class="flex flex-row items-center mb-7 relative">
+				<h3
+					class="card-heading font-bold {isActive ? 'pr-24' : ''} flex justify-center items-center"
+				>
 					{#if item.url}
 						<a
 							target="_blank"
@@ -112,7 +124,7 @@
 		{/if}
 
 		<p
-			class="leading-tight dark:text-gray-200 text-gray-600{type === 'project'
+			class="leading-snug dark:text-gray-200 text-gray-600{type === 'project'
 				? ' line-clamp-4'
 				: ''}"
 		>
@@ -122,7 +134,7 @@
 		<div class="flex flex-grow"></div>
 
 		<ul
-			class="text-xs md:text-[13px] mt-4 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
+			class="text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
 			'work'
 				? 'text-gray-500'
 				: 'text-gray-700'}"
@@ -186,32 +198,19 @@
 	</div>
 
 	<DetailsModal bind:open={detailsOpen} {item} {type} {tech} />
-
-	{#if isActive}
-		<span class="absolute -bottom-3 dark:bg-black bg-white rounded-full z-[2]">
-			<SpecialBadge className="-ml-2" variant={type === 'project' ? 'subtle' : 'emerald'}
-				>{badgeText}</SpecialBadge
-			>
-		</span>
-	{/if}
 </li>
 
 <style>
-	@property --bg-angle {
-		inherits: false;
-		initial-value: 0deg;
-		syntax: '<angle>';
-	}
-
-	@keyframes spin-border {
-		to {
-			--bg-angle: 360deg;
-		}
-	}
-
 	.card-heading {
 		font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem);
 		line-height: 1.2;
+	}
+
+	.status-anchor {
+		position: absolute;
+		top: 1.1rem;
+		right: 1.25rem;
+		z-index: 3;
 	}
 
 	@media (min-width: 640px) and (hover: hover) {
@@ -291,43 +290,84 @@
 		z-index: 0;
 		border-radius: inherit;
 		pointer-events: none;
-			background:
-				radial-gradient(
-					26rem circle at var(--grid-glow-x) var(--grid-glow-y),
-					rgba(168, 85, 247, 0.12) 0%,
-					rgba(168, 85, 247, 0.08) 42%,
-					rgba(168, 85, 247, 0.03) 68%,
-					transparent 88%
-				),
-				radial-gradient(120% 80% at 100% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 56%),
-				radial-gradient(90% 72% at 0% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 62%);
-		opacity: 0.1;
+		background: radial-gradient(
+			20rem circle at var(--grid-glow-x) var(--grid-glow-y),
+			rgba(126, 34, 206, 0.13) 0%,
+			rgba(126, 34, 206, 0.07) 45%,
+			transparent 78%
+		);
+		opacity: 0;
 		transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	:global(html.dark) .grid-card::after {
-			background:
-				radial-gradient(
-					26rem circle at var(--grid-glow-x) var(--grid-glow-y),
-					rgba(168, 85, 247, 0.16) 0%,
-					rgba(168, 85, 247, 0.1) 42%,
-					rgba(168, 85, 247, 0.04) 68%,
-					transparent 88%
-				),
-			radial-gradient(120% 80% at 100% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 56%),
-			radial-gradient(90% 72% at 0% 100%, rgba(16, 185, 129, 0.09) 0%, transparent 62%);
-		opacity: 0.12;
+		background: radial-gradient(
+			20rem circle at var(--grid-glow-x) var(--grid-glow-y),
+			rgba(168, 85, 247, 0.07) 0%,
+			rgba(168, 85, 247, 0.035) 45%,
+			transparent 78%
+		);
+	}
+
+	.grid-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		background: radial-gradient(
+			88% 78% at 0% 100%,
+			rgba(5, 150, 105, 0.17) 0%,
+			rgba(5, 150, 105, 0.06) 36%,
+			transparent 64%
+		);
+		-webkit-backdrop-filter: blur(3px) saturate(1.15);
+		backdrop-filter: blur(3px) saturate(1.15);
+		-webkit-mask-image: radial-gradient(88% 78% at 0% 100%, #000 0%, rgba(0, 0, 0, 0.55) 30%, transparent 70%);
+		mask-image: radial-gradient(88% 78% at 0% 100%, #000 0%, rgba(0, 0, 0, 0.55) 30%, transparent 70%);
+		opacity: 0;
+		transform: scale(0.55);
+		transform-origin: 0% 100%;
+		transition:
+			opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1) 220ms,
+			transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) 220ms;
+		will-change: transform, opacity;
+	}
+
+	:global(html.dark) .grid-card::before {
+		background: radial-gradient(
+			88% 78% at 0% 100%,
+			rgba(16, 185, 129, 0.22) 0%,
+			rgba(16, 185, 129, 0.08) 36%,
+			transparent 64%
+		);
+		-webkit-backdrop-filter: blur(4px) saturate(1.2);
+		backdrop-filter: blur(4px) saturate(1.2);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
 		.grid-card:hover::after,
 		.grid-card:focus-within::after {
-			opacity: 1;
+			opacity: 0.75;
 		}
 
 		:global(html.dark) .grid-card:hover::after,
 		:global(html.dark) .grid-card:focus-within::after {
-			opacity: 0.9;
+			opacity: 0.8;
+		}
+
+		.grid-card:hover::before,
+		.grid-card:focus-within::before {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.grid-card::before {
+			transform: none;
+			transition: opacity 240ms ease;
 		}
 	}
 
@@ -337,53 +377,92 @@
 	}
 
 	.active-border {
-		--ab-edge: theme('colors.emerald.500 / 0.1');
-		--ab-mid: theme('colors.emerald.500 / 0.9');
-		--ab-duration: 20s;
+		--ab-accent: theme('colors.emerald.500');
+		--ab-edge: theme('colors.emerald.500 / 0.32');
 		position: relative;
-		/* The animated conic ring renders via ::before; suppress the static card border underneath. */
-		border-color: transparent;
-		border-width: 0px;
+		border-color: theme('colors.emerald.500 / 0.18');
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.grid-card::after {
-			transition: none;
-		}
-
-		.active-border::before {
-			animation: none;
-		}
+	:global(html.dark) .active-border {
+		--ab-accent: theme('colors.emerald.400');
+		--ab-edge: theme('colors.emerald.400 / 0.32');
+		border-color: theme('colors.emerald.400 / 0.18');
 	}
 
 	.active-border--subtle {
-		--ab-edge: theme('colors.slate.400 / 0.05');
-		--ab-mid: theme('colors.slate.400 / 0.35');
-		--ab-duration: 30s;
-	}
-	:global(html.dark) .active-border--subtle {
-		--ab-edge: theme('colors.slate.500 / 0.05');
-		--ab-mid: theme('colors.slate.400 / 0.3');
+		--ab-accent: theme('colors.slate.400');
+		--ab-edge: theme('colors.slate.400 / 0.28');
+		border-color: theme('colors.slate.400 / 0.18');
 	}
 
-	.active-border::before {
-		content: '';
+	:global(html.dark) .active-border--subtle {
+		--ab-accent: theme('colors.slate.300');
+		--ab-edge: theme('colors.slate.300 / 0.22');
+		border-color: theme('colors.slate.300 / 0.14');
+	}
+
+	.active-glare {
 		position: absolute;
-		inset: 0;
-		z-index: -1;
-		border-radius: inherit;
-		border: 1px solid transparent;
-		background:
-			linear-gradient(to bottom, var(--ab-edge), var(--ab-mid), var(--ab-edge)) padding-box,
-			conic-gradient(from var(--bg-angle), var(--ab-edge), var(--ab-mid)) border-box;
-		-webkit-mask:
-			linear-gradient(#fff 0 0) content-box,
-			linear-gradient(#fff 0 0);
-		mask:
-			linear-gradient(#fff 0 0) content-box,
-			linear-gradient(#fff 0 0);
-		-webkit-mask-composite: xor;
-		mask-composite: exclude;
-		animation: spin-border var(--ab-duration) linear infinite;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.active-glare__spot {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 180px;
+		height: 44px;
+		transform: translate(-50%, -50%);
+		background: radial-gradient(
+			closest-side at 50% 50%,
+			color-mix(in oklab, var(--ab-accent), transparent 55%) 0%,
+			color-mix(in oklab, var(--ab-accent), transparent 82%) 38%,
+			transparent 72%
+		);
+		filter: blur(8px);
+		--glare-opacity: 0.42;
+		opacity: 0;
+		mix-blend-mode: multiply;
+		transition: opacity 7000ms cubic-bezier(0.45, 0, 0.55, 1);
+		will-change: transform, opacity;
+	}
+
+	:global(html.is-scrolling) .active-glare__spot {
+		opacity: var(--glare-opacity);
+		transition: opacity 3800ms cubic-bezier(0.45, 0, 0.55, 1);
+	}
+
+	:global(html.dark) .active-glare__spot {
+		--glare-opacity: 0.72;
+		mix-blend-mode: plus-lighter;
+	}
+
+	@supports (animation-timeline: view()) {
+		.active-glare__spot {
+			animation: glare-travel linear both;
+			animation-timeline: view();
+			animation-range: cover 0% cover 100%;
+		}
+	}
+
+	@keyframes glare-travel {
+		from {
+			transform: translate(-30%, -50%);
+		}
+		to {
+			transform: translate(130%, -50%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.active-glare__spot {
+			animation: none;
+			transform: translate(50%, -50%);
+		}
 	}
 </style>

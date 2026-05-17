@@ -139,41 +139,33 @@
 		z-index: 0;
 		border-radius: inherit;
 		pointer-events: none;
-			background:
-				radial-gradient(
-					15rem circle at var(--link-glow-x) var(--link-glow-y),
-					rgba(168, 85, 247, 0.12) 0%,
-					rgba(168, 85, 247, 0.08) 42%,
-					rgba(168, 85, 247, 0.03) 68%,
-					transparent 88%
-				),
-			radial-gradient(115% 90% at 100% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 58%),
-			radial-gradient(92% 78% at 0% 100%, rgba(16, 185, 129, 0.07) 0%, transparent 64%);
+		background: radial-gradient(
+			14rem circle at var(--link-glow-x) var(--link-glow-y),
+			rgba(126, 34, 206, 0.14) 0%,
+			rgba(126, 34, 206, 0.07) 45%,
+			transparent 78%
+		);
 		opacity: 0;
 		transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	:global(html.dark) .link-card::before {
-			background:
-				radial-gradient(
-					15rem circle at var(--link-glow-x) var(--link-glow-y),
-					rgba(168, 85, 247, 0.16) 0%,
-					rgba(168, 85, 247, 0.1) 42%,
-					rgba(168, 85, 247, 0.04) 68%,
-					transparent 88%
-				),
-			radial-gradient(115% 90% at 100% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 58%),
-			radial-gradient(92% 78% at 0% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 64%);
+		background: radial-gradient(
+			14rem circle at var(--link-glow-x) var(--link-glow-y),
+			rgba(168, 85, 247, 0.07) 0%,
+			rgba(168, 85, 247, 0.035) 45%,
+			transparent 78%
+		);
 	}
 
 	.link-card:hover::before,
 	.link-card:focus-visible::before {
-		opacity: 1;
+		opacity: 0.55;
 	}
 
 	:global(html.dark) .link-card:hover::before,
 	:global(html.dark) .link-card:focus-visible::before {
-		opacity: 0.9;
+		opacity: 0.6;
 	}
 
 	.link-card > :global(*) {

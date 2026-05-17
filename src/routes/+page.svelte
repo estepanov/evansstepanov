@@ -93,10 +93,7 @@
 	</header>
 	<main class="w-full space-y-16">
 		<section class="space-y-6">
-			<div
-				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
-			>
+			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
 				>
@@ -142,10 +139,7 @@
 		</section>
 
 		<section class="space-y-6">
-			<div
-				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
-			>
+			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
 				>
