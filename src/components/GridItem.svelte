@@ -35,6 +35,22 @@
 		Fathom.trackEvent(detailsEventName);
 		detailsOpen = true;
 	};
+
+	function handleGlowMove(event: PointerEvent) {
+		const target = event.currentTarget as HTMLElement;
+		const rect = target.getBoundingClientRect();
+		const x = ((event.clientX - rect.left) / rect.width) * 100;
+		const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+		target.style.setProperty('--grid-glow-x', `${x}%`);
+		target.style.setProperty('--grid-glow-y', `${y}%`);
+	}
+
+	function handleGlowLeave(event: PointerEvent) {
+		const target = event.currentTarget as HTMLElement;
+		target.style.removeProperty('--grid-glow-x');
+		target.style.removeProperty('--grid-glow-y');
+	}
 </script>
 
 <li
@@ -42,6 +58,9 @@
 	class="card card--interactive grid-card relative p-6 flex flex-col"
 	class:active-border={isActive}
 	class:active-border--subtle={isActive && type === 'project'}
+	on:pointerenter={handleGlowMove}
+	on:pointermove={handleGlowMove}
+	on:pointerleave={handleGlowLeave}
 >
 	<TechBackdrop tags={techTags} />
 
@@ -257,10 +276,59 @@
 	}
 
 	.grid-card {
+		--grid-glow-x: 86%;
+		--grid-glow-y: 14%;
 		/* Let the browser skip layout/paint for cards far from the viewport.
 		 * intrinsic size keeps scrollbar + anchor positions stable. */
 		content-visibility: auto;
 		contain-intrinsic-size: auto 320px;
+	}
+
+	.grid-card::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		border-radius: inherit;
+		pointer-events: none;
+			background:
+				radial-gradient(
+					26rem circle at var(--grid-glow-x) var(--grid-glow-y),
+					rgba(168, 85, 247, 0.12) 0%,
+					rgba(168, 85, 247, 0.08) 42%,
+					rgba(168, 85, 247, 0.03) 68%,
+					transparent 88%
+				),
+				radial-gradient(120% 80% at 100% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 56%),
+				radial-gradient(90% 72% at 0% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 62%);
+		opacity: 0.1;
+		transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	:global(html.dark) .grid-card::after {
+			background:
+				radial-gradient(
+					26rem circle at var(--grid-glow-x) var(--grid-glow-y),
+					rgba(168, 85, 247, 0.16) 0%,
+					rgba(168, 85, 247, 0.1) 42%,
+					rgba(168, 85, 247, 0.04) 68%,
+					transparent 88%
+				),
+			radial-gradient(120% 80% at 100% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 56%),
+			radial-gradient(90% 72% at 0% 100%, rgba(16, 185, 129, 0.09) 0%, transparent 62%);
+		opacity: 0.12;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.grid-card:hover::after,
+		.grid-card:focus-within::after {
+			opacity: 1;
+		}
+
+		:global(html.dark) .grid-card:hover::after,
+		:global(html.dark) .grid-card:focus-within::after {
+			opacity: 0.9;
+		}
 	}
 
 	.grid-card.active-border {
@@ -279,6 +347,10 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.grid-card::after {
+			transition: none;
+		}
+
 		.active-border::before {
 			animation: none;
 		}

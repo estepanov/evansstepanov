@@ -32,6 +32,20 @@
 		Advanced: 3,
 		Expert: 4
 	};
+
+	const proficiencyAbbrev: Record<string, string> = {
+		Beginner: 'Beg',
+		Intermediate: 'Int',
+		Advanced: 'Adv',
+		Expert: 'Exp'
+	};
+
+	const proficiencyTone: Record<string, string> = {
+		Beginner: 'text-slate-400 dark:text-slate-500',
+		Intermediate: 'text-purple-600 dark:text-purple-400',
+		Advanced: 'text-purple-700 dark:text-purple-300',
+		Expert: 'text-purple-800 dark:text-purple-200'
+	};
 	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
 	import LinksSection from '../components/links/LinksSection.svelte';
 	import GridItem from '../components/GridItem.svelte';
@@ -190,32 +204,45 @@
 			</div>
 			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
 				{#each techOrder as techType, cardIdx}
-					{@const techItems = data.tech.filter((tech) => tech.type === techType)}
+					{@const techItems = data.tech
+						.filter((tech) => tech.type === techType)
+						.slice()
+						.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight)}
 					{@const meta = categoryMeta[techType]}
 					{#if techItems.length > 0}
 						<article
-							class="card tech-group-card group/card relative overflow-hidden"
+							class="card tech-group-card group/card relative overflow-hidden flex flex-col p-5"
 							style="--card-delay: {cardIdx * 70}ms;"
 						>
 							<header
-								class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-dashed border-slate-200/70 dark:border-slate-800/70"
+								class="mb-3 pb-3 border-b border-dashed border-slate-200/70 dark:border-slate-800/70"
 							>
 								<a
 									href="/tech/#{techType.toLowerCase()}"
-									class="flex items-center gap-2.5 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
+									class="tech-card-link flex items-center justify-between gap-3 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-none focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200 rounded-md focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
 								>
-									<span
-										class="tech-card-icon inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300"
-									>
-										<svelte:component this={meta.icon} size={15} strokeWidth={1.75} />
+									<span class="inline-flex items-center gap-2.5 min-w-0">
+										<span
+											class="tech-card-icon inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300"
+										>
+											<svelte:component this={meta.icon} size={15} strokeWidth={1.75} />
+										</span>
+										<span
+											class="tech-card-label text-[11px] font-semibold tracking-[0.18em] uppercase"
+										>
+											{meta.label}
+										</span>
 									</span>
-									<span class="text-[11px] font-semibold tracking-[0.18em] uppercase">
-										{meta.label}
-									</span>
+									<ArrowUpRight
+										class="tech-card-arrow text-slate-400 dark:text-slate-500"
+										size={12}
+										strokeWidth={2.25}
+										aria-hidden="true"
+									/>
 								</a>
 							</header>
 
-							<ul class="grid grid-cols-3 sm:grid-cols-4 gap-1 p-3">
+							<ul class="grid grid-cols-3 sm:grid-cols-4 gap-1 -mx-2 -mb-2">
 								{#each techItems as tech, i}
 									{@const techIcon = getTechIcon(tech.name)}
 									{@const level = proficiencyLevel[tech.proficiency] ?? 0}
@@ -248,17 +275,13 @@
 												{tech.name}
 											</span>
 											<span
-												class="mt-1 flex gap-[3px]"
+												class="tech-prof mt-1 inline-flex items-center gap-1.5 leading-none {proficiencyTone[tech.proficiency]}"
 												aria-label="Proficiency: {tech.proficiency}"
 											>
-												{#each [1, 2, 3, 4] as i}
-													<span
-														class="tech-dot w-[3px] h-[3px] rounded-full {i <= level
-															? 'bg-slate-600 dark:bg-slate-300'
-															: 'bg-slate-300 dark:bg-slate-700'}"
-														style="--dot-i: {i};"
-													></span>
-												{/each}
+												<span class="tech-prof-rule" aria-hidden="true"></span>
+												<span class="text-[8.5px] font-bold tracking-[0.2em] uppercase">
+													{proficiencyAbbrev[tech.proficiency]}
+												</span>
 											</span>
 										</a>
 									</li>
@@ -388,20 +411,79 @@
 		transform: translateY(-2px) scale(1.06);
 	}
 
-	/* Proficiency dots — gentle stagger pulse on card hover */
-	.tech-group-card:hover .tech-dot {
-		animation: dot-pulse 1.2s ease-out;
-		animation-delay: calc(var(--dot-i, 0) * 60ms);
+	/* Header link micro-interactions mirror GridItem's `details-btn`
+	 * (underline-from-left + arrow translate) so tech cards read as
+	 * the same family as work / project cards. */
+	.tech-card-label {
+		position: relative;
 	}
 
-	@keyframes dot-pulse {
-		0%,
-		100% {
-			transform: scale(1);
+	.tech-card-label::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -3px;
+		height: 1px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left center;
+		transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.tech-card-link:hover .tech-card-label::after,
+	.tech-card-link:focus-visible .tech-card-label::after {
+		transform: scaleX(1);
+	}
+
+	.tech-card-link :global(.tech-card-arrow) {
+		transition:
+			transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+			color 200ms ease;
+	}
+
+	.tech-card-link:hover :global(.tech-card-arrow),
+	.tech-card-link:focus-visible :global(.tech-card-arrow) {
+		transform: translate(2px, -2px);
+	}
+
+	.tech-card-icon {
+		transition:
+			background-color 200ms ease,
+			color 200ms ease;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.tech-group-card:hover .tech-card-icon,
+		.tech-group-card:focus-within .tech-card-icon {
+			background-color: theme('colors.emerald.50');
+			color: theme('colors.emerald.600');
 		}
-		40% {
-			transform: scale(1.6);
+
+		:global(html.dark) .tech-group-card:hover .tech-card-icon,
+		:global(html.dark) .tech-group-card:focus-within .tech-card-icon {
+			background-color: rgb(16 185 129 / 0.1);
+			color: theme('colors.emerald.400');
 		}
+	}
+
+	/* Proficiency mark — a hairline rule that extends on hover, echoing
+	 * the dashed header border above. Color is inherited from the tone class. */
+	.tech-prof-rule {
+		display: inline-block;
+		width: 7px;
+		height: 1px;
+		background-color: currentColor;
+		opacity: 0.55;
+		transition:
+			width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.25s ease;
+	}
+
+	.tech-tile:hover .tech-prof-rule,
+	.tech-tile:focus-visible .tech-prof-rule {
+		width: 14px;
+		opacity: 0.9;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -416,11 +498,25 @@
 			transform: none;
 		}
 		.tech-tile-icon,
-		.tech-tile:hover .tech-tile-icon,
-		.tech-group-card:hover .tech-dot {
+		.tech-tile:hover .tech-tile-icon {
 			transform: none;
 			animation: none;
 			transition: none;
+		}
+		.tech-prof-rule,
+		.tech-tile:hover .tech-prof-rule,
+		.tech-tile:focus-visible .tech-prof-rule {
+			transition: none;
+			width: 9px;
+		}
+		.tech-card-label::after,
+		.tech-card-link :global(.tech-card-arrow),
+		.tech-card-icon {
+			transition: none;
+		}
+		.tech-card-link:hover :global(.tech-card-arrow),
+		.tech-card-link:focus-visible :global(.tech-card-arrow) {
+			transform: none;
 		}
 	}
 </style>

@@ -14,13 +14,12 @@
 	const { tech, allTech, relatedProjects, relatedWork } = data;
 	const techIcon = getTechIcon(tech.name);
 
-	const proficiencyLevel: Record<string, number> = {
-		Beginner: 1,
-		Intermediate: 2,
-		Advanced: 3,
-		Expert: 4
+	const proficiencyTone: Record<string, string> = {
+		Beginner: 'text-slate-500 dark:text-slate-400',
+		Intermediate: 'text-purple-600 dark:text-purple-400',
+		Advanced: 'text-purple-700 dark:text-purple-300',
+		Expert: 'text-purple-800 dark:text-purple-200'
 	};
-	const level = proficiencyLevel[tech.proficiency] ?? 0;
 
 	function stuckDetect(node: HTMLElement) {
 		let raf = 0;
@@ -121,20 +120,20 @@
 						</h1>
 						<div class="mt-4 flex items-center gap-3 flex-wrap">
 							<span
-								class="text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400"
+								class="text-[10px] font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400"
 							>
 								Proficiency
 							</span>
-							<span class="flex items-center gap-1.5" aria-label="Proficiency: {tech.proficiency}">
-								{#each [1, 2, 3, 4] as i}
-									<span
-										class="w-1.5 h-1.5 rounded-full {i <= level
-											? 'bg-purple-700 dark:bg-purple-400'
-											: 'bg-slate-300 dark:bg-slate-700'}"
-									></span>
-								{/each}
-							</span>
-							<span class="text-xs font-medium text-slate-700 dark:text-slate-300">
+							<span
+								class="inline-block h-3 w-px bg-slate-300 dark:bg-slate-700"
+								aria-hidden="true"
+							></span>
+							<span
+								class="text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase {proficiencyTone[
+									tech.proficiency
+								]}"
+								aria-label="Proficiency: {tech.proficiency}"
+							>
 								{tech.proficiency}
 							</span>
 						</div>

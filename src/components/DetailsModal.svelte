@@ -7,7 +7,7 @@
 	export let open = false;
 	export let item: any;
 	export let type: 'work' | 'project' = 'work';
-	export let tech: Array<{ name: string; type?: string }> = [];
+	export let tech: Array<{ name: string; type?: string; proficiencyWeight?: number }> = [];
 	export let onClose: () => void = () => {};
 
 	const CATEGORY_ORDER = ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'];
@@ -20,6 +20,12 @@
 	$: subtitle = type === 'work' ? item?.companyName : undefined;
 	$: techTags = (item?.techTags as string[] | undefined) ?? [];
 	$: techTypeByName = new Map(tech.map((t) => [t.name, t.type ?? 'Other']));
+	$: techWeightByName = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
+	$: sortByProficiency = (tags: string[]) =>
+		tags.slice().sort((a, b) => {
+			const wd = (techWeightByName.get(b) ?? -1) - (techWeightByName.get(a) ?? -1);
+			return wd !== 0 ? wd : a.localeCompare(b);
+		});
 	$: groupedTech = (() => {
 		const groups = new Map<string, string[]>();
 		for (const tag of techTags) {
@@ -31,10 +37,10 @@
 		const ordered: Array<{ category: string; tags: string[] }> = [];
 		for (const cat of CATEGORY_ORDER) {
 			const tags = groups.get(cat);
-			if (tags && tags.length) ordered.push({ category: cat, tags: tags.slice().sort() });
+			if (tags && tags.length) ordered.push({ category: cat, tags: sortByProficiency(tags) });
 		}
 		const other = groups.get('Other');
-		if (other && other.length) ordered.push({ category: 'Other', tags: other.slice().sort() });
+		if (other && other.length) ordered.push({ category: 'Other', tags: sortByProficiency(other) });
 		return ordered;
 	})();
 	$: media = (type === 'project' ? (item?.media as string[] | undefined) : undefined) ?? [];
@@ -246,9 +252,12 @@
 	}
 
 	.details-dialog::backdrop {
-		background: rgba(15, 23, 42, 0.45);
-		backdrop-filter: blur(8px) saturate(120%);
-		-webkit-backdrop-filter: blur(8px) saturate(120%);
+		background:
+			radial-gradient(120% 85% at 82% 8%, rgba(168, 85, 247, 0.18) 0%, transparent 55%),
+			radial-gradient(95% 80% at 10% 100%, rgba(16, 185, 129, 0.14) 0%, transparent 62%),
+			rgba(15, 23, 42, 0.48);
+		backdrop-filter: blur(10px) saturate(130%);
+		-webkit-backdrop-filter: blur(10px) saturate(130%);
 		opacity: 0;
 		animation: backdrop-in 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 	}
@@ -262,7 +271,10 @@
 		margin: 1rem;
 		border-radius: 18px;
 		overflow: hidden;
-		background: rgba(255, 255, 255, 0.72);
+		background:
+			radial-gradient(120% 80% at 100% 0%, rgba(168, 85, 247, 0.1) 0%, transparent 56%),
+			radial-gradient(92% 74% at 0% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 62%),
+			rgba(255, 255, 255, 0.74);
 		backdrop-filter: blur(24px) saturate(160%);
 		-webkit-backdrop-filter: blur(24px) saturate(160%);
 		border: 1px solid rgba(255, 255, 255, 0.6);
@@ -284,7 +296,10 @@
 	}
 
 	:global(.dark) .glass-card {
-		background: rgba(15, 20, 30, 0.65);
+		background:
+			radial-gradient(120% 80% at 100% 0%, rgba(168, 85, 247, 0.16) 0%, transparent 56%),
+			radial-gradient(92% 74% at 0% 100%, rgba(16, 185, 129, 0.11) 0%, transparent 62%),
+			rgba(15, 20, 30, 0.68);
 		border-color: rgba(255, 255, 255, 0.08);
 		box-shadow:
 			inset 0 1px 0 rgba(255, 255, 255, 0.06),

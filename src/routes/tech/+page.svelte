@@ -56,17 +56,12 @@
 			{@const techItems = tech.filter((t) => t.type === techType)}
 			{#if techItems.length > 0}
 				<section id={techType.toLowerCase()} class="scroll-mt-24">
-					<div
-						class="flex items-baseline justify-between mb-6 pb-3 border-b border-slate-200 dark:border-slate-800"
-					>
+					<div class="mb-6 pb-3 border-b border-slate-200 dark:border-slate-800">
 						<h2
 							class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300"
 						>
 							{techType}
 						</h2>
-						<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-							{techItems.length}
-						</span>
 					</div>
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 						{#each techItems as techItem}

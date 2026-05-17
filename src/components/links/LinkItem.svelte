@@ -40,6 +40,22 @@
 		Fathom.trackEvent(`click_main_link-${link.title}`);
 	};
 
+	function handleGlowMove(event: PointerEvent) {
+		const target = event.currentTarget as HTMLElement;
+		const rect = target.getBoundingClientRect();
+		const x = ((event.clientX - rect.left) / rect.width) * 100;
+		const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+		target.style.setProperty('--link-glow-x', `${x}%`);
+		target.style.setProperty('--link-glow-y', `${y}%`);
+	}
+
+	function handleGlowLeave(event: PointerEvent) {
+		const target = event.currentTarget as HTMLElement;
+		target.style.removeProperty('--link-glow-x');
+		target.style.removeProperty('--link-glow-y');
+	}
+
 	const logoIcons: Partial<Record<ExternalLinkKind, any>> = {
 		behance: SiBehance,
 		bluesky: SiBluesky,
@@ -71,6 +87,9 @@
 	{target}
 	{rel}
 	on:click={handleClick}
+	on:pointerenter={handleGlowMove}
+	on:pointermove={handleGlowMove}
+	on:pointerleave={handleGlowLeave}
 	class="card card--interactive link-card group grid min-h-14 grid-cols-[2rem_1fr_auto] items-center gap-3 px-4 py-3 text-left"
 	aria-label="Open {link.title}"
 >
@@ -106,6 +125,62 @@
 </a>
 
 <style>
+	.link-card {
+		--link-glow-x: 88%;
+		--link-glow-y: 14%;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.link-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		border-radius: inherit;
+		pointer-events: none;
+			background:
+				radial-gradient(
+					15rem circle at var(--link-glow-x) var(--link-glow-y),
+					rgba(168, 85, 247, 0.12) 0%,
+					rgba(168, 85, 247, 0.08) 42%,
+					rgba(168, 85, 247, 0.03) 68%,
+					transparent 88%
+				),
+			radial-gradient(115% 90% at 100% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 58%),
+			radial-gradient(92% 78% at 0% 100%, rgba(16, 185, 129, 0.07) 0%, transparent 64%);
+		opacity: 0;
+		transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	:global(html.dark) .link-card::before {
+			background:
+				radial-gradient(
+					15rem circle at var(--link-glow-x) var(--link-glow-y),
+					rgba(168, 85, 247, 0.16) 0%,
+					rgba(168, 85, 247, 0.1) 42%,
+					rgba(168, 85, 247, 0.04) 68%,
+					transparent 88%
+				),
+			radial-gradient(115% 90% at 100% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 58%),
+			radial-gradient(92% 78% at 0% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 64%);
+	}
+
+	.link-card:hover::before,
+	.link-card:focus-visible::before {
+		opacity: 1;
+	}
+
+	:global(html.dark) .link-card:hover::before,
+	:global(html.dark) .link-card:focus-visible::before {
+		opacity: 0.9;
+	}
+
+	.link-card > :global(*) {
+		position: relative;
+		z-index: 1;
+	}
+
 	.link-card :global(.link-card__arrow) {
 		transition:
 			color 200ms ease,
@@ -118,6 +193,10 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.link-card::before {
+			transition: none;
+		}
+
 		.link-card :global(.link-card__arrow) {
 			transition: color 200ms ease;
 		}
