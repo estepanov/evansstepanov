@@ -49,19 +49,36 @@
 </script>
 
 {#if icons.length > 0}
-	<div class="backdrop" aria-hidden="true" bind:this={root}>
-		<div class="lattice">
-			{#each grid as row, r}
-				<div class="row" style="--r: {r}">
-					{#each row as icon, c (`${r}-${c}`)}
-						<span class="cell" style="--c: {c}">
-							<span class="cell-inner">
-								<TechIcon {icon} {size} />
+	<div class="tech-backdrop" aria-hidden="true" bind:this={root}>
+		<div class="backdrop">
+			<div class="lattice">
+				{#each grid as row, r}
+					<div class="row" style="--r: {r}">
+						{#each row as icon, c (`${r}-${c}`)}
+							<span class="cell" style="--c: {c}">
+								<span class="cell-inner">
+									<TechIcon {icon} {size} />
+								</span>
 							</span>
-						</span>
-					{/each}
-				</div>
-			{/each}
+						{/each}
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="accent-mask">
+			<div class="lattice lattice--accent">
+				{#each grid as row, r}
+					<div class="row" style="--r: {r}">
+						{#each row as icon, c (`a-${r}-${c}`)}
+							<span class="cell" style="--c: {c}">
+								<span class="cell-inner">
+									<TechIcon {icon} {size} />
+								</span>
+							</span>
+						{/each}
+					</div>
+				{/each}
+			</div>
 		</div>
 	</div>
 {/if}
@@ -78,13 +95,20 @@
 		initial-value: 70%;
 	}
 
+	.tech-backdrop {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		z-index: 0;
+	}
+
 	.backdrop {
 		position: absolute;
 		inset: 0;
 		overflow: hidden;
 		border-radius: inherit;
 		pointer-events: none;
-		z-index: 0;
 		color: var(--color-slate-900);
 		opacity: 0.07;
 		--mask-mid: 28%;
@@ -144,7 +168,7 @@
 
 	/* Only promote to its own GPU layer while actively scrolling or hovering —
 	 * keeping ~24 always-on composited layers is what crashes mid-range phones. */
-	.backdrop:global(.parallax-scrolling) .lattice,
+	.tech-backdrop:global(.parallax-scrolling) .lattice,
 	:global(.tech-card:hover) .lattice,
 	:global(.tech-card:focus-within) .lattice,
 	:global(.tech-hero:hover) .lattice,
@@ -166,6 +190,51 @@
 	 * existing rotate/scale `transform`. */
 	.lattice {
 		translate: 0 calc(var(--parallax, 0) * 9%);
+	}
+
+	.accent-mask {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		border-radius: inherit;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+		-webkit-mask-image: radial-gradient(
+			11rem circle at var(--grid-glow-x, 50%) var(--grid-glow-y, 50%),
+			rgba(0, 0, 0, 0.85) 0%,
+			rgba(0, 0, 0, 0.35) 42%,
+			transparent 78%
+		);
+		mask-image: radial-gradient(
+			11rem circle at var(--grid-glow-x, 50%) var(--grid-glow-y, 50%),
+			rgba(0, 0, 0, 0.85) 0%,
+			rgba(0, 0, 0, 0.35) 42%,
+			transparent 78%
+		);
+	}
+
+	.lattice--accent {
+		color: var(--color-violet-700);
+		opacity: 0.45;
+	}
+
+	:global(html.dark) .lattice--accent {
+		color: var(--color-violet-300);
+		opacity: 0.55;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		:global(.grid-card:hover) .accent-mask,
+		:global(.grid-card:focus-within) .accent-mask {
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.accent-mask {
+			transition: none;
+		}
 	}
 
 	.row {

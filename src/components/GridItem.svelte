@@ -124,7 +124,7 @@
 		{/if}
 
 		<p
-			class="leading-snug dark:text-gray-200 text-gray-600{type === 'project'
+			class="card-description leading-snug dark:text-gray-200 text-gray-600{type === 'project'
 				? ' line-clamp-4'
 				: ''}"
 		>
@@ -206,6 +206,18 @@
 		line-height: 1.2;
 	}
 
+	.card-description {
+		text-shadow:
+			0 0 1px var(--color-white),
+			0 1px 1px var(--color-white);
+	}
+
+	:global(html.dark) .card-description {
+		text-shadow:
+			0 0 1px var(--color-gray-900),
+			0 1px 1px var(--color-gray-900);
+	}
+
 	.status-anchor {
 		position: absolute;
 		top: 1.1rem;
@@ -227,6 +239,18 @@
 			opacity: 1;
 			transform: translateY(0);
 		}
+	}
+
+	.details-btn {
+		text-shadow:
+			0 0 1px var(--color-white),
+			0 1px 1px var(--color-white);
+	}
+
+	:global(html.dark) .details-btn {
+		text-shadow:
+			0 0 1px var(--color-gray-900),
+			0 1px 1px var(--color-gray-900);
 	}
 
 	.details-btn__label {
