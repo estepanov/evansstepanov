@@ -33,19 +33,7 @@
 		Expert: 4
 	};
 
-	const proficiencyAbbrev: Record<string, string> = {
-		Beginner: 'Beg',
-		Intermediate: 'Int',
-		Advanced: 'Adv',
-		Expert: 'Exp'
-	};
-
-	const proficiencyTone: Record<string, string> = {
-		Beginner: 'text-slate-400 dark:text-slate-500',
-		Intermediate: 'text-purple-600 dark:text-purple-400',
-		Advanced: 'text-purple-700 dark:text-purple-300',
-		Expert: 'text-purple-800 dark:text-purple-200'
-	};
+	const proficiencyTone = 'text-violet-600 dark:text-violet-400';
 	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
 	import LinksSection from '../components/links/LinksSection.svelte';
 	import GridItem from '../components/GridItem.svelte';
@@ -53,6 +41,33 @@
 	import PageContainer from '../components/PageContainer.svelte';
 
 	export let data;
+
+	const proficiencyOrder = ['Beginner', 'Intermediate', 'Advanced', 'Expert'] as const;
+	const proficiencyDisplay: Record<string, string> = {
+		Beginner: 'Novice',
+		Intermediate: 'Intermediate',
+		Advanced: 'Advanced',
+		Expert: 'Expert'
+	};
+	$: profCounts = proficiencyOrder
+		.map((level) => ({
+			level,
+			count: data.tech.filter((t: { proficiency: string }) => t.proficiency === level).length
+		}))
+		.filter((p) => p.count > 0);
+	$: profMax = Math.max(1, ...profCounts.map((p) => p.count));
+	$: profMean =
+		profCounts.length === 0 ? 0 : profCounts.reduce((s, p) => s + p.count, 0) / profCounts.length;
+	$: profSpread =
+		profCounts.length === 0 || profMax === 0
+			? 0
+			: (profMax - Math.min(...profCounts.map((p) => p.count))) / profMax;
+	$: profIsBalanced = profSpread <= 0.34;
+
+	let selectedProf: string | null = null;
+	function toggleProf(level: string) {
+		selectedProf = selectedProf === level ? null : level;
+	}
 
 	function stuckDetect(node: HTMLElement) {
 		let raf = 0;
@@ -196,6 +211,73 @@
 					Tech
 				</h2>
 			</div>
+			<figure class="prof-chart flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6 px-1 py-2">
+				<div
+					class="prof-grid flex-1 relative grid gap-x-2 sm:gap-x-3 gap-y-1.5"
+					style="grid-template-columns: repeat({profCounts.length}, minmax(0, 1fr));"
+				>
+					{#each profCounts as { level, count }, i}
+						{@const isSelected = selectedProf === level}
+						{@const isDimmed = selectedProf !== null && !isSelected}
+						<span
+							class="prof-num text-[10px] font-medium tabular-nums text-slate-500 dark:text-slate-400 text-center transition-opacity duration-200"
+							class:opacity-30={isDimmed}
+							style="grid-column: {i + 1}; grid-row: 1;"
+						>
+							{count}
+						</span>
+						<span
+							class="prof-track relative h-10 sm:h-12 flex justify-center items-end transition-opacity duration-200"
+							class:opacity-30={isDimmed}
+							style="--bar-delay: {i * 80}ms; --bar-fill: {(count / profMax) * 100}%; grid-column: {i + 1}; grid-row: 2;"
+						>
+							<span
+								class="prof-bar w-4 sm:w-6 rounded-sm"
+								class:prof-bar--selected={isSelected}
+							></span>
+						</span>
+						<span
+							class="prof-label text-[10.5px] sm:text-[11px] font-medium tracking-wide uppercase text-slate-500 dark:text-slate-400 text-center truncate transition-opacity duration-200"
+							class:opacity-30={isDimmed}
+							style="grid-column: {i + 1}; grid-row: 3;"
+						>
+							{proficiencyDisplay[level]}
+						</span>
+						<button
+							type="button"
+							on:click={() => toggleProf(level)}
+							aria-pressed={isSelected}
+							aria-label="{isSelected ? 'Clear filter for' : 'Filter by'} {proficiencyDisplay[
+								level
+							]} ({count} skills)"
+							class="prof-hit rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 dark:focus-visible:ring-violet-400/60 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors duration-200"
+							style="grid-column: {i + 1}; grid-row: 1 / 4;"
+						></button>
+					{/each}
+					<span
+						class="prof-mean pointer-events-none relative self-stretch"
+						style="grid-column: 1 / -1; grid-row: 2;"
+						aria-hidden="true"
+					>
+						<span
+							class="prof-mean-line absolute inset-x-0"
+							style="bottom: {(profMean / profMax) * 100}%;"
+						></span>
+					</span>
+				</div>
+				<figcaption
+					class="prof-caption shrink-0 text-center sm:text-right text-[9.5px] sm:text-[10px] font-medium tracking-[0.18em] uppercase {profIsBalanced
+						? 'text-violet-600 dark:text-violet-400'
+						: 'text-slate-500 dark:text-slate-400'}"
+				>
+					<span class="sm:block">{profIsBalanced ? 'Balanced' : 'Skewed'}</span>
+					<span
+						class="text-slate-400 dark:text-slate-500 normal-case tracking-normal sm:block sm:mt-0.5"
+					>
+						<span class="sm:hidden"> · </span>across {data.tech.length} skills
+					</span>
+				</figcaption>
+			</figure>
 			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
 				{#each techOrder as techType, cardIdx}
 					{@const techItems = data.tech
@@ -236,47 +318,54 @@
 								</a>
 							</header>
 
-							<ul class="grid grid-cols-3 sm:grid-cols-4 gap-1 -mx-2 -mb-2">
+							<ul class="grid grid-cols-1 sm:grid-cols-2 gap-1 -mx-2 -mb-2">
 								{#each techItems as tech, i}
 									{@const techIcon = getTechIcon(tech.name)}
-									{@const level = proficiencyLevel[tech.proficiency] ?? 0}
+									{@const tileDimmed =
+										selectedProf !== null && tech.proficiency !== selectedProf}
 									<li class="contents">
 										<a
 											href="/tech/{tech.name}"
 											title="{tech.name} · {tech.proficiency}"
-											class="tech-tile group relative aspect-square flex flex-col items-center justify-center p-2 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
+											class="tech-tile group relative flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
+											class:tile-dimmed={tileDimmed}
 											style="--tile-delay: {i * 25}ms;"
 										>
-											<span
-												class="absolute top-1.5 right-1.5 text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 -translate-x-0.5 translate-y-0.5 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200"
+											<div
+												class="tech-tile-icon shrink-0 text-slate-800 dark:text-slate-100"
 											>
-												<ArrowUpRight size={11} strokeWidth={2} />
-											</span>
-											<div class="tech-tile-icon text-slate-800 dark:text-slate-100">
 												{#if techIcon}
-													<TechIcon icon={techIcon} size={30} />
+													<TechIcon icon={techIcon} size={22} />
 												{:else}
 													<div
-														class="w-[30px] h-[30px] rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-sm font-semibold text-slate-500 dark:text-slate-400"
+														class="w-[22px] h-[22px] rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[11px] font-semibold text-slate-500 dark:text-slate-400"
 													>
 														{tech.name.charAt(0)}
 													</div>
 												{/if}
 											</div>
-											<span
-												class="mt-1.5 text-[10.5px] font-medium text-slate-600 dark:text-slate-400 text-center line-clamp-1 w-full leading-tight"
-											>
-												{tech.name}
-											</span>
-											<span
-												class="tech-prof mt-1 inline-flex items-center gap-1.5 leading-none {proficiencyTone[tech.proficiency]}"
-												aria-label="Proficiency: {tech.proficiency}"
-											>
-												<span class="tech-prof-rule" aria-hidden="true"></span>
-												<span class="text-[8.5px] font-bold tracking-[0.2em] uppercase">
-													{proficiencyAbbrev[tech.proficiency]}
+											<div class="min-w-0 flex-1 flex flex-col leading-tight">
+												<span
+													class="tech-tile-name text-[13.5px] sm:text-sm font-semibold text-slate-700 dark:text-slate-200 truncate"
+												>
+													{tech.name}
 												</span>
-											</span>
+												<span
+													class="tech-prof mt-0.5 inline-flex items-center gap-1.5 leading-none {proficiencyTone}"
+													aria-label="Proficiency: {tech.proficiency}"
+												>
+													<span class="tech-prof-rule" aria-hidden="true"></span>
+													<span class="text-[10px] font-medium italic lowercase">
+														{proficiencyDisplay[tech.proficiency] ?? tech.proficiency}
+													</span>
+												</span>
+											</div>
+											<ArrowUpRight
+												class="tech-tile-arrow shrink-0 text-slate-400 dark:text-slate-500"
+												size={12}
+												strokeWidth={2}
+												aria-hidden="true"
+											/>
 										</a>
 									</li>
 								{/each}
@@ -350,6 +439,79 @@
 		}
 	}
 
+	.prof-bar {
+		display: block;
+		height: var(--bar-fill, 0%);
+		min-height: 2px;
+		background-color: theme('colors.slate.300');
+		transform-origin: center bottom;
+		animation: prof-bar-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: var(--bar-delay, 0ms);
+		transform: scaleY(0);
+		transition: background-color 220ms ease;
+	}
+
+	:global(html.dark) .prof-bar {
+		background-color: theme('colors.slate.700');
+	}
+
+	.prof-chart:hover .prof-bar,
+	.prof-chart:focus-within .prof-bar {
+		background-color: theme('colors.violet.500');
+	}
+
+	:global(html.dark) .prof-chart:hover .prof-bar,
+	:global(html.dark) .prof-chart:focus-within .prof-bar {
+		background-color: theme('colors.violet.400');
+	}
+
+	.prof-mean-line {
+		height: 0;
+		border-top: 1px dashed theme('colors.slate.300');
+		opacity: 0.9;
+	}
+
+	:global(html.dark) .prof-mean-line {
+		border-top-color: theme('colors.slate.700');
+	}
+
+	.prof-hit {
+		z-index: 2;
+		background: transparent;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.tile-dimmed {
+		opacity: 0.25;
+	}
+
+	.tile-dimmed:hover,
+	.tile-dimmed:focus-visible {
+		opacity: 1;
+	}
+
+	.prof-bar--selected {
+		background-color: theme('colors.violet.500') !important;
+	}
+
+	:global(html.dark) .prof-bar--selected {
+		background-color: theme('colors.violet.400') !important;
+	}
+
+	@keyframes prof-bar-in {
+		to {
+			transform: scaleY(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.prof-bar {
+			animation: none;
+			transform: scaleY(1);
+		}
+	}
+
 	/* Tech category cards — visual surface comes from the shared .card class.
 	 * Local rules cover entrance stagger, the lift, and tile micro-interactions. */
 	.tech-group-card {
@@ -402,7 +564,46 @@
 	}
 
 	.tech-tile:hover .tech-tile-icon {
-		transform: translateY(-2px) scale(1.06);
+		transform: scale(1.08);
+	}
+
+	.tech-tile-name {
+		position: relative;
+		display: inline-block;
+		max-width: 100%;
+	}
+
+	.tech-tile-name::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -2px;
+		height: 1px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left center;
+		transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.tech-tile:hover .tech-tile-name::after,
+	.tech-tile:focus-visible .tech-tile-name::after {
+		transform: scaleX(1);
+	}
+
+	.tech-tile :global(.tech-tile-arrow) {
+		opacity: 0;
+		transform: translate(-2px, 2px);
+		transition:
+			opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+			color 200ms ease;
+	}
+
+	.tech-tile:hover :global(.tech-tile-arrow),
+	.tech-tile:focus-visible :global(.tech-tile-arrow) {
+		opacity: 1;
+		transform: translate(0, 0);
 	}
 
 	/* Header link micro-interactions mirror GridItem's `details-btn`
@@ -505,11 +706,17 @@
 		}
 		.tech-card-label::after,
 		.tech-card-link :global(.tech-card-arrow),
-		.tech-card-icon {
+		.tech-card-icon,
+		.tech-tile-name::after,
+		.tech-tile :global(.tech-tile-arrow) {
 			transition: none;
 		}
 		.tech-card-link:hover :global(.tech-card-arrow),
 		.tech-card-link:focus-visible :global(.tech-card-arrow) {
+			transform: none;
+		}
+		.tech-tile :global(.tech-tile-arrow) {
+			opacity: 1;
 			transform: none;
 		}
 	}

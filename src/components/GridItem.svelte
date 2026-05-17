@@ -409,6 +409,8 @@
 		height: 1px;
 		z-index: 2;
 		pointer-events: none;
+		overflow-x: clip;
+		overflow-y: visible;
 	}
 
 	.active-glare__spot {
