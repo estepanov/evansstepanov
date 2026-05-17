@@ -211,7 +211,9 @@
 					Tech
 				</h2>
 			</div>
-			<figure class="prof-chart flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6 px-1 py-2">
+			<figure
+				class="prof-chart flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6 px-1 py-2"
+			>
 				<div
 					class="prof-grid flex-1 relative grid gap-x-2 sm:gap-x-3 gap-y-1.5"
 					style="grid-template-columns: repeat({profCounts.length}, minmax(0, 1fr));"
@@ -229,11 +231,10 @@
 						<span
 							class="prof-track relative h-10 sm:h-12 flex justify-center items-end transition-opacity duration-200"
 							class:opacity-30={isDimmed}
-							style="--bar-delay: {i * 80}ms; --bar-fill: {(count / profMax) * 100}%; grid-column: {i + 1}; grid-row: 2;"
+							style="--bar-delay: {i * 80}ms; --bar-fill: {(count / profMax) *
+								100}%; grid-column: {i + 1}; grid-row: 2;"
 						>
-							<span
-								class="prof-bar w-4 sm:w-6 rounded-sm"
-								class:prof-bar--selected={isSelected}
+							<span class="prof-bar w-4 sm:w-6 rounded-xs" class:prof-bar--selected={isSelected}
 							></span>
 						</span>
 						<span
@@ -250,7 +251,7 @@
 							aria-label="{isSelected ? 'Clear filter for' : 'Filter by'} {proficiencyDisplay[
 								level
 							]} ({count} skills)"
-							class="prof-hit rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 dark:focus-visible:ring-violet-400/60 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors duration-200"
+							class="prof-hit rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-violet-500/60 dark:focus-visible:ring-violet-400/60 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors duration-200"
 							style="grid-column: {i + 1}; grid-row: 1 / 4;"
 						></button>
 					{/each}
@@ -295,7 +296,7 @@
 							>
 								<a
 									href="/tech/#{techType.toLowerCase()}"
-									class="tech-card-link flex items-center justify-between gap-3 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-none focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200 rounded-md focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
+									class="tech-card-link flex items-center justify-between gap-3 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200 rounded-md focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
 								>
 									<span class="inline-flex items-center gap-2.5 min-w-0">
 										<span
@@ -321,19 +322,16 @@
 							<ul class="grid grid-cols-1 sm:grid-cols-2 gap-1 -mx-2 -mb-2">
 								{#each techItems as tech, i}
 									{@const techIcon = getTechIcon(tech.name)}
-									{@const tileDimmed =
-										selectedProf !== null && tech.proficiency !== selectedProf}
+									{@const tileDimmed = selectedProf !== null && tech.proficiency !== selectedProf}
 									<li class="contents">
 										<a
 											href="/tech/{tech.name}"
 											title="{tech.name} · {tech.proficiency}"
-											class="tech-tile group relative flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
+											class="tech-tile group relative flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
 											class:tile-dimmed={tileDimmed}
 											style="--tile-delay: {i * 25}ms;"
 										>
-											<div
-												class="tech-tile-icon shrink-0 text-slate-800 dark:text-slate-100"
-											>
+											<div class="tech-tile-icon shrink-0 text-slate-800 dark:text-slate-100">
 												{#if techIcon}
 													<TechIcon icon={techIcon} size={22} />
 												{:else}
@@ -443,7 +441,7 @@
 		display: block;
 		height: var(--bar-fill, 0%);
 		min-height: 2px;
-		background-color: theme('colors.slate.300');
+		background-color: var(--color-slate-300);
 		transform-origin: center bottom;
 		animation: prof-bar-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 		animation-delay: var(--bar-delay, 0ms);
@@ -452,27 +450,27 @@
 	}
 
 	:global(html.dark) .prof-bar {
-		background-color: theme('colors.slate.700');
+		background-color: var(--color-slate-700);
 	}
 
 	.prof-chart:hover .prof-bar,
 	.prof-chart:focus-within .prof-bar {
-		background-color: theme('colors.violet.500');
+		background-color: var(--color-violet-500);
 	}
 
 	:global(html.dark) .prof-chart:hover .prof-bar,
 	:global(html.dark) .prof-chart:focus-within .prof-bar {
-		background-color: theme('colors.violet.400');
+		background-color: var(--color-violet-400);
 	}
 
 	.prof-mean-line {
 		height: 0;
-		border-top: 1px dashed theme('colors.slate.300');
+		border-top: 1px dashed var(--color-slate-300);
 		opacity: 0.9;
 	}
 
 	:global(html.dark) .prof-mean-line {
-		border-top-color: theme('colors.slate.700');
+		border-top-color: var(--color-slate-700);
 	}
 
 	.prof-hit {
@@ -492,11 +490,11 @@
 	}
 
 	.prof-bar--selected {
-		background-color: theme('colors.violet.500') !important;
+		background-color: var(--color-violet-500) !important;
 	}
 
 	:global(html.dark) .prof-bar--selected {
-		background-color: theme('colors.violet.400') !important;
+		background-color: var(--color-violet-400) !important;
 	}
 
 	@keyframes prof-bar-in {
@@ -531,7 +529,7 @@
 		.tech-group-card:hover,
 		.tech-group-card:focus-within {
 			transform: translateY(-2px);
-			border-color: theme('colors.slate.300');
+			border-color: var(--color-slate-300);
 			background-color: rgb(255 255 255 / 0.7);
 			box-shadow:
 				0 1px 0 rgba(15, 23, 42, 0.02),
@@ -540,7 +538,7 @@
 
 		:global(html.dark) .tech-group-card:hover,
 		:global(html.dark) .tech-group-card:focus-within {
-			border-color: theme('colors.slate.700');
+			border-color: var(--color-slate-700);
 			background-color: rgb(15 23 42 / 0.6);
 			box-shadow:
 				0 1px 0 rgba(255, 255, 255, 0.02),
@@ -651,14 +649,14 @@
 	@media (hover: hover) and (pointer: fine) {
 		.tech-group-card:hover .tech-card-icon,
 		.tech-group-card:focus-within .tech-card-icon {
-			background-color: theme('colors.emerald.50');
-			color: theme('colors.emerald.600');
+			background-color: var(--color-emerald-50);
+			color: var(--color-emerald-600);
 		}
 
 		:global(html.dark) .tech-group-card:hover .tech-card-icon,
 		:global(html.dark) .tech-group-card:focus-within .tech-card-icon {
 			background-color: rgb(16 185 129 / 0.1);
-			color: theme('colors.emerald.400');
+			color: var(--color-emerald-400);
 		}
 	}
 

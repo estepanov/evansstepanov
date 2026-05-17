@@ -9,6 +9,8 @@
 </div>
 
 <style lang="postcss">
+	@reference "../app.css";
+
 	@property --bg-angle {
 		inherits: false;
 		initial-value: 0deg;
@@ -68,15 +70,15 @@
 		background:
 			linear-gradient(
 					to bottom,
-					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.7'),
-					theme('colors.emerald.500 / 0.1')
+					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
+					color-mix(in oklab, var(--color-emerald-500) 70%, transparent),
+					color-mix(in oklab, var(--color-emerald-500) 10%, transparent)
 				)
 				padding-box,
 			conic-gradient(
 					from var(--bg-angle),
-					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.7')
+					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
+					color-mix(in oklab, var(--color-emerald-500) 70%, transparent)
 				)
 				border-box;
 		opacity: 1;
@@ -87,15 +89,15 @@
 		background:
 			linear-gradient(
 					to bottom,
-					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.7'),
-					theme('colors.emerald.500 / 0.1')
+					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
+					color-mix(in oklab, var(--color-emerald-500) 70%, transparent),
+					color-mix(in oklab, var(--color-emerald-500) 10%, transparent)
 				)
 				padding-box,
 			conic-gradient(
 					from var(--bg-angle),
-					theme('colors.emerald.500 / 0.1'),
-					theme('colors.emerald.500 / 0.7')
+					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
+					color-mix(in oklab, var(--color-emerald-500) 70%, transparent)
 				)
 				border-box;
 		opacity: 1;

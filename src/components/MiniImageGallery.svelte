@@ -30,7 +30,7 @@
 		{#each images as image}
 			<button on:click={() => openModal(image)}>
 				<LazyLoadImage
-					classNames={`scale-100 ring-opacity-20 ring-white dark:ring-black ring-2 hover:scale-105 w-auto object-cover cursor-pointer rounded shadow-sm hover:shadow-lg duration-300 transition-all ease-in-out`}
+					classNames={`scale-100 ring-2 ring-white/20 dark:ring-black/20 hover:scale-105 w-auto object-cover cursor-pointer rounded-sm shadow-xs hover:shadow-lg duration-300 transition-all ease-in-out`}
 					src={image.url}
 					shouldLoad={isOpen}
 					alt={image.alt}
@@ -41,7 +41,7 @@
 </div>
 {#if selectedImage}
 	<div
-		class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+		class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
 		on:click={closeModal}
 	>
 		<div

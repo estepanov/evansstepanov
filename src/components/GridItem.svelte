@@ -74,7 +74,7 @@
 		</span>
 	{/if}
 
-	<div class="relative z-[1] flex flex-col flex-grow">
+	<div class="relative z-[1] flex flex-col grow">
 		{#if type === 'work'}
 			<div class="relative mb-7">
 				<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">
@@ -131,7 +131,7 @@
 			{item.description}
 		</p>
 
-		<div class="flex flex-grow"></div>
+		<div class="flex grow"></div>
 
 		<ul
 			class="text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
@@ -171,7 +171,7 @@
 					on:click={handleDetailsClick}
 					aria-haspopup="dialog"
 					aria-expanded={detailsOpen}
-					class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 rounded-sm"
+					class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 rounded-xs"
 				>
 					Details
 				</button>
@@ -183,7 +183,7 @@
 					aria-label="View details for {titleField}"
 					aria-haspopup="dialog"
 					aria-expanded={detailsOpen}
-					class="details-btn group/details relative inline-flex items-center gap-1.5 py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-none focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200"
+					class="details-btn group/details relative inline-flex items-center gap-1.5 py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200"
 				>
 					<span class="details-btn__label">View details</span>
 					<ArrowUpRight
@@ -324,8 +324,18 @@
 		);
 		-webkit-backdrop-filter: blur(3px) saturate(1.15);
 		backdrop-filter: blur(3px) saturate(1.15);
-		-webkit-mask-image: radial-gradient(88% 78% at 0% 100%, #000 0%, rgba(0, 0, 0, 0.55) 30%, transparent 70%);
-		mask-image: radial-gradient(88% 78% at 0% 100%, #000 0%, rgba(0, 0, 0, 0.55) 30%, transparent 70%);
+		-webkit-mask-image: radial-gradient(
+			88% 78% at 0% 100%,
+			#000 0%,
+			rgba(0, 0, 0, 0.55) 30%,
+			transparent 70%
+		);
+		mask-image: radial-gradient(
+			88% 78% at 0% 100%,
+			#000 0%,
+			rgba(0, 0, 0, 0.55) 30%,
+			transparent 70%
+		);
 		opacity: 0;
 		transform: scale(0.55);
 		transform-origin: 0% 100%;
@@ -377,29 +387,29 @@
 	}
 
 	.active-border {
-		--ab-accent: theme('colors.emerald.500');
-		--ab-edge: theme('colors.emerald.500 / 0.32');
+		--ab-accent: var(--color-emerald-500);
+		--ab-edge: color-mix(in oklab, var(--color-emerald-500) 32%, transparent);
 		position: relative;
-		border-color: theme('colors.emerald.500 / 0.18');
+		border-color: color-mix(in oklab, var(--color-emerald-500) 18%, transparent);
 	}
 
 	:global(html.dark) .active-border {
-		--ab-accent: theme('colors.emerald.400');
-		--ab-edge: theme('colors.emerald.400 / 0.32');
-		border-color: theme('colors.emerald.400 / 0.18');
+		--ab-accent: var(--color-emerald-400);
+		--ab-edge: color-mix(in oklab, var(--color-emerald-400) 32%, transparent);
+		border-color: color-mix(in oklab, var(--color-emerald-400) 18%, transparent);
 	}
 
 	.active-border--subtle {
-		--ab-accent: theme('colors.slate.600');
-		--ab-edge: theme('colors.slate.500 / 0.4');
+		--ab-accent: var(--color-slate-600);
+		--ab-edge: color-mix(in oklab, var(--color-slate-500) 40%, transparent);
 		--glare-opacity: 0.62;
-		border-color: theme('colors.slate.500 / 0.28');
+		border-color: color-mix(in oklab, var(--color-slate-500) 28%, transparent);
 	}
 
 	:global(html.dark) .active-border--subtle {
-		--ab-accent: theme('colors.slate.300');
-		--ab-edge: theme('colors.slate.300 / 0.22');
-		border-color: theme('colors.slate.300 / 0.14');
+		--ab-accent: var(--color-slate-300);
+		--ab-edge: color-mix(in oklab, var(--color-slate-300) 22%, transparent);
+		border-color: color-mix(in oklab, var(--color-slate-300) 14%, transparent);
 	}
 
 	.active-glare {

@@ -56,7 +56,7 @@
 		<a
 			href="/"
 			aria-label="Evans Stepanov — back to home"
-			class="group inline-flex items-center justify-center h-10 w-10 flex-shrink-0 text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+			class="group inline-flex items-center justify-center h-10 w-10 shrink-0 text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
 		>
 			<LogoIcon />
 		</a>
@@ -107,7 +107,7 @@
 				<div class="flex items-start gap-5 md:gap-7">
 					{#if techIcon}
 						<span
-							class="hero-icon flex-shrink-0 inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 text-slate-800 dark:text-slate-100 shadow-sm backdrop-blur-sm"
+							class="hero-icon shrink-0 inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 text-slate-800 dark:text-slate-100 shadow-xs backdrop-blur-sm"
 						>
 							<TechIcon icon={techIcon} size={44} />
 						</span>
@@ -124,9 +124,7 @@
 							>
 								Proficiency
 							</span>
-							<span
-								class="inline-block h-3 w-px bg-slate-300 dark:bg-slate-700"
-								aria-hidden="true"
+							<span class="inline-block h-3 w-px bg-slate-300 dark:bg-slate-700" aria-hidden="true"
 							></span>
 							<span
 								class="text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase {proficiencyTone[

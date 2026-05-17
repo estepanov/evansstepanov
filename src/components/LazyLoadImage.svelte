@@ -28,21 +28,23 @@
 				const dataUrl = canvas.toDataURL();
 				imageCache.addImage(src, dataUrl);
 			};
-            setTimeout(() => {
-                imageElement.src = src;
-            }, 500);
+			setTimeout(() => {
+				imageElement.src = src;
+			}, 500);
 		}
 	}
 </script>
 
-<div class="block h-32 w-32 flex-shrink-0">
+<div class="block h-32 w-32 shrink-0">
 	{#if !loaded}
 		<div
-			class={`relative h-full flex-shrink-0 bg-emerald-50 dark:bg-emerald-950 rounded-md animate-pulse bg-opacity-40 px-10 transition-all ease-in-out ${
+			class={`relative h-full shrink-0 bg-emerald-50/40 dark:bg-emerald-950/40 rounded-md animate-pulse px-10 transition-all ease-in-out ${
 				loaded ? 'opacity-0' : 'opacity-100'
 			}`}
 		>
-			<div class="spinner border-4 dark:border-black border-t-emerald-500 dark:border-t-emerald-500" />
+			<div
+				class="spinner border-4 dark:border-black border-t-emerald-500 dark:border-t-emerald-500"
+			/>
 		</div>
 	{/if}
 	<img

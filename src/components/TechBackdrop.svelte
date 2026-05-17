@@ -85,7 +85,7 @@
 		border-radius: inherit;
 		pointer-events: none;
 		z-index: 0;
-		color: theme('colors.slate.900');
+		color: var(--color-slate-900);
 		opacity: 0.07;
 		--mask-mid: 28%;
 		--mask-end: 74%;
@@ -108,7 +108,7 @@
 	}
 
 	:global(html.dark) .backdrop {
-		color: theme('colors.slate.100');
+		color: var(--color-slate-100);
 		opacity: 0.1;
 	}
 

@@ -24,7 +24,7 @@
 		<a
 			href="/"
 			aria-label="Evans Stepanov - back to home"
-			class="group inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg text-slate-900 transition-colors hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:text-slate-100 dark:hover:text-emerald-400"
+			class="group inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-900 transition-colors hover:text-emerald-600 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:text-slate-100 dark:hover:text-emerald-400"
 		>
 			<LogoIcon />
 		</a>
@@ -73,7 +73,7 @@
 							>
 								{#if techIcon}
 									<span
-										class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+										class="shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
 									>
 										<TechIcon icon={techIcon} size={22} />
 									</span>
@@ -84,7 +84,7 @@
 											{techItem.name}
 										</h3>
 										<span
-											class="flex-shrink-0 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border bg-transparent {proficiencyColor}"
+											class="shrink-0 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border bg-transparent {proficiencyColor}"
 										>
 											{techItem.proficiency}
 										</span>

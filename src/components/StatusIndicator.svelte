@@ -4,11 +4,7 @@
 	export let className: string = '';
 </script>
 
-<span
-	class="status status--{variant} {className}"
-	role="status"
-	aria-label={label}
->
+<span class="status status--{variant} {className}" role="status" aria-label={label}>
 	<span class="status__dot" aria-hidden="true">
 		<span class="status__ping"></span>
 	</span>
@@ -16,6 +12,8 @@
 </span>
 
 <style lang="postcss">
+	@reference "../app.css";
+
 	.status {
 		@apply inline-flex items-center gap-1.5 select-none;
 		font-feature-settings: 'ss01', 'cv11';
@@ -49,27 +47,27 @@
 	}
 
 	.status--emerald {
-		--status-color: theme('colors.emerald.500');
-		--status-halo: theme('colors.emerald.500 / 0.18');
-		--status-label: theme('colors.emerald.700');
+		--status-color: var(--color-emerald-500);
+		--status-halo: color-mix(in oklab, var(--color-emerald-500) 18%, transparent);
+		--status-label: var(--color-emerald-700);
 	}
 
 	:global(html.dark) .status--emerald {
-		--status-color: theme('colors.emerald.400');
-		--status-halo: theme('colors.emerald.400 / 0.22');
-		--status-label: theme('colors.emerald.300');
+		--status-color: var(--color-emerald-400);
+		--status-halo: color-mix(in oklab, var(--color-emerald-400) 22%, transparent);
+		--status-label: var(--color-emerald-300);
 	}
 
 	.status--subtle {
-		--status-color: theme('colors.slate.500');
-		--status-halo: theme('colors.slate.500 / 0.18');
-		--status-label: theme('colors.slate.600');
+		--status-color: var(--color-slate-500);
+		--status-halo: color-mix(in oklab, var(--color-slate-500) 18%, transparent);
+		--status-label: var(--color-slate-600);
 	}
 
 	:global(html.dark) .status--subtle {
-		--status-color: theme('colors.slate.300');
-		--status-halo: theme('colors.slate.300 / 0.22');
-		--status-label: theme('colors.slate.300');
+		--status-color: var(--color-slate-300);
+		--status-halo: color-mix(in oklab, var(--color-slate-300) 22%, transparent);
+		--status-label: var(--color-slate-300);
 	}
 
 	@keyframes status-ping {
