@@ -390,9 +390,10 @@
 	}
 
 	.active-border--subtle {
-		--ab-accent: theme('colors.slate.400');
-		--ab-edge: theme('colors.slate.400 / 0.28');
-		border-color: theme('colors.slate.400 / 0.18');
+		--ab-accent: theme('colors.slate.600');
+		--ab-edge: theme('colors.slate.500 / 0.4');
+		--glare-opacity: 0.62;
+		border-color: theme('colors.slate.500 / 0.28');
 	}
 
 	:global(html.dark) .active-border--subtle {

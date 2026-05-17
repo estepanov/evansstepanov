@@ -278,7 +278,7 @@
 					</span>
 				</figcaption>
 			</figure>
-			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each techOrder as techType, cardIdx}
 					{@const techItems = data.tech
 						.filter((tech) => tech.type === techType)

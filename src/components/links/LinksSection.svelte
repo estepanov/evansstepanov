@@ -5,7 +5,7 @@
 	export let links: ExternalLink[] = [];
 </script>
 
-<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 	{#each links as link}
 		<li class="min-w-0">
 			<LinkItem {link} />
