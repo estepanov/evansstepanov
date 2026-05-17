@@ -47,10 +47,11 @@
 		target.style.setProperty('--grid-glow-y', `${y}%`);
 	}
 
-	function handleGlowLeave(event: PointerEvent) {
-		const target = event.currentTarget as HTMLElement;
-		target.style.removeProperty('--grid-glow-x');
-		target.style.removeProperty('--grid-glow-y');
+	function handleGlowLeave() {
+		// Intentionally do not reset --grid-glow-x/y here: the spotlight ::after
+		// transitions opacity but not background-position, so resetting would
+		// snap the gradient to the default corner mid-fade. Leaving the last
+		// cursor position in place lets it fade out smoothly where it was.
 	}
 </script>
 
@@ -134,7 +135,7 @@
 		<div class="flex grow"></div>
 
 		<ul
-			class="text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
+			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
 			'work'
 				? 'text-gray-500'
 				: 'text-gray-700'}"
@@ -206,13 +207,15 @@
 		line-height: 1.2;
 	}
 
-	.card-description {
+	.card-description,
+	.card-meta {
 		text-shadow:
 			0 0 1px var(--color-white),
 			0 1px 1px var(--color-white);
 	}
 
-	:global(html.dark) .card-description {
+	:global(html.dark) .card-description,
+	:global(html.dark) .card-meta {
 		text-shadow:
 			0 0 1px var(--color-gray-900),
 			0 1px 1px var(--color-gray-900);
@@ -251,6 +254,38 @@
 		text-shadow:
 			0 0 1px var(--color-gray-900),
 			0 1px 1px var(--color-gray-900);
+	}
+
+	.details-btn::before {
+		content: '';
+		position: absolute;
+		inset: -0.3rem -0.65rem;
+		border-radius: 999px;
+		background: var(--color-white);
+		box-shadow:
+			0 1px 2px rgba(15, 23, 42, 0.06),
+			0 0 0 1px rgba(15, 23, 42, 0.06);
+		opacity: 0;
+		transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+		z-index: -1;
+	}
+
+	:global(html.dark) .details-btn::before {
+		background: var(--color-gray-900);
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.3),
+			0 0 0 1px rgba(255, 255, 255, 0.06);
+	}
+
+	.details-btn:hover::before,
+	.details-btn:focus-visible::before {
+		opacity: 1;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.details-btn::before {
+			transition: none;
+		}
 	}
 
 	.details-btn__label {

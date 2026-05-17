@@ -6,7 +6,7 @@
 	import AnchorButton from '../../components/AnchorButton.svelte';
 	import { House } from '@lucide/svelte';
 	import PageContainer from '../../components/PageContainer.svelte';
-	import LogoIcon from '../../components/LogoIcon.svelte';
+	import TechHeader from '../../components/TechHeader.svelte';
 
 	export let data;
 
@@ -37,21 +37,7 @@
 </svelte:head>
 
 <PageContainer class="space-y-12 mt-10">
-	<header class="w-full flex items-center gap-4">
-		<a
-			href="/"
-			aria-label="Evans Stepanov - back to home"
-			class="group inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-900 transition-colors hover:text-emerald-600 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:text-slate-100 dark:hover:text-emerald-400"
-		>
-			<LogoIcon />
-		</a>
-		<nav
-			aria-label="Breadcrumb"
-			class="min-w-0 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400"
-		>
-			<span class="text-slate-700 dark:text-slate-300">Tech</span>
-		</nav>
-	</header>
+	<TechHeader />
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
 			<p

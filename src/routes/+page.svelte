@@ -16,8 +16,11 @@
 		Sparkles,
 		Cloud,
 		BarChart3,
-		Tag
+		Tag,
+		ChevronDown
 	} from '@lucide/svelte';
+	import { slide, fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 
 	const categoryMeta: Record<string, { icon: any; label: string }> = {
 		Runtime: { icon: Cpu, label: 'Runtime' },
@@ -56,6 +59,7 @@
 	import GridItem from '../components/GridItem.svelte';
 	import ProfileDiamond from '../components/ProfileDiamond.svelte';
 	import PageContainer from '../components/PageContainer.svelte';
+	import Select from '../components/Select.svelte';
 
 	export let data;
 
@@ -95,23 +99,31 @@
 		selectedProf = selectedProf === level ? null : level;
 	}
 
+	let showProfChart = false;
+
 	function stuckDetect(node: HTMLElement) {
-		let raf = 0;
-		const update = () => {
-			raf = 0;
-			node.classList.toggle('is-stuck', node.getBoundingClientRect().top <= 0);
-		};
-		const onScroll = () => {
-			if (!raf) raf = requestAnimationFrame(update);
-		};
-		window.addEventListener('scroll', onScroll, { passive: true });
-		window.addEventListener('resize', onScroll, { passive: true });
-		update();
+		// Sentinel pattern: a 1px invisible marker inserted just above the
+		// sticky header. The header is stuck when the sentinel has scrolled
+		// ABOVE the viewport (not just "not visible"; below-viewport means
+		// the section hasn't been reached yet). We check
+		// boundingClientRect.top < 0 to distinguish above vs below.
+		const sentinel = document.createElement('div');
+		sentinel.setAttribute('aria-hidden', 'true');
+		sentinel.style.cssText = 'width:1px;height:1px;pointer-events:none;';
+		node.parentElement?.insertBefore(sentinel, node);
+
+		const io = new IntersectionObserver(
+			([entry]) => {
+				const stuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+				node.classList.toggle('is-stuck', stuck);
+			},
+			{ threshold: 0 }
+		);
+		io.observe(sentinel);
 		return {
 			destroy: () => {
-				window.removeEventListener('scroll', onScroll);
-				window.removeEventListener('resize', onScroll);
-				if (raf) cancelAnimationFrame(raf);
+				io.disconnect();
+				sentinel.remove();
 			}
 		};
 	}
@@ -132,8 +144,8 @@
 			Product-focused software engineer
 		</p> -->
 	</header>
-	<main class="w-full space-y-16">
-		<section class="space-y-6">
+	<main class="w-full">
+		<section class="space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
@@ -179,7 +191,7 @@
 			</div>
 		</section>
 
-		<section class="space-y-6">
+		<section class="space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
@@ -190,7 +202,7 @@
 			<LinksSection links={data.links} />
 		</section>
 
-		<section class="space-y-6">
+		<section class="pb-16">
 			<div
 				use:stuckDetect
 				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
@@ -201,14 +213,14 @@
 					Work
 				</h2>
 			</div>
-			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+			<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
 					<GridItem item={work} type="work" tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
 
-		<section class="space-y-6">
+		<section class="pb-16">
 			<div
 				use:stuckDetect
 				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
@@ -219,27 +231,82 @@
 					Projects
 				</h2>
 			</div>
-			<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+			<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
 					<GridItem item={project} type="project" {idHash} tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
 
-		<section class="space-y-6">
+		<section>
 			<div
 				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
+				class="section-header sticky top-[-1px] z-20 flex items-center justify-between py-3"
 			>
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
 				>
 					Tech
 				</h2>
+				<div class="prof-controls inline-flex items-center">
+					<button
+						type="button"
+						on:click={() => (showProfChart = !showProfChart)}
+						aria-expanded={showProfChart}
+						aria-controls="prof-chart-region"
+						class="prof-toggle group/prof inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-medium tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-violet-500/50 transition-colors duration-200"
+					>
+						<span>Proficiency</span>
+						<ChevronDown
+							size={13}
+							strokeWidth={2.25}
+							class="prof-toggle__chevron"
+							aria-hidden="true"
+						/>
+					</button>
+					<div class="prof-mini inline-flex items-center gap-2.5">
+						<div
+							class="prof-mini__bar"
+							aria-hidden="true"
+							title="{data.tech.length} skills across {profCounts.length} levels"
+						>
+							{#each profCounts as { level, count }}
+								{@const isSelected = selectedProf === level}
+								<span
+									class="prof-mini__seg"
+									class:prof-mini__seg--selected={isSelected}
+									class:prof-mini__seg--dim={selectedProf !== null && !isSelected}
+									style="flex: {count};"
+								></span>
+							{/each}
+						</div>
+						<Select
+							bind:value={selectedProf}
+							ariaLabel="Filter by proficiency"
+							placeholder="All"
+							options={[
+								{ value: null, label: 'All', meta: String(data.tech.length) },
+								...profCounts.map(({ level, count }) => ({
+									value: level,
+									label: proficiencyDisplay[level],
+									meta: String(count)
+								}))
+							]}
+						/>
+					</div>
+				</div>
 			</div>
-			<figure
-				class="prof-chart flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6 px-1 py-2"
-			>
+			{#if showProfChart}
+				<div
+					id="prof-chart-region"
+					transition:slide={{ duration: 380, easing: cubicOut }}
+					class="mt-6"
+				>
+					<figure
+						in:fade={{ duration: 280, delay: 120, easing: cubicOut }}
+						out:fade={{ duration: 140, easing: cubicOut }}
+						class="prof-chart flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6 px-1 py-2"
+					>
 				<div
 					class="prof-grid flex-1 relative grid gap-x-2 sm:gap-x-3 gap-y-1.5"
 					style="grid-template-columns: repeat({profCounts.length}, minmax(0, 1fr));"
@@ -305,7 +372,9 @@
 					</span>
 				</figcaption>
 			</figure>
-			<div class="tech-grid grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+				</div>
+			{/if}
+			<div class="tech-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each techTypes as techType, cardIdx}
 					{@const techItems = data.tech
 						.filter((tech) => tech.type === techType)
@@ -533,6 +602,130 @@
 		.prof-bar {
 			animation: none;
 			transform: scaleY(1);
+		}
+	}
+
+	.prof-controls {
+		position: relative;
+		height: 1.75rem;
+	}
+
+	.prof-toggle {
+		position: relative;
+		background: transparent;
+		border: 1px solid transparent;
+		transition:
+			color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+			background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	/* Both controls overlap inside .prof-controls; visibility is driven by the
+	 * sticky-stuck state on the section header, so swapping doesn't move layout. */
+	.prof-mini {
+		position: absolute;
+		inset: 0;
+		justify-content: flex-end;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.section-header:global(.is-stuck) .prof-toggle {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.section-header:global(.is-stuck) .prof-mini {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.prof-mini__bar {
+		display: inline-flex;
+		width: clamp(72px, 16vw, 128px);
+		height: 7px;
+		border-radius: 999px;
+		overflow: hidden;
+		background: color-mix(in oklab, var(--color-slate-300) 60%, transparent);
+		gap: 1.5px;
+		padding: 1px;
+		box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-slate-300) 40%, transparent);
+	}
+
+	:global(html.dark) .prof-mini__bar {
+		background: color-mix(in oklab, var(--color-slate-700) 50%, transparent);
+		box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-slate-700) 60%, transparent);
+	}
+
+	.prof-mini__seg {
+		display: block;
+		min-width: 6px;
+		height: 100%;
+		border-radius: 999px;
+		background: var(--color-slate-400);
+		transition:
+			background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	:global(html.dark) .prof-mini__seg {
+		background: var(--color-slate-500);
+	}
+
+	.prof-mini__seg--selected {
+		background: var(--color-violet-600);
+	}
+
+	:global(html.dark) .prof-mini__seg--selected {
+		background: var(--color-violet-400);
+	}
+
+	.prof-mini__seg--dim {
+		opacity: 0.35;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.prof-mini,
+		.prof-mini__seg,
+		.prof-select {
+			transition: none;
+		}
+	}
+
+	.prof-toggle:hover,
+	.prof-toggle[aria-expanded='true'] {
+		background-color: color-mix(in oklab, var(--color-violet-500) 8%, transparent);
+		border-color: color-mix(in oklab, var(--color-violet-500) 18%, transparent);
+	}
+
+	:global(html.dark) .prof-toggle:hover,
+	:global(html.dark) .prof-toggle[aria-expanded='true'] {
+		background-color: color-mix(in oklab, var(--color-violet-400) 10%, transparent);
+		border-color: color-mix(in oklab, var(--color-violet-400) 22%, transparent);
+	}
+
+	.prof-toggle[aria-expanded='true'] {
+		color: var(--color-violet-600);
+	}
+
+	:global(html.dark) .prof-toggle[aria-expanded='true'] {
+		color: var(--color-violet-300);
+	}
+
+	.prof-toggle :global(.prof-toggle__chevron) {
+		transition: transform 320ms cubic-bezier(0.34, 1.4, 0.5, 1);
+	}
+
+	.prof-toggle[aria-expanded='true'] :global(.prof-toggle__chevron) {
+		transform: rotate(180deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.prof-toggle,
+		.prof-toggle :global(.prof-toggle__chevron) {
+			transition: none;
 		}
 	}
 

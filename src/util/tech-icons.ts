@@ -1,4 +1,4 @@
-import { ClaudeIcon, JavaIcon, McpServerIcon, MicrosoftIcon } from '@hugeicons/core-free-icons';
+import { ClaudeIcon, JavaIcon, McpServerIcon } from '@hugeicons/core-free-icons';
 import DropwizardIcon from '../components/icons/DropwizardIcon.svelte';
 import OpenCodeIcon from '../components/icons/OpenCodeIcon.svelte';
 import PlaywrightIcon from '../components/icons/PlaywrightIcon.svelte';
@@ -43,7 +43,6 @@ import {
 	SiGatsby,
 	SiApachekafka
 } from '@icons-pack/svelte-simple-icons';
-import { siPulumi } from 'simple-icons';
 
 export type TechIcon =
 	| { kind: 'simple'; component: any }
@@ -63,7 +62,6 @@ export const techIconMap: Record<string, TechIcon> = {
 	AWS: simple(AwsIcon),
 	'Amazon CloudWatch.': simple(AwsIcon),
 	Cloudflare: simple(SiCloudflare),
-	'Microsoft Azure': huge(MicrosoftIcon),
 	'Claude Code': huge(ClaudeIcon),
 	'Open Code': simple(OpenCodeIcon),
 	Datadog: simple(SiDatadog),

@@ -5,7 +5,7 @@
 	import AnchorButton from '../../../components/AnchorButton.svelte';
 	import TechIcon from '../../../components/TechIcon.svelte';
 	import TechBackdrop from '../../../components/TechBackdrop.svelte';
-	import LogoIcon from '../../../components/LogoIcon.svelte';
+	import TechHeader from '../../../components/TechHeader.svelte';
 	import { House, Table, ArrowUpRight } from '@lucide/svelte';
 	import PageContainer from '../../../components/PageContainer.svelte';
 
@@ -51,29 +51,12 @@
 	/>
 </svelte:head>
 
-<PageContainer class="mt-12 space-y-16">
-	<header class="w-full flex items-center gap-4">
-		<a
-			href="/"
-			aria-label="Evans Stepanov — back to home"
-			class="group inline-flex items-center justify-center h-10 w-10 shrink-0 text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-		>
-			<LogoIcon />
-		</a>
-		<nav
-			class="text-[11px] font-medium tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400 flex items-center gap-2 min-w-0"
-		>
-			<a href="/tech" class="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-				>Tech</a
-			>
-			<span class="text-slate-300 dark:text-slate-700">/</span>
-			<span class="truncate text-slate-700 dark:text-slate-300">{tech.name}</span>
-		</nav>
-	</header>
+<PageContainer class="mt-10 space-y-16">
+	<TechHeader slug={tech.name} />
 
-	<main class="w-full space-y-20">
+	<main class="w-full">
 		<section
-			class="tech-hero relative w-full rounded-2xl border border-slate-500/20 dark:border-slate-800/80 overflow-hidden"
+			class="tech-hero relative w-full rounded-2xl border border-slate-500/20 dark:border-slate-800/80 overflow-hidden mb-20"
 		>
 			<TechBackdrop tags={[tech.name]} rows={6} cols={8} size={48} />
 			<div class="relative z-10 px-6 md:px-10 py-10 md:py-14 flex flex-col gap-8">
@@ -149,7 +132,7 @@
 		</section>
 
 		{#if relatedWork.length > 0}
-			<section class="space-y-6">
+			<section class={relatedProjects.length > 0 ? 'pb-20' : ''}>
 				<div
 					use:stuckDetect
 					class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
@@ -160,7 +143,7 @@
 						Related Work
 					</h2>
 				</div>
-				<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
+				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedWork as work}
 						<GridItem item={work} type="work" tech={allTech} />
 					{/each}
@@ -169,7 +152,7 @@
 		{/if}
 
 		{#if relatedProjects.length > 0}
-			<section class="space-y-6">
+			<section>
 				<div
 					use:stuckDetect
 					class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
@@ -180,7 +163,7 @@
 						Related Projects
 					</h2>
 				</div>
-				<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
+				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedProjects as project}
 						<GridItem item={project} type="project" tech={allTech} />
 					{/each}
