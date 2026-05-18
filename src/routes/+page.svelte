@@ -101,6 +101,43 @@
 
 	let showProfChart = false;
 
+	function revealOnView(
+		node: HTMLElement,
+		options: { delay?: number; rootMargin?: string; threshold?: number } = {}
+	) {
+		const { delay = 0, rootMargin = '0px 0px 24% 0px', threshold = 0.01 } = options;
+		node.style.setProperty('--reveal-delay', `${delay}ms`);
+		node.classList.add('reveal-ready');
+
+		const show = () => {
+			node.classList.add('is-visible');
+		};
+
+		if (
+			!('IntersectionObserver' in window) ||
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			show();
+			return {};
+		}
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					show();
+					observer.disconnect();
+				}
+			},
+			{ rootMargin, threshold }
+		);
+
+		observer.observe(node);
+
+		return {
+			destroy: () => observer.disconnect()
+		};
+	}
+
 	function stuckDetect(node: HTMLElement) {
 		// Sentinel pattern: a 1px invisible marker inserted just above the
 		// sticky header. The header is stuck when the sentinel has scrolled
@@ -131,13 +168,17 @@
 
 <svelte:head>
 	<title>Evans Stepanov</title>
+	<script>
+		document.documentElement.classList.add('js');
+	</script>
 </svelte:head>
 
-<PageContainer class="space-y-16 mt-12">
+<PageContainer class="landing-page space-y-16 mt-12">
 	<header
-		class="space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col"
+		use:revealOnView={{ delay: 40, rootMargin: '0px', threshold: 0.01 }}
+		class="landing-hero reveal-ready space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col"
 	>
-		<div class="w-56 md:w-64">
+		<div class="landing-logo w-56 md:w-64">
 			<Logo />
 		</div>
 		<!-- <p class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400">
@@ -145,7 +186,7 @@
 		</p> -->
 	</header>
 	<main class="w-full">
-		<section class="space-y-6 pb-16">
+		<section use:revealOnView={{ delay: 100 }} class="landing-section reveal-ready space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
@@ -153,7 +194,7 @@
 					About
 				</h2>
 			</div>
-			<div class="space-y-4 text-slate-700 dark:text-slate-300">
+			<div class="about-copy space-y-4 text-slate-700 dark:text-slate-300">
 				<p class="leading-relaxed">
 					<ProfileDiamond />
 					I'm a
@@ -191,7 +232,7 @@
 			</div>
 		</section>
 
-		<section class="space-y-6 pb-16">
+		<section use:revealOnView={{ delay: 130 }} class="landing-section reveal-ready space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
@@ -199,10 +240,12 @@
 					Links
 				</h2>
 			</div>
-			<LinksSection links={data.links} />
+			<div class="link-list-motion">
+				<LinksSection links={data.links} />
+			</div>
 		</section>
 
-		<section class="pb-16">
+		<section use:revealOnView class="landing-section reveal-ready pb-16">
 			<div
 				use:stuckDetect
 				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
@@ -213,14 +256,14 @@
 					Work
 				</h2>
 			</div>
-			<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
 					<GridItem item={work} type="work" tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
 
-		<section class="pb-16">
+		<section use:revealOnView class="landing-section reveal-ready pb-16">
 			<div
 				use:stuckDetect
 				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
@@ -231,14 +274,14 @@
 					Projects
 				</h2>
 			</div>
-			<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
 					<GridItem item={project} type="project" {idHash} tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
 
-		<section>
+		<section use:revealOnView class="landing-section reveal-ready">
 			<div
 				use:stuckDetect
 				class="section-header sticky top-[-1px] z-20 flex items-center justify-between py-3"
@@ -315,71 +358,71 @@
 						out:fade={{ duration: 140, easing: cubicOut }}
 						class="prof-chart flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6 px-1 py-2"
 					>
-				<div
-					class="prof-grid flex-1 relative grid gap-x-2 sm:gap-x-3 gap-y-1.5"
-					style="grid-template-columns: repeat({profCounts.length}, minmax(0, 1fr));"
-				>
-					{#each profCounts as { level, count }, i}
-						{@const isSelected = selectedProf === level}
-						{@const isDimmed = selectedProf !== null && !isSelected}
-						<span
-							class="prof-num text-[10px] font-medium tabular-nums text-slate-500 dark:text-slate-400 text-center transition-opacity duration-200"
-							class:opacity-30={isDimmed}
-							style="grid-column: {i + 1}; grid-row: 1;"
+						<div
+							class="prof-grid flex-1 relative grid gap-x-2 sm:gap-x-3 gap-y-1.5"
+							style="grid-template-columns: repeat({profCounts.length}, minmax(0, 1fr));"
 						>
-							{count}
-						</span>
-						<span
-							class="prof-track relative h-10 sm:h-12 flex justify-center items-end transition-opacity duration-200"
-							class:opacity-30={isDimmed}
-							style="--bar-delay: {i * 80}ms; --bar-fill: {(count / profMax) *
-								100}%; grid-column: {i + 1}; grid-row: 2;"
+							{#each profCounts as { level, count }, i}
+								{@const isSelected = selectedProf === level}
+								{@const isDimmed = selectedProf !== null && !isSelected}
+								<span
+									class="prof-num text-[10px] font-medium tabular-nums text-slate-500 dark:text-slate-400 text-center transition-opacity duration-200"
+									class:opacity-30={isDimmed}
+									style="grid-column: {i + 1}; grid-row: 1;"
+								>
+									{count}
+								</span>
+								<span
+									class="prof-track relative h-10 sm:h-12 flex justify-center items-end transition-opacity duration-200"
+									class:opacity-30={isDimmed}
+									style="--bar-delay: {i * 80}ms; --bar-fill: {(count / profMax) *
+										100}%; grid-column: {i + 1}; grid-row: 2;"
+								>
+									<span class="prof-bar w-4 sm:w-6 rounded-xs" class:prof-bar--selected={isSelected}
+									></span>
+								</span>
+								<span
+									class="prof-label text-[10.5px] sm:text-[11px] font-medium tracking-wide uppercase text-slate-500 dark:text-slate-400 text-center truncate transition-opacity duration-200"
+									class:opacity-30={isDimmed}
+									style="grid-column: {i + 1}; grid-row: 3;"
+								>
+									{proficiencyDisplay[level]}
+								</span>
+								<button
+									type="button"
+									on:click={() => toggleProf(level)}
+									aria-pressed={isSelected}
+									aria-label="{isSelected ? 'Clear filter for' : 'Filter by'} {proficiencyDisplay[
+										level
+									]} ({count} skills)"
+									class="prof-hit rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-violet-500/60 dark:focus-visible:ring-violet-400/60 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors duration-200"
+									style="grid-column: {i + 1}; grid-row: 1 / 4;"
+								></button>
+							{/each}
+							<span
+								class="prof-mean pointer-events-none relative self-stretch"
+								style="grid-column: 1 / -1; grid-row: 2;"
+								aria-hidden="true"
+							>
+								<span
+									class="prof-mean-line absolute inset-x-0"
+									style="bottom: {(profMean / profMax) * 100}%;"
+								></span>
+							</span>
+						</div>
+						<figcaption
+							class="prof-caption shrink-0 text-center sm:text-right text-[9.5px] sm:text-[10px] font-medium tracking-[0.18em] uppercase {profIsBalanced
+								? 'text-violet-600 dark:text-violet-400'
+								: 'text-slate-500 dark:text-slate-400'}"
 						>
-							<span class="prof-bar w-4 sm:w-6 rounded-xs" class:prof-bar--selected={isSelected}
-							></span>
-						</span>
-						<span
-							class="prof-label text-[10.5px] sm:text-[11px] font-medium tracking-wide uppercase text-slate-500 dark:text-slate-400 text-center truncate transition-opacity duration-200"
-							class:opacity-30={isDimmed}
-							style="grid-column: {i + 1}; grid-row: 3;"
-						>
-							{proficiencyDisplay[level]}
-						</span>
-						<button
-							type="button"
-							on:click={() => toggleProf(level)}
-							aria-pressed={isSelected}
-							aria-label="{isSelected ? 'Clear filter for' : 'Filter by'} {proficiencyDisplay[
-								level
-							]} ({count} skills)"
-							class="prof-hit rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-violet-500/60 dark:focus-visible:ring-violet-400/60 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors duration-200"
-							style="grid-column: {i + 1}; grid-row: 1 / 4;"
-						></button>
-					{/each}
-					<span
-						class="prof-mean pointer-events-none relative self-stretch"
-						style="grid-column: 1 / -1; grid-row: 2;"
-						aria-hidden="true"
-					>
-						<span
-							class="prof-mean-line absolute inset-x-0"
-							style="bottom: {(profMean / profMax) * 100}%;"
-						></span>
-					</span>
-				</div>
-				<figcaption
-					class="prof-caption shrink-0 text-center sm:text-right text-[9.5px] sm:text-[10px] font-medium tracking-[0.18em] uppercase {profIsBalanced
-						? 'text-violet-600 dark:text-violet-400'
-						: 'text-slate-500 dark:text-slate-400'}"
-				>
-					<span class="sm:block">{profIsBalanced ? 'Balanced' : 'Skewed'}</span>
-					<span
-						class="text-slate-400 dark:text-slate-500 normal-case tracking-normal sm:block sm:mt-0.5"
-					>
-						<span class="sm:hidden"> · </span>across {data.tech.length} skills
-					</span>
-				</figcaption>
-			</figure>
+							<span class="sm:block">{profIsBalanced ? 'Balanced' : 'Skewed'}</span>
+							<span
+								class="text-slate-400 dark:text-slate-500 normal-case tracking-normal sm:block sm:mt-0.5"
+							>
+								<span class="sm:hidden"> · </span>across {data.tech.length} skills
+							</span>
+						</figcaption>
+					</figure>
 				</div>
 			{/if}
 			<div class="tech-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
@@ -477,7 +520,7 @@
 			</div>
 		</section>
 	</main>
-	<footer class="mt-10">
+	<footer use:revealOnView class="landing-footer reveal-ready mt-10">
 		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">
 			<span class="italic">“I have not failed. I've just found 10,000 ways that won't work.”</span> ―
 			Thomas A. Edison
@@ -486,6 +529,164 @@
 </PageContainer>
 
 <style>
+	.landing-logo {
+		position: relative;
+		overflow: hidden;
+		border-radius: 0.125rem;
+		transform-origin: 50% 58%;
+	}
+
+	:global(html.js) .landing-hero:global(.reveal-ready):not(:global(.is-visible)) .landing-logo {
+		opacity: 0;
+		filter: blur(8px);
+		transform: translateY(10px) scale(0.97);
+	}
+
+	.landing-hero:global(.is-visible) .landing-logo {
+		animation: landing-logo-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+		animation-delay: var(--reveal-delay, 0ms);
+	}
+
+	:global(html.js) .landing-section:global(.reveal-ready):not(:global(.is-visible)) > :first-child,
+	:global(html.js) .landing-section:global(.reveal-ready):not(:global(.is-visible)) .about-copy > p,
+	:global(html.js)
+		.landing-section:global(.reveal-ready):not(:global(.is-visible))
+		.link-list-motion
+		:global(li),
+	:global(html.js)
+		.landing-section:global(.reveal-ready):not(:global(.is-visible))
+		.landing-grid
+		> :global(.grid-card),
+	:global(html.js)
+		.landing-section:global(.reveal-ready):not(:global(.is-visible))
+		.tech-grid
+		.tech-group-card,
+	:global(html.js) .landing-footer:global(.reveal-ready):not(:global(.is-visible)) > * {
+		opacity: 0;
+		filter: blur(6px);
+		transform: translateY(14px);
+	}
+
+	:global(html.js)
+		.landing-section:global(.reveal-ready):not(:global(.is-visible))
+		.tech-grid
+		.tech-group-card {
+		animation: none;
+	}
+
+	.landing-section:global(.is-visible) > :first-child {
+		animation: landing-heading-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: var(--reveal-delay, 0ms);
+	}
+
+	.landing-section:global(.is-visible) .about-copy > p,
+	.landing-section:global(.is-visible) .link-list-motion :global(li),
+	.landing-section:global(.is-visible) .landing-grid > :global(.grid-card),
+	.landing-section:global(.is-visible) .tech-grid .tech-group-card,
+	.landing-footer:global(.is-visible) > * {
+		animation: landing-content-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+		animation-delay: calc(var(--reveal-delay, 0ms) + var(--item-delay, 40ms));
+	}
+
+	.about-copy > p:nth-child(1),
+	.link-list-motion :global(li:nth-child(1)),
+	.landing-grid > :global(.grid-card:nth-child(1)) {
+		--item-delay: 40ms;
+	}
+
+	.about-copy > p:nth-child(2),
+	.link-list-motion :global(li:nth-child(2)),
+	.landing-grid > :global(.grid-card:nth-child(2)) {
+		--item-delay: 80ms;
+	}
+
+	.about-copy > p:nth-child(3),
+	.link-list-motion :global(li:nth-child(3)),
+	.landing-grid > :global(.grid-card:nth-child(3)) {
+		--item-delay: 120ms;
+	}
+
+	.link-list-motion :global(li:nth-child(4)),
+	.landing-grid > :global(.grid-card:nth-child(4)) {
+		--item-delay: 160ms;
+	}
+
+	.link-list-motion :global(li:nth-child(5)),
+	.landing-grid > :global(.grid-card:nth-child(5)) {
+		--item-delay: 200ms;
+	}
+
+	.link-list-motion :global(li:nth-child(6)),
+	.landing-grid > :global(.grid-card:nth-child(6)) {
+		--item-delay: 240ms;
+	}
+
+	.landing-grid > :global(.grid-card:nth-child(7)) {
+		--item-delay: 280ms;
+	}
+
+	.landing-grid > :global(.grid-card:nth-child(8)) {
+		--item-delay: 320ms;
+	}
+
+	.landing-grid > :global(.grid-card:nth-child(9)) {
+		--item-delay: 360ms;
+	}
+
+	.landing-grid > :global(.grid-card:nth-child(10)) {
+		--item-delay: 400ms;
+	}
+
+	.landing-grid > :global(.grid-card:nth-child(11)) {
+		--item-delay: 440ms;
+	}
+
+	.landing-grid > :global(.grid-card:nth-child(12)) {
+		--item-delay: 480ms;
+	}
+
+	@keyframes landing-logo-in {
+		0% {
+			opacity: 0;
+			filter: blur(8px);
+			transform: translateY(10px) scale(0.97);
+		}
+		60% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 1;
+			filter: blur(0);
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes landing-heading-in {
+		0% {
+			opacity: 0;
+			filter: blur(5px);
+			transform: translateY(10px);
+		}
+		100% {
+			opacity: 1;
+			filter: blur(0);
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes landing-content-in {
+		0% {
+			opacity: 0;
+			filter: blur(6px);
+			transform: translateY(14px);
+		}
+		100% {
+			opacity: 1;
+			filter: blur(0);
+			transform: translateY(0);
+		}
+	}
+
 	.section-header {
 		isolation: isolate;
 		width: 100%;
@@ -534,6 +735,19 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.landing-logo,
+		.landing-section > :first-child,
+		.about-copy > p,
+		.link-list-motion :global(li),
+		.landing-grid > :global(.grid-card),
+		.tech-grid .tech-group-card,
+		.landing-footer > * {
+			animation: none !important;
+			filter: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+		}
+
 		.section-header::before,
 		.section-title {
 			transition: none;
