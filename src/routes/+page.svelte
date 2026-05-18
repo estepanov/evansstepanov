@@ -265,19 +265,27 @@
 						/>
 					</button>
 					<div class="prof-mini inline-flex items-center gap-2.5">
-						<div
-							class="prof-mini__bar"
-							aria-hidden="true"
-							title="{data.tech.length} skills across {profCounts.length} levels"
-						>
+						<div class="prof-mini__bar" role="group" aria-label="Filter by proficiency">
 							{#each profCounts as { level, count }}
 								{@const isSelected = selectedProf === level}
-								<span
+								<button
+									type="button"
+									on:click={() => toggleProf(level)}
+									aria-pressed={isSelected}
+									aria-label="{isSelected ? 'Clear filter for' : 'Filter by'} {proficiencyDisplay[
+										level
+									]} ({count} skills)"
 									class="prof-mini__seg"
 									class:prof-mini__seg--selected={isSelected}
 									class:prof-mini__seg--dim={selectedProf !== null && !isSelected}
 									style="flex: {count};"
-								></span>
+								>
+									<span class="prof-mini__seg-fill" aria-hidden="true"></span>
+									<span class="prof-mini__tip" role="tooltip">
+										<span class="prof-mini__tip-label">{proficiencyDisplay[level]}</span>
+										<span class="prof-mini__tip-count">{count}</span>
+									</span>
+								</button>
 							{/each}
 						</div>
 						<Select
@@ -627,9 +635,17 @@
 		position: absolute;
 		inset: 0;
 		justify-content: flex-end;
+		padding-right: 0.25rem;
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	/* Lock the select trigger to a stable width so swapping options
+	 * (All ↔ Intermediate ↔ Expert …) doesn't reflow the bar next to it. */
+	.prof-mini :global(.select__trigger) {
+		min-width: 8.5rem;
+		justify-content: space-between;
 	}
 
 	.section-header:global(.is-stuck) .prof-toggle {
@@ -643,14 +659,15 @@
 	}
 
 	.prof-mini__bar {
+		position: relative;
 		display: inline-flex;
-		width: clamp(72px, 16vw, 128px);
-		height: 7px;
+		flex: 0 0 auto;
+		width: clamp(88px, 18vw, 144px);
+		height: 12px;
 		border-radius: 999px;
-		overflow: hidden;
 		background: color-mix(in oklab, var(--color-slate-300) 60%, transparent);
-		gap: 1.5px;
-		padding: 1px;
+		gap: 3px;
+		padding: 3px;
 		box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-slate-300) 40%, transparent);
 	}
 
@@ -659,38 +676,141 @@
 		box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-slate-700) 60%, transparent);
 	}
 
+	/* Button is the unscaled hit area + positioning context for the tooltip.
+	 * The visible bar is the inner __seg-fill, which carries the scale on
+	 * hover/selected — keeping the tooltip outside the transformed element
+	 * so it doesn't inherit the vertical stretch. */
 	.prof-mini__seg {
+		position: relative;
 		display: block;
+		flex-shrink: 1;
 		min-width: 6px;
+		height: 100%;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.prof-mini__seg:focus-visible {
+		outline: none;
+	}
+
+	.prof-mini__seg:focus-visible .prof-mini__seg-fill {
+		box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-violet-500) 50%, transparent);
+	}
+
+	.prof-mini__seg-fill {
+		display: block;
+		width: 100%;
 		height: 100%;
 		border-radius: 999px;
 		background: var(--color-slate-400);
+		transform-origin: center;
 		transition:
 			background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-			opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+			opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 200ms cubic-bezier(0.34, 1.4, 0.5, 1);
 	}
 
-	:global(html.dark) .prof-mini__seg {
+	:global(html.dark) .prof-mini__seg-fill {
 		background: var(--color-slate-500);
 	}
 
-	.prof-mini__seg--selected {
-		background: var(--color-violet-600);
+	.prof-mini__seg:hover .prof-mini__seg-fill {
+		background: var(--color-violet-500);
+		transform: scaleY(1.4);
 	}
 
-	:global(html.dark) .prof-mini__seg--selected {
+	:global(html.dark) .prof-mini__seg:hover .prof-mini__seg-fill {
 		background: var(--color-violet-400);
 	}
 
-	.prof-mini__seg--dim {
-		opacity: 0.35;
+	.prof-mini__seg--selected .prof-mini__seg-fill,
+	.prof-mini__seg--selected:hover .prof-mini__seg-fill {
+		background: var(--color-violet-600);
+		transform: scaleY(1.25);
+	}
+
+	:global(html.dark) .prof-mini__seg--selected .prof-mini__seg-fill,
+	:global(html.dark) .prof-mini__seg--selected:hover .prof-mini__seg-fill {
+		background: var(--color-violet-400);
+	}
+
+	.prof-mini__seg--dim .prof-mini__seg-fill {
+		opacity: 0.4;
+	}
+
+	.prof-mini__seg--dim:hover .prof-mini__seg-fill {
+		opacity: 1;
+	}
+
+	/* Tooltip — matches the theme-toggle's mode-label aesthetic: glassy pill
+	 * with backdrop blur, uppercase tracked text, surface tone matches page
+	 * (light on light, dark on dark — not inverted). */
+	.prof-mini__tip {
+		position: absolute;
+		top: calc(100% + 8px);
+		left: 50%;
+		transform: translate(-50%, -4px);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.32rem 0.7rem;
+		border-radius: 9999px;
+		background: rgba(255, 255, 255, 0.78);
+		-webkit-backdrop-filter: blur(12px) saturate(160%);
+		backdrop-filter: blur(12px) saturate(160%);
+		border: 1px solid rgba(0, 0, 0, 0.06);
+		color: #1f2937;
+		font-family: 'Albert Sans', sans-serif;
+		font-size: 0.68rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+		pointer-events: none;
+		opacity: 0;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.05),
+			0 8px 22px -14px rgba(0, 0, 0, 0.25);
+		transition:
+			opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+		z-index: 30;
+	}
+
+	:global(html.dark) .prof-mini__tip {
+		background: rgba(17, 17, 17, 0.72);
+		border-color: rgba(255, 255, 255, 0.08);
+		color: #f3f4f6;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.4),
+			0 10px 26px -14px rgba(0, 0, 0, 0.7);
+	}
+
+	.prof-mini__tip-count {
+		opacity: 0.55;
+		letter-spacing: 0.08em;
+	}
+
+	.prof-mini__seg:hover .prof-mini__tip,
+	.prof-mini__seg:focus-visible .prof-mini__tip {
+		opacity: 1;
+		transform: translate(-50%, 0);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.prof-mini,
-		.prof-mini__seg,
-		.prof-select {
+		.prof-mini__seg-fill,
+		.prof-mini__tip {
 			transition: none;
+		}
+		.prof-mini__seg:hover .prof-mini__seg-fill,
+		.prof-mini__seg--selected .prof-mini__seg-fill {
+			transform: none;
 		}
 	}
 
