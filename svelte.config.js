@@ -16,7 +16,7 @@ const config = {
             // these options are set automatically — see below
             pages: 'build',
             assets: 'build',
-            precompress: false,
+            precompress: true,
             strict: true
         })
 	}

@@ -1,6 +1,4 @@
-import { Client } from '@notionhq/client';
 import {
-	NOTION_TOKEN,
 	LANDING_LINKS_NOTION_DB_ID,
 	PROJECTS_NOTION_DB_ID,
 	WORK_NOTION_DB_ID,
@@ -11,10 +9,7 @@ import { type Work } from '../data/work';
 import { type Project } from '../data/projects';
 import { formatNotionFiles } from '../util/formate-notion-files';
 import { normalizeExternalLink, type ExternalLink } from '../util/links';
-
-const notion = new Client({
-	auth: NOTION_TOKEN
-});
+import { queryNotion } from '../util/notion';
 
 interface LoadResults {
 	links: ExternalLink[];
@@ -24,18 +19,12 @@ interface LoadResults {
 }
 
 export async function load(): Promise<LoadResults> {
-	const links = await notion.databases.query({
-		database_id: LANDING_LINKS_NOTION_DB_ID as string
-	});
-	const projects = await notion.databases.query({
-		database_id: PROJECTS_NOTION_DB_ID as string
-	});
-	const work = await notion.databases.query({
-		database_id: WORK_NOTION_DB_ID as string
-	});
-	const tech = await notion.databases.query({
-		database_id: TECH_NOTION_DB_ID as string
-	});
+	const [links, projects, work, tech] = await Promise.all([
+		queryNotion({ database_id: LANDING_LINKS_NOTION_DB_ID as string }),
+		queryNotion({ database_id: PROJECTS_NOTION_DB_ID as string }),
+		queryNotion({ database_id: WORK_NOTION_DB_ID as string }),
+		queryNotion({ database_id: TECH_NOTION_DB_ID as string })
+	]);
 	const techIdToName = new Map<string, string>();
 	for (const page of tech.results) {
 		if ('properties' in page) {

@@ -1,4 +1,4 @@
-import { notion } from '../../util/notion';
+import { queryNotion } from '../../util/notion';
 import { BOOKMARKS_NOTION_DB_ID } from '$env/static/private';
 
 export interface Link {
@@ -17,7 +17,7 @@ interface Tag {
 }
 
 export async function load() {
-    const links = await notion.databases.query({
+    const links = await queryNotion({
         database_id: BOOKMARKS_NOTION_DB_ID as string
     })
 

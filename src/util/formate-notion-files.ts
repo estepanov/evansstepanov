@@ -1,4 +1,5 @@
 import { getFileExtension, hashFileName } from "./file-names";
+import { WEBP_COMPATIBLE_EXTENSIONS } from "./image-constants";
 
 type NotionFile = {
     name: string,
@@ -16,6 +17,9 @@ export const formatNotionFiles = (files: NotionFile[]): string[] => {
     return files.map(item => {
         const fileName = hashFileName(item.file.url);
         const fileExtension = getFileExtension(item.file.url);
-        return `_dld/static/${fileName}.${fileExtension}`;
+        const ext = WEBP_COMPATIBLE_EXTENSIONS.includes(fileExtension?.toLowerCase() as any)
+            ? 'webp'
+            : fileExtension ?? '';
+        return `_dld/static/${fileName}${ext ? '.' + ext : ''}`;
     });
 }

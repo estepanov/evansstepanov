@@ -1,6 +1,4 @@
-import { Client } from '@notionhq/client';
 import {
-	NOTION_TOKEN,
 	TECH_NOTION_DB_ID,
 	PROJECTS_NOTION_DB_ID,
 	WORK_NOTION_DB_ID
@@ -9,11 +7,8 @@ import { TechProficiencyWeight, type Tech } from '../../../data/tech';
 import { type Work } from '../../../data/work';
 import { type Project } from '../../../data/projects';
 import { formatNotionFiles } from '../../../util/formate-notion-files';
+import { queryNotion } from '../../../util/notion';
 import { error } from '@sveltejs/kit';
-
-const notion = new Client({
-	auth: NOTION_TOKEN
-});
 
 export async function load({
 	params
@@ -21,7 +16,7 @@ export async function load({
 	const { slug } = params;
 
 	// Query the tech database to find the tech item by name
-	const techResults = await notion.databases.query({
+	const techResults = await queryNotion({
 		database_id: TECH_NOTION_DB_ID as string,
 		filter: {
 			property: 'Name',
@@ -41,9 +36,18 @@ export async function load({
 	}
 	const techId = techPage.id;
 
-	const allTech = await notion.databases.query({
-		database_id: TECH_NOTION_DB_ID as string
-	});
+	const [allTech, relatedProjectsResults, relatedWorkResults] = await Promise.all([
+		queryNotion({ database_id: TECH_NOTION_DB_ID as string }),
+		queryNotion({
+			database_id: PROJECTS_NOTION_DB_ID as string,
+			filter: { property: 'Tech Tags', relation: { contains: techId } }
+		}),
+		queryNotion({
+			database_id: WORK_NOTION_DB_ID as string,
+			filter: { property: 'Tech Tags', relation: { contains: techId } }
+		})
+	]);
+
 	const techIdToName = new Map<string, string>();
 	const allTechItems = allTech.results
 		.filter((page): page is any => 'properties' in page)
@@ -81,17 +85,6 @@ export async function load({
 		url: (techPage.properties.URL as any).url ?? undefined
 	};
 
-	// Fetch related projects that have this tech tag
-	const relatedProjectsResults = await notion.databases.query({
-		database_id: PROJECTS_NOTION_DB_ID as string,
-		filter: {
-			property: 'Tech Tags',
-			relation: {
-				contains: techId
-			}
-		}
-	});
-
 	const relatedProjects: Project[] = relatedProjectsResults.results
 		.filter((page): page is any => 'properties' in page)
 		.map((page) => ({
@@ -110,17 +103,6 @@ export async function load({
 				? new Date((page.properties.Dates as any).date.end)
 				: undefined
 		}));
-
-	// Fetch related work that has this tech tag
-	const relatedWorkResults = await notion.databases.query({
-		database_id: WORK_NOTION_DB_ID as string,
-		filter: {
-			property: 'Tech Tags',
-			relation: {
-				contains: techId
-			}
-		}
-	});
 
 	const relatedWork: Work[] = relatedWorkResults.results
 		.filter((page): page is any => 'properties' in page)
