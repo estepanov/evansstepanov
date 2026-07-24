@@ -68,10 +68,26 @@
 	// grid at the very bottom of the page. Load them off the critical initial
 	// chunk after mount so they don't delay hydration; tiles show a letter
 	// fallback until the module resolves.
+	//
+	// Accepted trade-off: because this is a fully prerendered static site,
+	// moving the icon module to a dynamic import means the prerendered HTML
+	// (and no-JS clients / the pre-hydration paint) shows the first-letter
+	// fallback instead of the brand icons for this bottom-of-page grid. This is
+	// acceptable because the icons are purely decorative — the tech name is
+	// rendered as adjacent text and TechIcon has no aria-label, the fallback box
+	// is the same 22×22px as the icon so the swap causes no layout shift, and
+	// the grid is below the fold so JS users almost always have the icons before
+	// they scroll to it.
 	let techIcons: Record<string, TechIconT> | null = null;
-	onMount(async () => {
-		const mod = await import('../util/tech-icons');
-		techIcons = mod.techIconMap;
+	onMount(() => {
+		import('../util/tech-icons')
+			.then((mod) => {
+				techIcons = mod.techIconMap;
+			})
+			.catch((err) => {
+				// Chunk failed to load — degrade to the letter fallback intentionally.
+				console.error('Failed to load tech icons; using letter fallback.', err);
+			});
 	});
 
 	$: techTypes = (() => {
@@ -242,7 +258,7 @@
 			</div>
 		</section>
 
-		<section use:revealOnView={{ delay: 130 }} class="landing-section reveal-ready space-y-6 pb-16">
+		<section class="landing-section reveal-on-load space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
@@ -557,7 +573,6 @@
 	}
 
 	:global(html.js) .landing-section:global(.reveal-ready):not(:global(.is-visible)) > :first-child,
-	:global(html.js) .landing-section:global(.reveal-ready):not(:global(.is-visible)) .about-copy > p,
 	:global(html.js)
 		.landing-section:global(.reveal-ready):not(:global(.is-visible))
 		.link-list-motion
@@ -606,7 +621,8 @@
 		animation-delay: var(--reveal-delay, 0ms);
 	}
 
-	.landing-section:global(.reveal-on-load) .about-copy > p {
+	.landing-section:global(.reveal-on-load) .about-copy > p,
+	.landing-section:global(.reveal-on-load) .link-list-motion :global(li) {
 		animation: landing-content-slide 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
 		animation-delay: calc(var(--reveal-delay, 0ms) + var(--item-delay, 40ms));
 	}
