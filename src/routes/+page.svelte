@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Logo from '../components/Logo.svelte';
 	import { idHash } from '../util/id-hash-link-format';
-	import type { TechIcon as TechIconT } from '../util/tech-icons';
+	import { getTechIcon } from '../util/tech-icons';
 	import TechIcon from '../components/TechIcon.svelte';
 	import {
 		MousePointer,
@@ -63,32 +62,6 @@
 	import Select from '../components/Select.svelte';
 
 	export let data;
-
-	// Tech-category icons (~40 brand SVGs, ~87KB) are only needed by the Tech
-	// grid at the very bottom of the page. Load them off the critical initial
-	// chunk after mount so they don't delay hydration; tiles show a letter
-	// fallback until the module resolves.
-	//
-	// Accepted trade-off: because this is a fully prerendered static site,
-	// moving the icon module to a dynamic import means the prerendered HTML
-	// (and no-JS clients / the pre-hydration paint) shows the first-letter
-	// fallback instead of the brand icons for this bottom-of-page grid. This is
-	// acceptable because the icons are purely decorative — the tech name is
-	// rendered as adjacent text and TechIcon has no aria-label, the fallback box
-	// is the same 22×22px as the icon so the swap causes no layout shift, and
-	// the grid is below the fold so JS users almost always have the icons before
-	// they scroll to it.
-	let techIcons: Record<string, TechIconT> | null = null;
-	onMount(() => {
-		import('../util/tech-icons')
-			.then((mod) => {
-				techIcons = mod.techIconMap;
-			})
-			.catch((err) => {
-				// Chunk failed to load — degrade to the letter fallback intentionally.
-				console.error('Failed to load tech icons; using letter fallback.', err);
-			});
-	});
 
 	$: techTypes = (() => {
 		const present = new Set<string>(
@@ -493,7 +466,7 @@
 
 							<ul class="grid grid-cols-1 sm:grid-cols-2 gap-1 -mx-2 -mb-2">
 								{#each techItems as tech, i}
-									{@const techIcon = techIcons?.[tech.name] ?? null}
+									{@const techIcon = getTechIcon(tech.name)}
 									{@const tileDimmed = selectedProf !== null && tech.proficiency !== selectedProf}
 									<li class="contents">
 										<a
