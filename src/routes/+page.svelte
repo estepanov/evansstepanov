@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Logo from '../components/Logo.svelte';
 	import { idHash } from '../util/id-hash-link-format';
-	import { getTechIcon } from '../util/tech-icons';
+	import type { TechIcon as TechIconT } from '../util/tech-icons';
 	import TechIcon from '../components/TechIcon.svelte';
 	import {
 		MousePointer,
@@ -62,6 +63,16 @@
 	import Select from '../components/Select.svelte';
 
 	export let data;
+
+	// Tech-category icons (~40 brand SVGs, ~87KB) are only needed by the Tech
+	// grid at the very bottom of the page. Load them off the critical initial
+	// chunk after mount so they don't delay hydration; tiles show a letter
+	// fallback until the module resolves.
+	let techIcons: Record<string, TechIconT> | null = null;
+	onMount(async () => {
+		const mod = await import('../util/tech-icons');
+		techIcons = mod.techIconMap;
+	});
 
 	$: techTypes = (() => {
 		const present = new Set<string>(
@@ -175,8 +186,7 @@
 
 <PageContainer class="landing-page space-y-16 mt-12">
 	<header
-		use:revealOnView={{ delay: 40, rootMargin: '0px', threshold: 0.01 }}
-		class="landing-hero reveal-ready space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col"
+		class="landing-hero reveal-on-load space-y-5 text-slate-900 dark:text-slate-100 flex justify-center items-center flex-col"
 	>
 		<div class="landing-logo w-56 md:w-64">
 			<Logo />
@@ -186,7 +196,7 @@
 		</p> -->
 	</header>
 	<main class="w-full">
-		<section use:revealOnView={{ delay: 100 }} class="landing-section reveal-ready space-y-6 pb-16">
+		<section class="landing-section reveal-on-load space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
@@ -467,7 +477,7 @@
 
 							<ul class="grid grid-cols-1 sm:grid-cols-2 gap-1 -mx-2 -mb-2">
 								{#each techItems as tech, i}
-									{@const techIcon = getTechIcon(tech.name)}
+									{@const techIcon = techIcons?.[tech.name] ?? null}
 									{@const tileDimmed = selectedProf !== null && tech.proficiency !== selectedProf}
 									<li class="contents">
 										<a
@@ -536,15 +546,14 @@
 		transform-origin: 50% 58%;
 	}
 
-	:global(html.js) .landing-hero:global(.reveal-ready):not(:global(.is-visible)) .landing-logo {
-		opacity: 0;
-		filter: blur(8px);
-		transform: translateY(10px) scale(0.97);
-	}
-
-	.landing-hero:global(.is-visible) .landing-logo {
+	/* Hero is above the fold, so it plays its entrance on load via pure CSS
+	 * rather than waiting for JS hydration + an IntersectionObserver. The `both`
+	 * fill-mode applies the 0% keyframe (hidden/blurred) during the delay, so no
+	 * separate hidden-state rule is needed. This lets the LCP element paint as
+	 * soon as the render-blocking CSS arrives instead of after the JS bundle. */
+	:global(html.js) .landing-hero:global(.reveal-on-load) .landing-logo {
 		animation: landing-logo-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-		animation-delay: var(--reveal-delay, 0ms);
+		animation-delay: 40ms;
 	}
 
 	:global(html.js) .landing-section:global(.reveal-ready):not(:global(.is-visible)) > :first-child,
@@ -563,7 +572,6 @@
 		.tech-group-card,
 	:global(html.js) .landing-footer:global(.reveal-ready):not(:global(.is-visible)) > * {
 		opacity: 0;
-		filter: blur(6px);
 		transform: translateY(14px);
 	}
 
@@ -574,6 +582,7 @@
 		animation: none;
 	}
 
+	/* Below-the-fold sections reveal on scroll (JS adds .is-visible): fade + slide. */
 	.landing-section:global(.is-visible) > :first-child {
 		animation: landing-heading-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: var(--reveal-delay, 0ms);
@@ -585,6 +594,20 @@
 	.landing-section:global(.is-visible) .tech-grid .tech-group-card,
 	.landing-footer:global(.is-visible) > * {
 		animation: landing-content-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+		animation-delay: calc(var(--reveal-delay, 0ms) + var(--item-delay, 40ms));
+	}
+
+	/* Above-the-fold (hero heading + About copy) reveals on load. This text holds
+	 * the LCP element, so it slides only and stays at opacity 1 — the element is
+	 * paintable at first paint, keeping LCP ≈ FCP instead of waiting out a fade
+	 * that also races hydration. Below-the-fold keeps the richer fade above. */
+	.landing-section:global(.reveal-on-load) > :first-child {
+		animation: landing-heading-slide 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: var(--reveal-delay, 0ms);
+	}
+
+	.landing-section:global(.reveal-on-load) .about-copy > p {
+		animation: landing-content-slide 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
 		animation-delay: calc(var(--reveal-delay, 0ms) + var(--item-delay, 40ms));
 	}
 
@@ -661,15 +684,17 @@
 		}
 	}
 
+	/* Heading/content reveals run on many elements at once (up to a dozen grid
+	 * cards + list items staggering together). Animating filter:blur() there
+	 * forces a full repaint per frame per element; opacity + transform stay on
+	 * the compositor. The blur-in look is kept only on the single hero logo. */
 	@keyframes landing-heading-in {
 		0% {
 			opacity: 0;
-			filter: blur(5px);
 			transform: translateY(10px);
 		}
 		100% {
 			opacity: 1;
-			filter: blur(0);
 			transform: translateY(0);
 		}
 	}
@@ -677,12 +702,30 @@
 	@keyframes landing-content-in {
 		0% {
 			opacity: 0;
-			filter: blur(6px);
 			transform: translateY(14px);
 		}
 		100% {
 			opacity: 1;
-			filter: blur(0);
+			transform: translateY(0);
+		}
+	}
+
+	/* Slide-only variants for above-the-fold reveals (opacity stays 1 so the LCP
+	 * text is painted immediately). */
+	@keyframes landing-heading-slide {
+		0% {
+			transform: translateY(10px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes landing-content-slide {
+		0% {
+			transform: translateY(14px);
+		}
+		100% {
 			transform: translateY(0);
 		}
 	}
