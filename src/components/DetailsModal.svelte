@@ -77,31 +77,38 @@
 		}, EXIT_MS);
 	}
 
+	/* Scroll lock lives on <html>, NOT <body>. Locking body turns it into its own
+	 * scroll container at scrollTop 0, which makes `position: sticky` section
+	 * headers re-resolve against an unscrolled box and jump off-screen while the
+	 * modal is open. Locking documentElement keeps the document scroll offset, so
+	 * stuck headers stay put and remain visible behind the modal. */
+	function lockScroll() {
+		const html = document.documentElement;
+		if (html.dataset.prevOverflow !== undefined) return;
+		const scrollbarWidth = window.innerWidth - html.clientWidth;
+		html.dataset.prevOverflow = html.style.overflow;
+		html.dataset.prevPaddingRight = html.style.paddingRight;
+		html.style.overflow = 'hidden';
+		if (scrollbarWidth > 0) html.style.paddingRight = `${scrollbarWidth}px`;
+	}
+
+	function unlockScroll() {
+		const html = document.documentElement;
+		if (html.dataset.prevOverflow === undefined) return;
+		html.style.overflow = html.dataset.prevOverflow;
+		html.style.paddingRight = html.dataset.prevPaddingRight ?? '';
+		delete html.dataset.prevOverflow;
+		delete html.dataset.prevPaddingRight;
+	}
+
 	$: if (typeof document !== 'undefined') {
-		const body = document.body;
-		if (open) {
-			const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-			body.dataset.prevOverflow = body.style.overflow;
-			body.dataset.prevPaddingRight = body.style.paddingRight;
-			body.style.overflow = 'hidden';
-			if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
-		} else if (body.dataset.prevOverflow !== undefined) {
-			body.style.overflow = body.dataset.prevOverflow;
-			body.style.paddingRight = body.dataset.prevPaddingRight ?? '';
-			delete body.dataset.prevOverflow;
-			delete body.dataset.prevPaddingRight;
-		}
+		if (open) lockScroll();
+		else unlockScroll();
 	}
 
 	onDestroy(() => {
 		if (typeof document === 'undefined') return;
-		const body = document.body;
-		if (body.dataset.prevOverflow !== undefined) {
-			body.style.overflow = body.dataset.prevOverflow;
-			body.style.paddingRight = body.dataset.prevPaddingRight ?? '';
-			delete body.dataset.prevOverflow;
-			delete body.dataset.prevPaddingRight;
-		}
+		unlockScroll();
 	});
 
 	function handleBackdropClick(e: MouseEvent) {
