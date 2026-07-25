@@ -7,7 +7,7 @@
 	import DetailsModal from '../../../components/DetailsModal.svelte';
 	import StickySectionHeader from '../../../components/StickySectionHeader.svelte';
 	import PageContainer from '../../../components/PageContainer.svelte';
-	import { getFormattedDate } from '../../../util/dates';
+	import { formatDateRange } from '../../../util/dates';
 	import type { Work } from '../../../data/work';
 	import { House, Table, ArrowUpRight } from '@lucide/svelte';
 
@@ -17,18 +17,7 @@
 
 	let openRole: Work | null = null;
 
-	function formatRange(startDate?: Date, endDate?: Date, isCurrent?: boolean): string | null {
-		if (!startDate) return null;
-		const start = getFormattedDate(new Date(startDate));
-		if (isCurrent || !endDate) return `${start} — Present`;
-		return `${start} — ${getFormattedDate(new Date(endDate))}`;
-	}
-
-	function roleRange(role: Work): string | null {
-		return formatRange(role.startDate, role.endDate, role.isCurrent);
-	}
-
-	const tenure = formatRange(company.startDate, company.endDate, company.isCurrent);
+	const tenure = formatDateRange(company.startDate, company.endDate, company.isCurrent);
 </script>
 
 <svelte:head>
@@ -104,7 +93,7 @@
 				</StickySectionHeader>
 				<ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
 					{#each company.roles as role}
-						{@const range = roleRange(role)}
+						{@const range = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 						<li class="py-6 first:pt-0 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
 							<div class="min-w-0 flex-1 space-y-2">
 								<h3

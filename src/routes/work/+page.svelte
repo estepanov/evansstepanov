@@ -5,19 +5,11 @@
 	import PageContainer from '../../components/PageContainer.svelte';
 	import TechHeader from '../../components/TechHeader.svelte';
 	import StatusIndicator from '../../components/StatusIndicator.svelte';
-	import { getFormattedDate } from '../../util/dates';
+	import { formatDateRange } from '../../util/dates';
 
 	export let data;
 
 	const { companies } = data;
-
-	function formatRange(startDate?: Date, endDate?: Date, isCurrent?: boolean): string | null {
-		if (!startDate) return null;
-		const start = getFormattedDate(new Date(startDate));
-		if (isCurrent) return `${start} — Present`;
-		if (endDate) return `${start} — ${getFormattedDate(new Date(endDate))}`;
-		return start;
-	}
 </script>
 
 <PageContainer class="space-y-12 mt-10">
@@ -41,7 +33,7 @@
 
 		<ol class="relative border-l border-slate-200 dark:border-slate-800 ml-2 pl-8">
 			{#each companies as company}
-				{@const range = formatRange(company.startDate, company.endDate, company.isCurrent)}
+				{@const range = formatDateRange(company.startDate, company.endDate, company.isCurrent)}
 				{@const latestTitle = company.roles[0]?.title}
 				<li class="relative pb-12 last:pb-0">
 					<span
