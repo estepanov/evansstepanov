@@ -61,15 +61,15 @@ Information architecture is unchanged — this cleanup is purely visual.
 
 All in `src/routes/+page.svelte` unless noted.
 
-| Removed | Current lines |
-|---|---|
-| Proficiency chart — bars, mean line, caption, `slide`/`fade` transitions | ~348–425 |
-| Sticky-swap mini segmented filter, `Select` dropdown, `prof-toggle` | ~292–346 |
-| State: `showProfChart`, `selectedProf`, `toggleProf`, `profCounts`, `profMax`, `profMean`, `profSpread`, `profIsBalanced`, `proficiencyDisplay`, `proficiencyTone` | 48–101 |
-| `proficiencyLevel` — dead code, referenced nowhere | 48–53 |
-| `categoryMeta` and its Lucide imports: `Cpu`, `Code2`, `Boxes`, `Library`, `Database`, `Wrench`, `Sparkles`, `Cloud`, `BarChart3`, `Tag`, `ChevronDown` | 8–34 |
-| CSS: all `.prof-*`, `.tech-group-card`, `.tech-tile-*`, `.tech-card-*`, `.tile-dimmed`, `@keyframes prof-bar-in`, `@keyframes tech-card-in` | ~776–1257 |
-| `src/components/Select.svelte` — the landing page is its only consumer | whole file |
+| Removed                                                                                                                                                            | Current lines |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| Proficiency chart — bars, mean line, caption, `slide`/`fade` transitions                                                                                           | ~348–425      |
+| Sticky-swap mini segmented filter, `Select` dropdown, `prof-toggle`                                                                                                | ~292–346      |
+| State: `showProfChart`, `selectedProf`, `toggleProf`, `profCounts`, `profMax`, `profMean`, `profSpread`, `profIsBalanced`, `proficiencyDisplay`, `proficiencyTone` | 48–101        |
+| `proficiencyLevel` — dead code, referenced nowhere                                                                                                                 | 48–53         |
+| `categoryMeta` and its Lucide imports: `Cpu`, `Code2`, `Boxes`, `Library`, `Database`, `Wrench`, `Sparkles`, `Cloud`, `BarChart3`, `Tag`, `ChevronDown`            | 8–34          |
+| CSS: all `.prof-*`, `.tech-group-card`, `.tech-tile-*`, `.tech-card-*`, `.tile-dimmed`, `@keyframes prof-bar-in`, `@keyframes tech-card-in`                        | ~776–1257     |
+| `src/components/Select.svelte` — the landing page is its only consumer                                                                                             | whole file    |
 
 `MousePointer` and `ShoppingCart` imports stay; the About section uses them. `cubicOut`, `slide`, and `fade` imports go — the proficiency chart was their only consumer.
 

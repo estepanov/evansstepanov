@@ -22,21 +22,23 @@
 
 ## File Structure
 
-| File | Change | Responsibility after the change |
-|---|---|---|
-| `tests/test.ts` | Modify | Playwright specs: existing h1 check, plus new structural assertions for the flat tech rows and the absence of proficiency controls |
-| `src/routes/+page.svelte` | Modify | Landing page. Tech section becomes flat rows; proficiency state and card/chart CSS removed |
-| `src/components/Select.svelte` | Delete | — (landing page was its only consumer) |
+| File                           | Change | Responsibility after the change                                                                                                    |
+| ------------------------------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/test.ts`                | Modify | Playwright specs: existing h1 check, plus new structural assertions for the flat tech rows and the absence of proficiency controls |
+| `src/routes/+page.svelte`      | Modify | Landing page. Tech section becomes flat rows; proficiency state and card/chart CSS removed                                         |
+| `src/components/Select.svelte` | Delete | — (landing page was its only consumer)                                                                                             |
 
 ---
 
 ### Task 1: Flat tech rows replace the card grid
 
 **Files:**
+
 - Test: `tests/test.ts`
 - Modify: `src/routes/+page.svelte` (script block lines 1–101; Tech section markup lines 282–507)
 
 **Interfaces:**
+
 - Consumes: `data.tech` — an array of `{ name: string; type?: string; proficiency: string; proficiencyWeight: number }` supplied by `+page.server.ts`, already sorted by `proficiencyWeight` descending. Also the existing `techTypes` reactive statement, the `revealOnView` and `stuckDetect` actions, `getTechIcon` from `../util/tech-icons`, and the `TechIcon` component — all already present in the file and all kept.
 - Produces: DOM class names that Task 2's CSS and the tests both target: `.tech-rows`, `.tech-row`, `.tech-row__label`, `.tech-row__label-text`, `.tech-row__rule`, `.tech-row__items`, `.tech-item`, `.tech-item__icon`, `.tech-item__fallback`, `.tech-item__name`.
 
@@ -110,51 +112,51 @@ Note: `proficiencyOrder` is retained only if something still reads it. After the
 Replace the entire Tech `<section>` — currently lines 282–507, from `<section use:revealOnView class="landing-section reveal-ready">` that contains the `Tech` heading, through the closing `</section>` after the `.tech-grid` div — with:
 
 ```svelte
-		<section use:revealOnView class="landing-section reveal-ready">
-			<div
-				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-center justify-between py-3"
-			>
-				<h2
-					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
-				>
-					Tech
-				</h2>
-			</div>
-			<div class="tech-rows mt-6">
-				{#each techTypes as techType, rowIdx}
-					{@const techItems = data.tech
-						.filter((tech) => tech.type === techType)
-						.slice()
-						.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight)}
-					{#if techItems.length > 0}
-						<div class="tech-row" style="--item-delay: {rowIdx * 70}ms;">
-							<a href="/tech/#{techType.toLowerCase()}" class="tech-row__label">
-								<span class="tech-row__label-text">{techType}</span>
-								<span class="tech-row__rule" aria-hidden="true"></span>
-							</a>
-							<ul class="tech-row__items">
-								{#each techItems as tech}
-									{@const techIcon = getTechIcon(tech.name)}
-									<li>
-										<a href="/tech/{tech.name}" class="tech-item" title={tech.name}>
-											<span class="tech-item__icon">
-												{#if techIcon}
-													<TechIcon icon={techIcon} size={18} />
-												{:else}
-													<span class="tech-item__fallback">{tech.name.charAt(0)}</span>
-												{/if}
-											</span>
-											<span class="tech-item__name">{tech.name}</span>
-										</a>
-									</li>
-								{/each}
-							</ul>
-						</div>
-					{/if}
-				{/each}
-			</div>
-		</section>
+<section use:revealOnView class="landing-section reveal-ready">
+	<div
+		use:stuckDetect
+		class="section-header sticky top-[-1px] z-20 flex items-center justify-between py-3"
+	>
+		<h2
+			class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
+		>
+			Tech
+		</h2>
+	</div>
+	<div class="tech-rows mt-6">
+		{#each techTypes as techType, rowIdx}
+			{@const techItems = data.tech
+				.filter((tech) => tech.type === techType)
+				.slice()
+				.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight)}
+			{#if techItems.length > 0}
+				<div class="tech-row" style="--item-delay: {rowIdx * 70}ms;">
+					<a href="/tech/#{techType.toLowerCase()}" class="tech-row__label">
+						<span class="tech-row__label-text">{techType}</span>
+						<span class="tech-row__rule" aria-hidden="true"></span>
+					</a>
+					<ul class="tech-row__items">
+						{#each techItems as tech}
+							{@const techIcon = getTechIcon(tech.name)}
+							<li>
+								<a href="/tech/{tech.name}" class="tech-item" title={tech.name}>
+									<span class="tech-item__icon">
+										{#if techIcon}
+											<TechIcon icon={techIcon} size={18} />
+										{:else}
+											<span class="tech-item__fallback">{tech.name.charAt(0)}</span>
+										{/if}
+									</span>
+									<span class="tech-item__name">{tech.name}</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+		{/each}
+	</div>
+</section>
 ```
 
 Two details that matter and are easy to get wrong:
@@ -167,143 +169,143 @@ Two details that matter and are easy to get wrong:
 Add to the `<style>` block of `src/routes/+page.svelte`. Put it where the deleted `.tech-group-card` rules were, so the file's ordering still groups tech styles together:
 
 ```css
-	/* Flat tech rows. The section signals breadth at a glance — depth lives on
+/* Flat tech rows. The section signals breadth at a glance — depth lives on
 	 * /tech — so there is no card surface, no proficiency label, and no hover
 	 * lift. The only texture is the brand icons; hover tints text + icon. */
-	.tech-rows {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
+.tech-rows {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
 
-	.tech-row {
-		display: flex;
-		flex-direction: column;
-		gap: 0.875rem;
-	}
+.tech-row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.875rem;
+}
 
-	.tech-row__label {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		color: var(--color-slate-500);
-		transition: color 200ms ease;
-	}
+.tech-row__label {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	color: var(--color-slate-500);
+	transition: color 200ms ease;
+}
 
-	:global(html.dark) .tech-row__label {
-		color: var(--color-slate-400);
-	}
+:global(html.dark) .tech-row__label {
+	color: var(--color-slate-400);
+}
 
-	.tech-row__label-text {
-		font-size: 0.6875rem;
-		font-weight: 600;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		white-space: nowrap;
-	}
+.tech-row__label-text {
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
 
-	/* The rule fills whatever the label text leaves, so every row's hairline
+/* The rule fills whatever the label text leaves, so every row's hairline
 	 * ends flush at the right margin regardless of label length. */
-	.tech-row__rule {
-		flex: 1;
-		height: 1px;
-		background-color: var(--color-slate-200);
-		transition: background-color 200ms ease;
-	}
+.tech-row__rule {
+	flex: 1;
+	height: 1px;
+	background-color: var(--color-slate-200);
+	transition: background-color 200ms ease;
+}
 
-	:global(html.dark) .tech-row__rule {
-		background-color: var(--color-slate-800);
-	}
+:global(html.dark) .tech-row__rule {
+	background-color: var(--color-slate-800);
+}
 
-	.tech-row__label:hover,
-	.tech-row__label:focus-visible {
-		color: var(--color-emerald-600);
-	}
+.tech-row__label:hover,
+.tech-row__label:focus-visible {
+	color: var(--color-emerald-600);
+}
 
-	:global(html.dark) .tech-row__label:hover,
-	:global(html.dark) .tech-row__label:focus-visible {
-		color: var(--color-emerald-400);
-	}
+:global(html.dark) .tech-row__label:hover,
+:global(html.dark) .tech-row__label:focus-visible {
+	color: var(--color-emerald-400);
+}
 
-	.tech-row__items {
-		display: flex;
-		flex-wrap: wrap;
-		column-gap: 1.5rem;
-		row-gap: 0.625rem;
-	}
+.tech-row__items {
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: 1.5rem;
+	row-gap: 0.625rem;
+}
 
-	.tech-item {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		color: var(--color-slate-700);
-		transition: color 200ms ease;
-	}
+.tech-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--color-slate-700);
+	transition: color 200ms ease;
+}
 
-	:global(html.dark) .tech-item {
-		color: var(--color-slate-300);
-	}
+:global(html.dark) .tech-item {
+	color: var(--color-slate-300);
+}
 
-	.tech-item:hover,
-	.tech-item:focus-visible {
-		color: var(--color-emerald-600);
-	}
+.tech-item:hover,
+.tech-item:focus-visible {
+	color: var(--color-emerald-600);
+}
 
-	:global(html.dark) .tech-item:hover,
-	:global(html.dark) .tech-item:focus-visible {
-		color: var(--color-emerald-400);
-	}
+:global(html.dark) .tech-item:hover,
+:global(html.dark) .tech-item:focus-visible {
+	color: var(--color-emerald-400);
+}
 
-	/* outline (not a box-shadow ring) so the focus indicator can sit outside the
+/* outline (not a box-shadow ring) so the focus indicator can sit outside the
 	 * element without a wrapper — these links have no padding to inset into. */
-	.tech-row__label:focus-visible,
-	.tech-item:focus-visible {
-		outline: 2px solid color-mix(in oklab, var(--color-emerald-500) 60%, transparent);
-		outline-offset: 3px;
-		border-radius: 0.25rem;
-	}
+.tech-row__label:focus-visible,
+.tech-item:focus-visible {
+	outline: 2px solid color-mix(in oklab, var(--color-emerald-500) 60%, transparent);
+	outline-offset: 3px;
+	border-radius: 0.25rem;
+}
 
-	:global(html.dark) .tech-row__label:focus-visible,
-	:global(html.dark) .tech-item:focus-visible {
-		outline-color: color-mix(in oklab, var(--color-emerald-400) 60%, transparent);
-	}
+:global(html.dark) .tech-row__label:focus-visible,
+:global(html.dark) .tech-item:focus-visible {
+	outline-color: color-mix(in oklab, var(--color-emerald-400) 60%, transparent);
+}
 
-	.tech-item__icon {
-		display: inline-flex;
-		flex-shrink: 0;
-	}
+.tech-item__icon {
+	display: inline-flex;
+	flex-shrink: 0;
+}
 
-	.tech-item__name {
-		font-size: 0.875rem;
-		font-weight: 500;
-	}
+.tech-item__name {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
 
-	.tech-item__fallback {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 18px;
-		height: 18px;
-		border-radius: 0.25rem;
-		background-color: var(--color-slate-100);
-		color: var(--color-slate-500);
-		font-size: 10px;
-		font-weight: 600;
-		line-height: 1;
-	}
+.tech-item__fallback {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	border-radius: 0.25rem;
+	background-color: var(--color-slate-100);
+	color: var(--color-slate-500);
+	font-size: 10px;
+	font-weight: 600;
+	line-height: 1;
+}
 
-	:global(html.dark) .tech-item__fallback {
-		background-color: var(--color-slate-800);
-		color: var(--color-slate-400);
-	}
+:global(html.dark) .tech-item__fallback {
+	background-color: var(--color-slate-800);
+	color: var(--color-slate-400);
+}
 
-	@media (prefers-reduced-motion: reduce) {
-		.tech-row__label,
-		.tech-row__rule,
-		.tech-item {
-			transition: none;
-		}
+@media (prefers-reduced-motion: reduce) {
+	.tech-row__label,
+	.tech-row__rule,
+	.tech-item {
+		transition: none;
 	}
+}
 ```
 
 - [ ] **Step 6: Repoint the reveal selectors at the new class names**
@@ -322,12 +324,12 @@ Three places in the `<style>` block still name `.tech-grid .tech-group-card`. Ea
 2. The `animation: none` override immediately after it (currently lines 553–558):
 
 ```css
-	:global(html.js)
-		.landing-section:global(.reveal-ready):not(:global(.is-visible))
-		.tech-rows
-		.tech-row {
-		animation: none;
-	}
+:global(html.js)
+	.landing-section:global(.reveal-ready):not(:global(.is-visible))
+	.tech-rows
+	.tech-row {
+	animation: none;
+}
 ```
 
 3. The `.is-visible` reveal rule (currently line 569): change `.tech-grid .tech-group-card` to `.tech-rows .tech-row` in that selector list.
@@ -354,9 +356,11 @@ git commit -m "refactor(landing): flatten tech section into category rows"
 ### Task 2: Purge the dead card, tile, and proficiency CSS
 
 **Files:**
+
 - Modify: `src/routes/+page.svelte` (`<style>` block)
 
 **Interfaces:**
+
 - Consumes: the class names Task 1 removed from the markup. Nothing in this task adds new selectors.
 - Produces: nothing new. This is deletion only.
 
@@ -413,9 +417,11 @@ git commit -m "refactor(landing): remove dead tech card and proficiency styles"
 ### Task 3: Delete the orphaned Select component
 
 **Files:**
+
 - Delete: `src/components/Select.svelte`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: nothing.
 
@@ -452,6 +458,7 @@ git commit -m "chore: remove unused Select component"
 **Files:** none modified — this task only runs checks and reports.
 
 **Interfaces:**
+
 - Consumes: the finished state of Tasks 1–3.
 - Produces: a pass/fail report for the user.
 
