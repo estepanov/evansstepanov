@@ -7,7 +7,6 @@
 	import { GithubIcon } from '@lucide/svelte';
 
 	export let item: any;
-	export let type: 'work' | 'project' = 'work';
 	export let idHash: ((name: string) => string) | undefined = undefined;
 	export let tech: Array<{ name: string; type?: string }> = [];
 	export let onLinkClick: (linkType: string, itemName: string) => void = () => {};
@@ -16,11 +15,8 @@
 
 	let detailsOpen = false;
 
-	$: isActive = type === 'work' ? item.isCurrent : item.isActive;
-	$: statusLabel = type === 'work' ? 'Now' : 'In progress';
-	$: statusVariant = (type === 'work' ? 'emerald' : 'subtle') as 'emerald' | 'subtle';
-	$: titleField = type === 'work' ? item.title : item.name;
-	$: companyOrUrl = type === 'work' ? item.companyName : undefined;
+	$: isActive = Boolean(item.isActive);
+	$: titleField = item.name;
 	$: techTags = (item.techTags as string[] | undefined) ?? [];
 
 	const handleLinkClick = (linkType: string, itemName: string) => {
@@ -55,10 +51,10 @@
 </script>
 
 <li
-	id={type === 'project' && idHash ? idHash(item.name) : undefined}
+	id={idHash ? idHash(item.name) : undefined}
 	class="card card--interactive grid-card relative p-6 sm:p-7 flex flex-col"
 	class:active-border={isActive}
-	class:active-border--subtle={isActive && type === 'project'}
+	class:active-border--subtle={isActive}
 	on:pointerenter={handleGlowMove}
 	on:pointermove={handleGlowMove}
 	on:pointerleave={handleGlowLeave}
@@ -67,7 +63,7 @@
 
 	{#if isActive}
 		<span class="status-anchor">
-			<StatusIndicator label={statusLabel} variant={statusVariant} />
+			<StatusIndicator label="In progress" variant="subtle" />
 		</span>
 		<span class="active-glare" aria-hidden="true">
 			<span class="active-glare__spot"></span>
@@ -75,77 +71,39 @@
 	{/if}
 
 	<div class="relative z-[1] flex flex-col grow">
-		{#if type === 'work'}
-			<div class="relative mb-7">
-				<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">
-					{titleField}
-				</h3>
-				{#if companyOrUrl}
-					<p class="mt-2.5 text-sm italic text-gray-500 dark:text-gray-400">
-						<span class="mr-1">at</span>
-						{#if item.companySlug}
-							<a
-								href="/work/{item.companySlug}"
-								on:click={() => handleLinkClick('work', titleField)}
-								class="not-italic font-medium text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200"
-								>{companyOrUrl}</a
-							>
-						{:else}
-							<span class="not-italic font-medium text-gray-700 dark:text-gray-200"
-								>{companyOrUrl}</span
-							>
-						{/if}
-					</p>
+		<div class="flex flex-row items-center mb-7 relative">
+			<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''} flex justify-center items-center">
+				{#if item.url}
+					<a
+						target="_blank"
+						rel="noopener"
+						referrerpolicy="no-referrer"
+						on:click={() => handleLinkClick('project', titleField)}
+						href={item.url}
+						class="text-gray-700 dark:text-gray-200 line-clamp-1 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in"
+						>{titleField}</a
+					>
+				{:else}
+					<span class="text-gray-700 dark:text-gray-200 line-clamp-1">{titleField}</span>
 				{/if}
-			</div>
-		{:else}
-			<div class="flex flex-row items-center mb-7 relative">
-				<h3
-					class="card-heading font-bold {isActive ? 'pr-24' : ''} flex justify-center items-center"
-				>
-					{#if item.url}
-						<a
-							target="_blank"
-							rel="noopener"
-							referrerpolicy="no-referrer"
-							on:click={() => handleLinkClick('project', titleField)}
-							href={item.url}
-							class="text-gray-700 dark:text-gray-200 line-clamp-1 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in"
-							>{titleField}</a
-						>
-					{:else}
-						<span class="text-gray-700 dark:text-gray-200 line-clamp-1">{titleField}</span>
-					{/if}
-				</h3>
-			</div>
-		{/if}
+			</h3>
+		</div>
 
-		<p
-			class="card-description leading-snug dark:text-gray-200 text-gray-600{type === 'project'
-				? ' line-clamp-4'
-				: ''}"
-		>
+		<p class="card-description leading-snug dark:text-gray-200 text-gray-600 line-clamp-4">
 			{item.description}
 		</p>
 
 		<div class="flex grow"></div>
 
 		<ul
-			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center {type ===
-			'work'
-				? 'text-gray-500'
-				: 'text-gray-700'}"
+			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center text-gray-700"
 		>
 			{#if item.startDate}
-				<li class="opacity-80{type === 'project' ? ' special' : ''}">
+				<li class="opacity-80 special">
 					{getFormattedDate(item.startDate)}
-					{#if type === 'work' && item.endDate}
-						<span class="mx-1">-</span>
-						{getFormattedDate(item.endDate)}
-					{/if}
 				</li>
 			{/if}
-			{#if type === 'project' && item.source}
+			{#if item.source}
 				<li class="special">
 					<a
 						target="_blank"
@@ -188,7 +146,7 @@
 		</ul>
 	</div>
 
-	<DetailsModal bind:open={detailsOpen} {item} {type} {tech} />
+	<DetailsModal bind:open={detailsOpen} {item} type="project" {tech} />
 </li>
 
 <style>

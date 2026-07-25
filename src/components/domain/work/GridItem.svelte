@@ -3,18 +3,11 @@
 	import GridItemView from './GridItemView.svelte';
 
 	export let item: any;
-	export let type: 'work' | 'project' = 'work';
 	export let idHash: ((name: string) => string) | undefined = undefined;
 	export let tech: Array<{ name: string; type?: string }> = [];
 
-	$: titleField = type === 'work' ? item.title : item.name;
-	$: detailsEventName =
-		type === 'work' ? `click_work_details-${titleField}` : `click_project_details-${titleField}`;
-
 	const handleLinkClick = (_linkType: string, itemName: string) => {
-		const eventName =
-			type === 'work' ? `click_work_link-${itemName}` : `click_project_link-${itemName}`;
-		Fathom.trackEvent(eventName);
+		Fathom.trackEvent(`click_project_link-${itemName}`);
 	};
 
 	const handleSourceClick = (itemName: string) => {
@@ -22,13 +15,12 @@
 	};
 
 	const handleDetailsClick = () => {
-		Fathom.trackEvent(detailsEventName);
+		Fathom.trackEvent(`click_project_details-${item.name}`);
 	};
 </script>
 
 <GridItemView
 	{item}
-	{type}
 	{idHash}
 	{tech}
 	onLinkClick={handleLinkClick}

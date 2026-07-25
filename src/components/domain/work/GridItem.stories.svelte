@@ -2,7 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import GridItemView from './GridItemView.svelte';
 	import { sampleProjectItem } from './fixtures/sampleProjectItem';
-	import { sampleTech, sampleWorkItem } from './fixtures/sampleWorkItem';
+	import { sampleTech } from './fixtures/sampleWorkItem';
 
 	const { Story } = defineMeta({
 		title: 'Domain/Work/GridItem',
@@ -12,23 +12,16 @@
 			docs: {
 				description: {
 					component:
-						'Presentational work/project card. Stories target `GridItemView`; the public ' +
-						'`GridItem` container wires Fathom analytics callbacks.'
+						'Presentational project card. Stories target `GridItemView`; the public ' +
+						'`GridItem` container wires Fathom analytics callbacks. Work cards live under ' +
+						'`Domain/Work/WorkExperienceCard`.'
 				}
 			}
 		}
 	});
 </script>
 
-<Story name="Work Current" args={{ item: sampleWorkItem, type: 'work', tech: sampleTech }}>
-	{#snippet template(args)}
-		<ul class="list-none p-0 m-0 max-w-md">
-			<GridItemView {...args} />
-		</ul>
-	{/snippet}
-</Story>
-
-<Story name="Project Active" args={{ item: sampleProjectItem, type: 'project', tech: sampleTech }}>
+<Story name="Project Active" args={{ item: sampleProjectItem, tech: sampleTech }}>
 	{#snippet template(args)}
 		<ul class="list-none p-0 m-0 max-w-md">
 			<GridItemView {...args} />

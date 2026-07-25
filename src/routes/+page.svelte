@@ -177,7 +177,7 @@
 			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
-					<GridItem item={project} type="project" {idHash} tech={data.tech} />
+					<GridItem item={project} {idHash} tech={data.tech} />
 				{/each}
 			</ul>
 		</section>

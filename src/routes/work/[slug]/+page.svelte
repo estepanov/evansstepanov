@@ -166,7 +166,7 @@
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedProjects as project}
-						<GridItem item={project} type="project" tech={allTech} />
+						<GridItem item={project} tech={allTech} />
 					{/each}
 				</ul>
 			</section>
