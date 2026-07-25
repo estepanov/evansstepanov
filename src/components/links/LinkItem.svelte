@@ -118,10 +118,14 @@
 		</span>
 	</span>
 
-	<ArrowUpRight
-		class="link-card__arrow h-4 w-4 text-slate-400 transition-[color,transform] duration-200 group-hover:text-emerald-600 dark:text-slate-500 dark:group-hover:text-emerald-300"
-		aria-hidden="true"
-	/>
+	<!-- The ↗ mark is reserved for links that leave the site in a new tab; a
+	     mailto: hands off to a mail client, so it keeps its Mail icon only. -->
+	{#if target === '_blank'}
+		<ArrowUpRight
+			class="link-card__arrow h-4 w-4 text-slate-400 transition-[color,transform] duration-200 group-hover:text-emerald-600 dark:text-slate-500 dark:group-hover:text-emerald-300"
+			aria-hidden="true"
+		/>
+	{/if}
 </a>
 
 <style>

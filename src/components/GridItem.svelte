@@ -3,7 +3,7 @@
 	import TechBackdrop from './TechBackdrop.svelte';
 	import DetailsModal from './DetailsModal.svelte';
 	import { getFormattedDate } from '../util/dates';
-	import { GithubIcon, ArrowUpRight } from '@lucide/svelte';
+	import { GithubIcon } from '@lucide/svelte';
 	import * as Fathom from 'fathom-client';
 
 	export let item: any;
@@ -184,15 +184,9 @@
 					aria-label="View details for {titleField}"
 					aria-haspopup="dialog"
 					aria-expanded={detailsOpen}
-					class="details-btn group/details relative inline-flex items-center gap-1.5 py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200"
+					class="details-btn group/details relative inline-flex items-center py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200"
 				>
 					<span class="details-btn__label">View details</span>
-					<ArrowUpRight
-						size={12}
-						strokeWidth={2.25}
-						class="details-btn__arrow"
-						aria-hidden="true"
-					/>
 				</button>
 			</li>
 		</ul>
@@ -310,18 +304,8 @@
 		transform: scaleX(1);
 	}
 
-	.details-btn :global(.details-btn__arrow) {
-		transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
-	}
-
-	.details-btn:hover :global(.details-btn__arrow),
-	.details-btn:focus-visible :global(.details-btn__arrow) {
-		transform: translate(2px, -2px);
-	}
-
 	@media (prefers-reduced-motion: reduce) {
-		.details-btn__label::after,
-		.details-btn :global(.details-btn__arrow) {
+		.details-btn__label::after {
 			transition: none;
 		}
 	}

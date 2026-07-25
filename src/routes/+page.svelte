@@ -6,7 +6,6 @@
 	import {
 		MousePointer,
 		ShoppingCart,
-		ArrowUpRight,
 		Cpu,
 		Code2,
 		Boxes,
@@ -442,7 +441,7 @@
 							>
 								<a
 									href="/tech/#{techType.toLowerCase()}"
-									class="tech-card-link flex items-center justify-between gap-3 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200 rounded-md focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
+									class="tech-card-link flex items-center text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200 rounded-md focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950"
 								>
 									<span class="inline-flex items-center gap-2.5 min-w-0">
 										<span
@@ -456,12 +455,6 @@
 											{meta.label}
 										</span>
 									</span>
-									<ArrowUpRight
-										class="tech-card-arrow text-slate-400 dark:text-slate-500"
-										size={12}
-										strokeWidth={2.25}
-										aria-hidden="true"
-									/>
 								</a>
 							</header>
 
@@ -504,12 +497,6 @@
 													</span>
 												</span>
 											</div>
-											<ArrowUpRight
-												class="tech-tile-arrow shrink-0 text-slate-400 dark:text-slate-500"
-												size={12}
-												strokeWidth={2}
-												aria-hidden="true"
-											/>
 										</a>
 									</li>
 								{/each}
@@ -1142,24 +1129,10 @@
 		transform: scaleX(1);
 	}
 
-	.tech-tile :global(.tech-tile-arrow) {
-		opacity: 0;
-		transform: translate(-2px, 2px);
-		transition:
-			opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
-			transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-			color 200ms ease;
-	}
-
-	.tech-tile:hover :global(.tech-tile-arrow),
-	.tech-tile:focus-visible :global(.tech-tile-arrow) {
-		opacity: 1;
-		transform: translate(0, 0);
-	}
-
 	/* Header link micro-interactions mirror GridItem's `details-btn`
-	 * (underline-from-left + arrow translate) so tech cards read as
-	 * the same family as work / project cards. */
+	 * (underline-from-left) so tech cards read as the same family as
+	 * work / project cards. The ↗ mark is reserved for links that leave
+	 * the site, so these internal links carry no icon. */
 	.tech-card-label {
 		position: relative;
 	}
@@ -1180,17 +1153,6 @@
 	.tech-card-link:hover .tech-card-label::after,
 	.tech-card-link:focus-visible .tech-card-label::after {
 		transform: scaleX(1);
-	}
-
-	.tech-card-link :global(.tech-card-arrow) {
-		transition:
-			transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-			color 200ms ease;
-	}
-
-	.tech-card-link:hover :global(.tech-card-arrow),
-	.tech-card-link:focus-visible :global(.tech-card-arrow) {
-		transform: translate(2px, -2px);
 	}
 
 	.tech-card-icon {
@@ -1256,19 +1218,9 @@
 			width: 9px;
 		}
 		.tech-card-label::after,
-		.tech-card-link :global(.tech-card-arrow),
 		.tech-card-icon,
-		.tech-tile-name::after,
-		.tech-tile :global(.tech-tile-arrow) {
+		.tech-tile-name::after {
 			transition: none;
-		}
-		.tech-card-link:hover :global(.tech-card-arrow),
-		.tech-card-link:focus-visible :global(.tech-card-arrow) {
-			transform: none;
-		}
-		.tech-tile :global(.tech-tile-arrow) {
-			opacity: 1;
-			transform: none;
 		}
 	}
 </style>
