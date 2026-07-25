@@ -39,6 +39,22 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
+## Storybook
+
+Component workshop for the presentational components in `src/components/`:
+
+```bash
+npm run storybook        # dev server on http://localhost:6006
+npm run build-storybook  # static build into storybook-static/
+```
+
+Storybook needs no Notion credentials and does not run the image prefetch, so it
+works with no `.env` at all. Stories are colocated with their components as
+`*.stories.svelte` and use the Svelte CSF format.
+
+Use the toolbar theme switcher to toggle light/dark — it applies the `dark` class
+to `<html>`, which is what the components' styles key off.
+
 ## Sample `.env.local`
 
 ```bash

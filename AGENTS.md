@@ -17,6 +17,7 @@ These notes keep contributions consistent across the SvelteKit site and its auto
 - `npm run check`: `svelte-check` type and config validation.
 - `npm run lint` / `npm run format`: Prettier + ESLint check or write.
 - `npm run test:unit`: Vitest unit suite. `npm test` runs Playwright E2E.
+- `npm run storybook` / `npm run build-storybook`: component workshop on port 6006. Needs no Notion credentials and skips the image prefetch.
 
 ## Coding Style & Naming Conventions
 - TypeScript and Svelte with 2-space indentation; rely on Prettier defaults (`prettier-plugin-svelte`) and ESLint (`eslint-plugin-svelte`, `@typescript-eslint`).

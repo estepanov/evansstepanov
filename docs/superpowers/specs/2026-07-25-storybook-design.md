@@ -156,11 +156,30 @@ not the full `lint` script.
 
 ## Verification
 
-- `npm run storybook` starts and all twelve components render.
-- Dark mode toolbar toggle visibly changes every component.
-- Albert Sans is the resolved font in the preview iframe.
+Results recorded after implementation.
+
+- All 43 stories across the 12 components render in both light and dark themes:
+  86 renders, no console errors, no Storybook error boxes, correct `html.dark`
+  state in every case.
+- Albert Sans resolves in the preview iframe, and the `body` gradient and Tailwind
+  `oklch` theme variables both apply.
 - `npm run build-storybook` completes.
-- `npm run check` passes.
-- `npm run test:unit` and `npm test` still pass, confirming no regression to the
-  existing suites.
-- Storybook starts with `.env` absent.
+- `npm run test:unit` passes.
+- Storybook builds with `.env` moved away, confirming no credential dependency.
+- axe reports zero violations across all 43 stories.
+
+`npm run check` reports 10 errors and 6 warnings across 6 files. This is
+**unchanged from the pre-existing baseline on `main`** — verified by stashing the
+Storybook work and re-running. Every error is in `MiniImageGallery.svelte`,
+`ProfileDiamond.svelte`, `LazyLoadImage.svelte`, `+layout.svelte`, and the two
+`+page.server.ts` files. No story file or `.storybook/` file contributes an error.
+Fixing the pre-existing set is out of scope here.
+
+## Implementation note: Tailwind and the build output
+
+Tailwind 4's automatic source detection scans the project directory, which means it
+will pick up `storybook-static/` once a build has run and generate CSS referencing
+its assets. Tailwind honours `.gitignore`, so the `/storybook-static` entry added
+above is what keeps the build output out of the scan. It is load-bearing, not just
+tidiness — without it, a `storybook build` followed by `storybook dev` produces
+Vite `ENOENT` errors out of `vite:css-analysis` on `src/app.css`.
