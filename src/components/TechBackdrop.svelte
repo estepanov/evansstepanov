@@ -139,7 +139,9 @@
 	:global(.tech-card:hover) .backdrop,
 	:global(.tech-card:focus-within) .backdrop,
 	:global(.tech-hero:hover) .backdrop,
-	:global(.tech-hero:focus-within) .backdrop {
+	:global(.tech-hero:focus-within) .backdrop,
+	:global(.topic-hero:hover) .backdrop,
+	:global(.topic-hero:focus-within) .backdrop {
 		opacity: 0.13;
 		--mask-mid: 36%;
 		--mask-end: 88%;
@@ -147,7 +149,9 @@
 	:global(html.dark .tech-card:hover) .backdrop,
 	:global(html.dark .tech-card:focus-within) .backdrop,
 	:global(html.dark .tech-hero:hover) .backdrop,
-	:global(html.dark .tech-hero:focus-within) .backdrop {
+	:global(html.dark .tech-hero:focus-within) .backdrop,
+	:global(html.dark .topic-hero:hover) .backdrop,
+	:global(html.dark .topic-hero:focus-within) .backdrop {
 		opacity: 0.16;
 	}
 
@@ -172,14 +176,18 @@
 	:global(.tech-card:hover) .lattice,
 	:global(.tech-card:focus-within) .lattice,
 	:global(.tech-hero:hover) .lattice,
-	:global(.tech-hero:focus-within) .lattice {
+	:global(.tech-hero:focus-within) .lattice,
+	:global(.topic-hero:hover) .lattice,
+	:global(.topic-hero:focus-within) .lattice {
 		will-change: transform, translate;
 	}
 
 	:global(.tech-card:hover) .lattice,
 	:global(.tech-card:focus-within) .lattice,
 	:global(.tech-hero:hover) .lattice,
-	:global(.tech-hero:focus-within) .lattice {
+	:global(.tech-hero:focus-within) .lattice,
+	:global(.topic-hero:hover) .lattice,
+	:global(.topic-hero:focus-within) .lattice {
 		--lattice-scale: 1.025;
 	}
 
