@@ -22,6 +22,7 @@
 	import GridItem from '../components/GridItem.svelte';
 	import ProfileDiamond from '../components/ProfileDiamond.svelte';
 	import PageContainer from '../components/PageContainer.svelte';
+	import StickySectionHeader from '../components/StickySectionHeader.svelte';
 
 	export let data;
 
@@ -68,33 +69,6 @@
 
 		return {
 			destroy: () => observer.disconnect()
-		};
-	}
-
-	function stuckDetect(node: HTMLElement) {
-		// Sentinel pattern: a 1px invisible marker inserted just above the
-		// sticky header. The header is stuck when the sentinel has scrolled
-		// ABOVE the viewport (not just "not visible"; below-viewport means
-		// the section hasn't been reached yet). We check
-		// boundingClientRect.top < 0 to distinguish above vs below.
-		const sentinel = document.createElement('div');
-		sentinel.setAttribute('aria-hidden', 'true');
-		sentinel.style.cssText = 'width:1px;height:1px;pointer-events:none;';
-		node.parentElement?.insertBefore(sentinel, node);
-
-		const io = new IntersectionObserver(
-			([entry]) => {
-				const stuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-				node.classList.toggle('is-stuck', stuck);
-			},
-			{ threshold: 0 }
-		);
-		io.observe(sentinel);
-		return {
-			destroy: () => {
-				io.disconnect();
-				sentinel.remove();
-			}
 		};
 	}
 </script>
@@ -178,16 +152,13 @@
 		</section>
 
 		<section use:revealOnView class="landing-section reveal-ready pb-16">
-			<div
-				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
-			>
+			<StickySectionHeader>
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
 				>
 					Work
 				</h2>
-			</div>
+			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
 					<GridItem item={work} type="work" tech={data.tech} />
@@ -196,16 +167,13 @@
 		</section>
 
 		<section use:revealOnView class="landing-section reveal-ready pb-16">
-			<div
-				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-baseline justify-between py-3"
-			>
+			<StickySectionHeader>
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
 				>
 					Projects
 				</h2>
-			</div>
+			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
 					<GridItem item={project} type="project" {idHash} tech={data.tech} />
@@ -214,16 +182,13 @@
 		</section>
 
 		<section use:revealOnView class="landing-section reveal-ready">
-			<div
-				use:stuckDetect
-				class="section-header sticky top-[-1px] z-20 flex items-center justify-between py-3"
-			>
+			<StickySectionHeader>
 				<h2
 					class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300"
 				>
 					Tech
 				</h2>
-			</div>
+			</StickySectionHeader>
 			<div class="tech-rows mt-6">
 				{#each techTypes as techType, rowIdx}
 					{@const techItems = data.tech
@@ -459,53 +424,6 @@
 		}
 	}
 
-	.section-header {
-		isolation: isolate;
-		width: 100%;
-	}
-
-	.section-title {
-		font-size: 1.5rem;
-		line-height: 1.2;
-		letter-spacing: 0.18em;
-		transition:
-			font-size 0.3s ease,
-			letter-spacing 0.3s ease;
-	}
-
-	.section-header:global(.is-stuck) .section-title {
-		font-size: 0.875rem;
-		letter-spacing: 0.15em;
-	}
-
-	.section-header::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: calc(50% - 50vw);
-		width: 100vw;
-		z-index: -1;
-		background-color: transparent;
-		border-bottom: 1px solid transparent;
-		transition:
-			background-color 0.25s ease,
-			border-color 0.25s ease,
-			backdrop-filter 0.25s ease;
-	}
-
-	.section-header:global(.is-stuck)::before {
-		background-color: rgb(255 255 255 / 0.75);
-		border-bottom-color: rgb(226 232 240 / 0.8);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-	}
-
-	:global(.dark) .section-header:global(.is-stuck)::before {
-		background-color: rgb(2 6 23 / 0.75);
-		border-bottom-color: rgb(30 41 59 / 0.8);
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.landing-logo,
 		.landing-section > :first-child,
@@ -518,11 +436,6 @@
 			filter: none !important;
 			opacity: 1 !important;
 			transform: none !important;
-		}
-
-		.section-header::before,
-		.section-title {
-			transition: none;
 		}
 	}
 
