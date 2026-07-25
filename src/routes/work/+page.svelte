@@ -1,10 +1,10 @@
 <script lang="ts">
-	import ButtonContainer from '../../components/ButtonContainer.svelte';
-	import AnchorButton from '../../components/AnchorButton.svelte';
+	import ButtonContainer from '../../components/actions/ButtonContainer.svelte';
+	import AnchorButton from '../../components/actions/AnchorButton.svelte';
 	import { House } from '@lucide/svelte';
-	import PageContainer from '../../components/PageContainer.svelte';
-	import TechHeader from '../../components/TechHeader.svelte';
-	import StatusIndicator from '../../components/StatusIndicator.svelte';
+	import PageContainer from '../../components/layout/PageContainer.svelte';
+	import TechHeader from '../../components/domain/tech/TechHeader.svelte';
+	import StatusIndicator from '../../components/feedback/StatusIndicator.svelte';
 	import { formatDateRange } from '../../util/dates';
 
 	export let data;

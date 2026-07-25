@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { getTechIcon } from '../../util/tech-icons';
-	import TechIcon from '../../components/TechIcon.svelte';
+	import TechIcon from '../../components/domain/tech/TechIcon.svelte';
 	import { getColorFromWeight } from '../../util/statusColors';
-	import ButtonContainer from '../../components/ButtonContainer.svelte';
-	import AnchorButton from '../../components/AnchorButton.svelte';
+	import ButtonContainer from '../../components/actions/ButtonContainer.svelte';
+	import AnchorButton from '../../components/actions/AnchorButton.svelte';
 	import { House } from '@lucide/svelte';
-	import PageContainer from '../../components/PageContainer.svelte';
-	import TechHeader from '../../components/TechHeader.svelte';
+	import PageContainer from '../../components/layout/PageContainer.svelte';
+	import TechHeader from '../../components/domain/tech/TechHeader.svelte';
 
 	export let data;
 

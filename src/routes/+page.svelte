@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Logo from '../components/Logo.svelte';
+	import Logo from '../components/chrome/Logo.svelte';
 	import { idHash } from '../util/id-hash-link-format';
 	import { getTechIcon } from '../util/tech-icons';
-	import TechIcon from '../components/TechIcon.svelte';
+	import TechIcon from '../components/domain/tech/TechIcon.svelte';
 	import { MousePointer, ShoppingCart } from '@lucide/svelte';
 
 	const preferredTechOrder = [
@@ -18,11 +18,11 @@
 	];
 
 	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
-	import LinksSection from '../components/links/LinksSection.svelte';
-	import GridItem from '../components/GridItem.svelte';
-	import ProfileDiamond from '../components/ProfileDiamond.svelte';
-	import PageContainer from '../components/PageContainer.svelte';
-	import StickySectionHeader from '../components/StickySectionHeader.svelte';
+	import LinksSection from '../components/domain/links/LinksSection.svelte';
+	import GridItem from '../components/domain/work/GridItem.svelte';
+	import ProfileDiamond from '../components/media/ProfileDiamond.svelte';
+	import PageContainer from '../components/layout/PageContainer.svelte';
+	import StickySectionHeader from '../components/layout/StickySectionHeader.svelte';
 
 	export let data;
 

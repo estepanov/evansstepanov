@@ -1,6 +1,6 @@
 <script>
-	import PageContainer from '../../components/PageContainer.svelte';
-	import SiteHeader from '../../components/SiteHeader.svelte';
+	import PageContainer from '../../components/layout/PageContainer.svelte';
+	import SiteHeader from '../../components/chrome/SiteHeader.svelte';
 	import { ArrowUpRight } from '@lucide/svelte';
 
 	export let data;

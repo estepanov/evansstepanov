@@ -4,7 +4,7 @@ These notes keep contributions consistent across the SvelteKit site and its auto
 
 ## Project Structure & Module Organization
 - `src/routes/` holds page endpoints (`+page.svelte`, `+page.server.ts`, `+layout.*`); each folder is a URL segment. Subroutes like `tech/` and `bookmarks/` mirror their pages.
-- `src/components/` contains reusable UI blocks; keep names PascalCase and colocate styles.
+- `src/components/` contains reusable UI grouped by Storybook taxonomy (`actions/`, `feedback/`, `chrome/`, `layout/`, `media/`, `icons/`, `domain/*/`); keep names PascalCase and colocate `*.stories.svelte`.
 - `src/data/` contains static content and Notion-derived helpers; `src/util/` hosts cross-cutting utilities.
 - `static/` serves unprocessed assets; `app.css` and `tailwind.config.js` define global styling.
 - `scripts/download-build-images.ts` downloads external images; it runs automatically before `dev`/`build`.

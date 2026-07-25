@@ -1,12 +1,12 @@
 <script lang="ts">
-	import GridItem from '../../../components/GridItem.svelte';
-	import ButtonContainer from '../../../components/ButtonContainer.svelte';
-	import AnchorButton from '../../../components/AnchorButton.svelte';
-	import TopicHero from '../../../components/TopicHero.svelte';
-	import TechHeader from '../../../components/TechHeader.svelte';
-	import DetailsModal from '../../../components/DetailsModal.svelte';
-	import StickySectionHeader from '../../../components/StickySectionHeader.svelte';
-	import PageContainer from '../../../components/PageContainer.svelte';
+	import GridItem from '../../../components/domain/work/GridItem.svelte';
+	import ButtonContainer from '../../../components/actions/ButtonContainer.svelte';
+	import AnchorButton from '../../../components/actions/AnchorButton.svelte';
+	import TopicHero from '../../../components/domain/tech/TopicHero.svelte';
+	import TechHeader from '../../../components/domain/tech/TechHeader.svelte';
+	import DetailsModal from '../../../components/domain/work/DetailsModal.svelte';
+	import StickySectionHeader from '../../../components/layout/StickySectionHeader.svelte';
+	import PageContainer from '../../../components/layout/PageContainer.svelte';
 	import { formatDateRange } from '../../../util/dates';
 	import type { Work } from '../../../data/work';
 	import { House, Table, ArrowUpRight } from '@lucide/svelte';

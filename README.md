@@ -55,6 +55,31 @@ works with no `.env` at all. Stories are colocated with their components as
 Use the toolbar theme switcher to toggle light/dark — it applies the `dark` class
 to `<html>`, which is what the components' styles key off.
 
+### Story organization
+
+Stories are grouped to match folders under `src/components/`:
+
+- `Actions/` — buttons, links, select
+- `Feedback/` — status + spinners
+- `Chrome/` — site header, logos, theme toggle
+- `Layout/` — page/section scaffolding
+- `Media/` — images, backdrops, profile diamond
+- `Icons/` — custom tech icons (+ Gallery)
+- `Domain/Tech|Work|Links/` — feature composites
+
+Presentational `*View` shells are what Storybook targets for analytics-coupled
+composites (`GridItem`, `LinkItem`, `DetailsModal`). Containers keep Fathom calls.
+
+### Future visual QA
+
+Story IDs are stable CSF paths derived from `title` + story `name`
+(e.g. `domain-work-griditem--work-current`). Optional later hooks:
+
+- `npm run build-storybook` then browse `storybook-static/`
+- Playwright against the static build, or Chromatic on CI
+
+No visual-regression CI is wired yet.
+
 ## Sample `.env.local`
 
 ```bash

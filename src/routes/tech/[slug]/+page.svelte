@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { getTechIcon } from '../../../util/tech-icons';
-	import GridItem from '../../../components/GridItem.svelte';
-	import ButtonContainer from '../../../components/ButtonContainer.svelte';
-	import AnchorButton from '../../../components/AnchorButton.svelte';
-	import TechIcon from '../../../components/TechIcon.svelte';
-	import TopicHero from '../../../components/TopicHero.svelte';
-	import TechHeader from '../../../components/TechHeader.svelte';
+	import GridItem from '../../../components/domain/work/GridItem.svelte';
+	import ButtonContainer from '../../../components/actions/ButtonContainer.svelte';
+	import AnchorButton from '../../../components/actions/AnchorButton.svelte';
+	import TechIcon from '../../../components/domain/tech/TechIcon.svelte';
+	import TopicHero from '../../../components/domain/tech/TopicHero.svelte';
+	import TechHeader from '../../../components/domain/tech/TechHeader.svelte';
 	import { House, Table, ArrowUpRight } from '@lucide/svelte';
-	import PageContainer from '../../../components/PageContainer.svelte';
-	import StickySectionHeader from '../../../components/StickySectionHeader.svelte';
+	import PageContainer from '../../../components/layout/PageContainer.svelte';
+	import StickySectionHeader from '../../../components/layout/StickySectionHeader.svelte';
 
 	export let data;
 
