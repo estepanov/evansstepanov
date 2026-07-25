@@ -31,26 +31,23 @@
 			</p>
 		</header>
 
-		<ol class="relative border-l border-slate-200 dark:border-slate-800 ml-2 pl-8">
+		<ol class="timeline relative ml-1">
+			<span class="timeline-rail" aria-hidden="true"></span>
 			{#each companies as company}
 				{@const range = formatDateRange(company.startDate, company.endDate, company.isCurrent)}
 				{@const latestTitle = company.roles[0]?.title}
-				<li class="relative pb-12 last:pb-0">
+				<li class="timeline-item relative pb-12 pl-8 last:pb-0">
 					<span
-						class="absolute -left-[2.125rem] top-1.5 flex h-2.5 w-2.5 items-center justify-center"
+						class="timeline-dot absolute top-[0.55rem] size-2.5 rounded-full ring-4 ring-white dark:ring-slate-950 {company.isCurrent
+							? 'bg-emerald-500 dark:bg-emerald-400'
+							: 'bg-slate-300 dark:bg-slate-600'}"
 						aria-hidden="true"
-					>
-						<span
-							class="h-2.5 w-2.5 rounded-full ring-4 ring-white dark:ring-slate-950 {company.isCurrent
-								? 'bg-emerald-500 dark:bg-emerald-400'
-								: 'bg-slate-300 dark:bg-slate-600'}"
-						></span>
-					</span>
+					></span>
 
-					<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1.5 mb-1.5">
+					<div class="mb-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
 						<a
 							href="/work/{company.slug}"
-							class="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+							class="text-xl font-semibold tracking-tight text-slate-900 transition-colors hover:text-emerald-600 dark:text-slate-100 dark:hover:text-emerald-400"
 						>
 							{company.companyName}
 						</a>
@@ -60,13 +57,13 @@
 					</div>
 
 					{#if range}
-						<p class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide">
+						<p class="text-sm tabular-nums tracking-wide text-slate-500 dark:text-slate-400">
 							{range}
 						</p>
 					{/if}
 
 					{#if latestTitle}
-						<p class="mt-2 text-slate-600 dark:text-slate-400 leading-relaxed">
+						<p class="mt-2 leading-relaxed text-slate-600 dark:text-slate-400">
 							{latestTitle}
 						</p>
 					{/if}
@@ -82,3 +79,29 @@
 		</ButtonContainer>
 	</main>
 </PageContainer>
+
+<style>
+	/* Dot is 0.625rem (size-2.5); rail + dots share the same center axis. */
+	.timeline {
+		--timeline-axis: 0.3125rem;
+	}
+
+	.timeline-rail {
+		position: absolute;
+		top: 0.55rem;
+		bottom: 0.55rem;
+		left: var(--timeline-axis);
+		width: 1px;
+		transform: translateX(-50%);
+		background-color: rgb(226 232 240); /* slate-200 */
+	}
+
+	:global(html.dark) .timeline-rail {
+		background-color: rgb(30 41 59); /* slate-800 */
+	}
+
+	.timeline-dot {
+		left: var(--timeline-axis);
+		transform: translateX(-50%);
+	}
+</style>
