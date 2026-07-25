@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getTechIcon } from '../../../util/tech-icons';
 	import GridItem from '../../../components/domain/work/GridItem.svelte';
+	import WorkExperienceCard from '../../../components/domain/work/WorkExperienceCard.svelte';
 	import ButtonContainer from '../../../components/actions/ButtonContainer.svelte';
 	import AnchorButton from '../../../components/actions/AnchorButton.svelte';
 	import TechIcon from '../../../components/domain/tech/TechIcon.svelte';
@@ -117,7 +118,7 @@
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedWork as work}
-						<GridItem item={work} type="work" tech={allTech} />
+						<WorkExperienceCard item={work} />
 					{/each}
 				</ul>
 			</section>

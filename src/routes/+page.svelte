@@ -20,6 +20,7 @@
 	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
 	import LinksSection from '../components/domain/links/LinksSection.svelte';
 	import GridItem from '../components/domain/work/GridItem.svelte';
+	import WorkExperienceCard from '../components/domain/work/WorkExperienceCard.svelte';
 	import ProfileDiamond from '../components/media/ProfileDiamond.svelte';
 	import PageContainer from '../components/layout/PageContainer.svelte';
 	import StickySectionHeader from '../components/layout/StickySectionHeader.svelte';
@@ -161,7 +162,7 @@
 			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
-					<GridItem item={work} type="work" tech={data.tech} />
+					<WorkExperienceCard item={work} />
 				{/each}
 			</ul>
 		</section>
