@@ -4,6 +4,9 @@ import OpenCodeIcon from '../components/icons/OpenCodeIcon.svelte';
 import PlaywrightIcon from '../components/icons/PlaywrightIcon.svelte';
 import AwsIcon from '../components/icons/AwsIcon.svelte';
 import AzureIcon from '../components/icons/AzureIcon.svelte';
+import CodexIcon from '../components/icons/CodexIcon.svelte';
+import CursorIcon from '../components/icons/CursorIcon.svelte';
+import DevinIcon from '../components/icons/DevinIcon.svelte';
 import EmotionIcon from '../components/icons/EmotionIcon.svelte';
 import {
 	SiReact,
@@ -41,7 +44,6 @@ import {
 	SiCloudflare,
 	SiPulumi,
 	SiDatadog,
-	SiOpenai,
 	SiGatsby,
 	SiApachekafka
 } from '@icons-pack/svelte-simple-icons';
@@ -55,7 +57,9 @@ const huge = (icon: any): TechIcon => ({ kind: 'hugeicons', icon });
 
 export const techIconMap: Record<string, TechIcon> = {
 	'Microsoft Azure': simple(AzureIcon),
-	Codex: huge(SiOpenai),
+	Codex: simple(CodexIcon),
+	Cursor: simple(CursorIcon),
+	'Devin.ai': simple(DevinIcon),
 	Java: huge(JavaIcon),
 	Dropwizard: simple(DropwizardIcon),
 	Playwright: simple(PlaywrightIcon),
