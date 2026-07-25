@@ -21,7 +21,9 @@
 
 <Story name="Default">
 	{#snippet template()}
-		<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; color: currentColor;">
+		<div
+			style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; color: currentColor;"
+		>
 			<span title="AWS"><AwsIcon size={40} /></span>
 			<span title="Dropwizard"><DropwizardIcon size={40} /></span>
 			<span title="Emotion"><EmotionIcon size={40} /></span>

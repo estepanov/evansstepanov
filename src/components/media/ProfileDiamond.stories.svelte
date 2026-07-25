@@ -23,8 +23,8 @@
 		<div style="max-width: 28rem; padding: 1rem;">
 			<p style="line-height: 1.6;">
 				<ProfileDiamond />
-				Decorative float-right profile diamond with interactive motion. Resize or scroll to see
-				parallax and orbit effects.
+				Decorative float-right profile diamond with interactive motion. Resize or scroll to see parallax
+				and orbit effects.
 			</p>
 		</div>
 	{/snippet}

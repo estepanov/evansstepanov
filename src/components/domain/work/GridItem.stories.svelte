@@ -20,10 +20,7 @@
 	});
 </script>
 
-<Story
-	name="Work Current"
-	args={{ item: sampleWorkItem, type: 'work', tech: sampleTech }}
->
+<Story name="Work Current" args={{ item: sampleWorkItem, type: 'work', tech: sampleTech }}>
 	{#snippet template(args)}
 		<ul class="list-none p-0 m-0 max-w-md">
 			<GridItemView {...args} />
@@ -31,10 +28,7 @@
 	{/snippet}
 </Story>
 
-<Story
-	name="Project Active"
-	args={{ item: sampleProjectItem, type: 'project', tech: sampleTech }}
->
+<Story name="Project Active" args={{ item: sampleProjectItem, type: 'project', tech: sampleTech }}>
 	{#snippet template(args)}
 		<ul class="list-none p-0 m-0 max-w-md">
 			<GridItemView {...args} />

@@ -9,8 +9,7 @@
 		parameters: {
 			docs: {
 				description: {
-					component:
-						'Tech-page hero shell: `TechBackdrop` plus a slotted content area.'
+					component: 'Tech-page hero shell: `TechBackdrop` plus a slotted content area.'
 				}
 			}
 		}
