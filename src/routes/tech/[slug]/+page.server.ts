@@ -3,10 +3,15 @@ import {
 	PROJECTS_NOTION_DB_ID,
 	WORK_NOTION_DB_ID
 } from '$env/static/private';
-import { TechProficiencyWeight, type Tech } from '../../../data/tech';
+import { type Tech } from '../../../data/tech';
 import { type Work } from '../../../data/work';
 import { type Project } from '../../../data/projects';
-import { formatNotionFiles } from '../../../util/formate-notion-files';
+import {
+	buildTechIdToName,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../../../util/notion-mappers';
 import { queryNotion } from '../../../util/notion';
 import { error } from '@sveltejs/kit';
 
@@ -48,78 +53,22 @@ export async function load({
 		})
 	]);
 
-	const techIdToName = new Map<string, string>();
+	const techIdToName = buildTechIdToName(
+		allTech.results.filter((p): p is typeof p & { properties: object } => 'properties' in p)
+	);
 	const allTechItems = allTech.results
-		.filter((page): page is any => 'properties' in page)
-		.map((page) => ({
-			name: (page.properties.Name as any).title[0].plain_text,
-			type: (page.properties.Type as any).select?.name,
-			proficiency: (page.properties.Proficiency as any).select.name,
-			proficiencyWeight:
-				TechProficiencyWeight[
-					(page.properties.Proficiency as any).select.name as keyof typeof TechProficiencyWeight
-				],
-			description: (page.properties.Description as any).rich_text[0]?.plain_text ?? undefined,
-			url: (page.properties.URL as any).url ?? undefined
-		})) as unknown as Tech[];
-	for (const page of allTech.results) {
-		if ('properties' in page) {
-			const name = ((page as any).properties.Name as any).title[0]?.plain_text;
-			if (name) techIdToName.set((page as any).id, name);
-		}
-	}
-	const resolveTechTags = (relations: any[] | undefined): string[] =>
-		(relations || [])
-			.map((r: any) => techIdToName.get(r.id))
-			.filter((n): n is string => Boolean(n));
+		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
+		.map((page) => mapTech(page as any));
 
-	const tech: Tech = {
-		name: (techPage.properties.Name as any).title[0].plain_text,
-		type: (techPage.properties.Type as any).select?.name,
-		proficiency: (techPage.properties.Proficiency as any).select.name,
-		proficiencyWeight:
-			TechProficiencyWeight[
-				(techPage.properties.Proficiency as any).select.name as keyof typeof TechProficiencyWeight
-			],
-		description: (techPage.properties.Description as any).rich_text[0]?.plain_text ?? undefined,
-		url: (techPage.properties.URL as any).url ?? undefined
-	};
+	const tech = mapTech(techPage as any);
 
-	const relatedProjects: Project[] = relatedProjectsResults.results
-		.filter((page): page is any => 'properties' in page)
-		.map((page) => ({
-			name: (page.properties.Name as any).title[0].plain_text,
-			description: (page.properties.Description as any).rich_text[0].plain_text,
-			tags: (page.properties.Tags as any).multi_select.map((tag: any) => tag.name),
-			techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
-			url: (page.properties.URL as any).url,
-			source: (page.properties.Source as any).url,
-			media: formatNotionFiles((page.properties.Media as any).files),
-			isActive: (page.properties.Active as any).checkbox,
-			startDate: (page.properties.Dates as any).date.start
-				? new Date((page.properties.Dates as any).date.start)
-				: undefined,
-			endDate: (page.properties.Dates as any).date.end
-				? new Date((page.properties.Dates as any).date.end)
-				: undefined
-		}));
+	const relatedProjects = relatedProjectsResults.results
+		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
+		.map((page) => mapProject(page as any, techIdToName));
 
-	const relatedWork: Work[] = relatedWorkResults.results
-		.filter((page): page is any => 'properties' in page)
-		.map((page) => ({
-			companyName: (page.properties.Company as any).rich_text[0].plain_text,
-			title: (page.properties.Position as any).title[0].plain_text,
-			description: (page.properties.Summary as any).rich_text[0].plain_text,
-			url: (page.properties.URL as any).url,
-			techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
-			isCurrent: (page.properties.Dates as any).date.end === null,
-			startDate: (page.properties.Dates as any).date.start
-				? new Date((page.properties.Dates as any).date.start)
-				: undefined,
-			endDate: (page.properties.Dates as any).date.end
-				? new Date((page.properties.Dates as any).date.end)
-				: undefined
-		}));
+	const relatedWork = relatedWorkResults.results
+		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
+		.map((page) => mapWork(page as any, techIdToName));
 
 	return {
 		tech,

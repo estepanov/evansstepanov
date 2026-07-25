@@ -4,11 +4,16 @@ import {
 	WORK_NOTION_DB_ID,
 	TECH_NOTION_DB_ID
 } from '$env/static/private';
-import { TechProficiencyWeight, type Tech } from '../data/tech';
+import { type Tech } from '../data/tech';
 import { type Work } from '../data/work';
 import { type Project } from '../data/projects';
-import { formatNotionFiles } from '../util/formate-notion-files';
 import { normalizeExternalLink, type ExternalLink } from '../util/links';
+import {
+	buildTechIdToName,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../util/notion-mappers';
 import { queryNotion } from '../util/notion';
 
 interface LoadResults {
@@ -25,69 +30,18 @@ export async function load(): Promise<LoadResults> {
 		queryNotion({ database_id: WORK_NOTION_DB_ID as string }),
 		queryNotion({ database_id: TECH_NOTION_DB_ID as string })
 	]);
-	const techIdToName = new Map<string, string>();
-	for (const page of tech.results) {
-		if ('properties' in page) {
-			const name = ((page as any).properties.Name as any).title[0]?.plain_text;
-			if (name) techIdToName.set((page as any).id, name);
-		}
-	}
-	const resolveTechTags = (relations: any[] | undefined): string[] =>
-		(relations || [])
-			.map((r: any) => techIdToName.get(r.id))
-			.filter((n): n is string => Boolean(n));
-
+	const techIdToName = buildTechIdToName(
+		tech.results.filter((p): p is typeof p & { properties: object } => 'properties' in p)
+	);
 	const projectsResults = projects.results
-		.filter((page): page is any => 'properties' in page)
-		.map((page) => ({
-			name: (page.properties.Name as any).title[0].plain_text,
-			description: (page.properties.Description as any).rich_text[0].plain_text,
-			tags: (page.properties.Tags as any).multi_select.map((tag: any) => tag.name),
-			techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
-			url: (page.properties.URL as any).url,
-			source: (page.properties.Source as any).url,
-			media: formatNotionFiles((page.properties.Media as any).files),
-			isActive: (page.properties.Active as any).checkbox,
-			startDate: (page.properties.Dates as any).date?.start
-				? new Date((page.properties.Dates as any).date.start)
-				: undefined,
-			endDate: (page.properties.Dates as any).date?.end
-				? new Date((page.properties.Dates as any).date.end)
-				: undefined
-		})) as unknown as Project[];
-
+		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
+		.map((page) => mapProject(page as any, techIdToName));
 	const workResults = work.results
-		.filter((page): page is any => 'properties' in page)
-		.map((page) => ({
-			companyName: (page.properties.Company as any).rich_text[0].plain_text,
-			title: (page.properties.Position as any).title[0].plain_text,
-			description: (page.properties.Summary as any).rich_text[0].plain_text,
-			url: (page.properties.URL as any).url,
-			techTags: resolveTechTags((page.properties['Tech Tags'] as any)?.relation),
-			isCurrent: (page.properties.Dates as any).date.end === null,
-			startDate: (page.properties.Dates as any).date?.start
-				? new Date((page.properties.Dates as any).date.start)
-				: undefined,
-			endDate: (page.properties.Dates as any).date?.end
-				? new Date((page.properties.Dates as any).date.end)
-				: undefined
-		})) as unknown as Work[];
-
+		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
+		.map((page) => mapWork(page as any, techIdToName));
 	const techResults = tech.results
-		.filter((page): page is any => 'properties' in page)
-		.map((page) => {
-			return {
-				name: (page.properties.Name as any).title[0].plain_text,
-				type: (page.properties.Type as any).select?.name,
-				proficiency: (page.properties.Proficiency as any).select.name,
-				proficiencyWeight:
-					TechProficiencyWeight[
-						(page.properties.Proficiency as any).select.name as keyof typeof TechProficiencyWeight
-					],
-				description: (page.properties.Description as any).rich_text[0]?.plain_text ?? undefined,
-				url: (page.properties.URL as any).url ?? undefined
-			};
-		}) as unknown as Tech[];
+		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
+		.map((page) => mapTech(page as any));
 
 	return {
 		links: links.results

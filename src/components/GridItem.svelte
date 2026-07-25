@@ -84,13 +84,10 @@
 				{#if companyOrUrl}
 					<p class="mt-2.5 text-sm italic text-gray-500 dark:text-gray-400">
 						<span class="mr-1">at</span>
-						{#if item.url}
+						{#if item.companySlug}
 							<a
-								target="_blank"
-								rel="noopener"
-								referrerpolicy="no-referrer"
+								href="/work/{item.companySlug}"
 								on:click={() => handleLinkClick('work', titleField)}
-								href={item.url}
 								class="not-italic font-medium text-gray-700 dark:text-gray-200 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200"
 								>{companyOrUrl}</a
 							>
