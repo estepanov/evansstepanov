@@ -42,11 +42,21 @@ test('work index lists companies and links to detail', async ({ page }) => {
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 
-test('home work company links to work detail', async ({ page }) => {
+test('home work cards link to work detail without nested details controls', async ({ page }) => {
 	await page.goto('/');
-	const workCompany = page.locator('a[href^="/work/"]').first();
-	await expect(workCompany).toBeVisible();
-	const href = await workCompany.getAttribute('href');
-	await workCompany.click();
+
+	const workSection = page.locator('section').filter({
+		has: page.getByRole('heading', { name: 'Work', exact: true })
+	});
+	const workCardLink = workSection.locator('.landing-grid a[href^="/work/"]').first();
+
+	await expect(workCardLink).toBeVisible();
+	await expect(workSection.getByRole('button', { name: /details/i })).toHaveCount(0);
+
+	const href = await workCardLink.getAttribute('href');
+	expect(href).toMatch(/^\/work\/[a-z0-9-]+\/?$/);
+
+	await workCardLink.click();
 	await expect(page).toHaveURL(new RegExp(`${href!.replace(/\/$/, '')}/?$`));
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
