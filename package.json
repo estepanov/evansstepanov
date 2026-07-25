@@ -2,6 +2,9 @@
 	"name": "evansstepanov",
 	"version": "0.0.1",
 	"private": true,
+	"engines": {
+		"node": ">=24 <25"
+	},
 	"scripts": {
 		"dev": "npm run download-images:dev && vite dev",
 		"download-images": "NODE_OPTIONS='--import=tsx' node ./scripts/download-build-images.ts",
