@@ -3,7 +3,7 @@
 	import SiteHeader from './SiteHeader.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/SiteHeader',
+		title: 'Chrome/SiteHeader',
 		component: SiteHeader,
 		tags: ['autodocs'],
 		argTypes: {

@@ -3,7 +3,7 @@
 	import Select from './Select.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/Select',
+		title: 'Actions/Select',
 		component: Select,
 		tags: ['autodocs'],
 		argTypes: {

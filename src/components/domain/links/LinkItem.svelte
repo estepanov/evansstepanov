@@ -25,7 +25,7 @@
 		SiYoutube
 	} from '@icons-pack/svelte-simple-icons';
 	import * as Fathom from 'fathom-client';
-	import type { ExternalLink, ExternalLinkKind } from '../../util/links';
+	import type { ExternalLink, ExternalLinkKind } from '../../../util/links';
 
 	export let link: ExternalLink;
 

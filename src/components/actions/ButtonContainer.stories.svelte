@@ -4,7 +4,7 @@
 	import AnchorButton from './AnchorButton.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/ButtonContainer',
+		title: 'Actions/ButtonContainer',
 		component: ButtonContainer,
 		tags: ['autodocs'],
 		argTypes: {

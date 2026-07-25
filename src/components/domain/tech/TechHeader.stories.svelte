@@ -3,7 +3,7 @@
 	import TechHeader from './TechHeader.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/TechHeader',
+		title: 'Domain/Tech/TechHeader',
 		component: TechHeader,
 		tags: ['autodocs'],
 		argTypes: {

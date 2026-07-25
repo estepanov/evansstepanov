@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { imageCache } from '../util/image-cache';
+	import { imageCache } from '../../util/image-cache';
 	export let classNames: string;
 	export let src: string;
 	export let alt: string;

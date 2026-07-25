@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { HugeiconsIcon } from '@hugeicons/svelte';
-	import type { TechIcon } from '../util/tech-icons';
+	import type { TechIcon } from '../../../util/tech-icons';
 
 	export let icon: TechIcon | null;
 	export let size: number = 24;

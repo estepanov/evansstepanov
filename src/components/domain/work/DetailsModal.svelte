@@ -2,7 +2,7 @@
 	import { X, ArrowUpRight } from '@lucide/svelte';
 	import { GithubIcon } from '@lucide/svelte';
 	import { onDestroy } from 'svelte';
-	import { getFormattedDate } from '../util/dates';
+	import { getFormattedDate } from '../../../util/dates';
 
 	export let open = false;
 	export let item: any;

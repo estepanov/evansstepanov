@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getTechIcon, type TechIcon as TechIconT } from '../util/tech-icons';
-	import { registerParallax } from '../util/parallax-coordinator';
-	import TechIcon from './TechIcon.svelte';
+	import { getTechIcon, type TechIcon as TechIconT } from '../../util/tech-icons';
+	import { registerParallax } from '../../util/parallax-coordinator';
+	import TechIcon from '../domain/tech/TechIcon.svelte';
 
 	export let tags: string[] = [];
 

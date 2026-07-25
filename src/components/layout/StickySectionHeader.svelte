@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { stuckDetect } from '../util/stuck-detect';
+	import { stuckDetect } from '../../util/stuck-detect';
 </script>
 
 <div

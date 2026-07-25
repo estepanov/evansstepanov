@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TechBackdrop from './TechBackdrop.svelte';
+	import TechBackdrop from '../../media/TechBackdrop.svelte';
 
 	export let tags: string[] = [];
 </script>

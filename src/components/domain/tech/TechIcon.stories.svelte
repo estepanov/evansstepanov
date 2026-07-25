@@ -1,10 +1,10 @@
 <script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import TechIcon from './TechIcon.svelte';
-	import { getTechIcon, techIconMap } from '../util/tech-icons';
+	import { getTechIcon, techIconMap } from '../../../util/tech-icons';
 
 	const { Story } = defineMeta({
-		title: 'Components/TechIcon',
+		title: 'Domain/Tech/TechIcon',
 		component: TechIcon,
 		tags: ['autodocs'],
 		argTypes: {

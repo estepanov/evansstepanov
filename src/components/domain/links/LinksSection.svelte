@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LinkItem from './LinkItem.svelte';
-	import type { ExternalLink } from '../../util/links';
+	import type { ExternalLink } from '../../../util/links';
 
 	export let links: ExternalLink[] = [];
 </script>

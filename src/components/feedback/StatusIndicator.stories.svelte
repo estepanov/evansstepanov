@@ -3,7 +3,7 @@
 	import StatusIndicator from './StatusIndicator.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/StatusIndicator',
+		title: 'Feedback/StatusIndicator',
 		component: StatusIndicator,
 		tags: ['autodocs'],
 		argTypes: {

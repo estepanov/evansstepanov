@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LogoIcon from './LogoIcon.svelte';
+	import LogoIcon from '../../chrome/LogoIcon.svelte';
 
 	export let rootLabel: string = 'Tech';
 	export let rootHref: string = '/tech';

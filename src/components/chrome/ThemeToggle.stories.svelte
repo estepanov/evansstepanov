@@ -3,7 +3,7 @@
 	import ThemeToggle from './ThemeToggle.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/ThemeToggle',
+		title: 'Chrome/ThemeToggle',
 		component: ThemeToggle,
 		tags: ['autodocs'],
 		parameters: {

@@ -3,7 +3,7 @@
 	import SpecialButton from './SpecialButton.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/SpecialButton',
+		title: 'Actions/SpecialButton',
 		component: SpecialButton,
 		tags: ['autodocs'],
 		argTypes: {

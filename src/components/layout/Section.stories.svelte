@@ -3,7 +3,7 @@
 	import Section from './Section.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Components/Section',
+		title: 'Layout/Section',
 		component: Section,
 		tags: ['autodocs'],
 		argTypes: {

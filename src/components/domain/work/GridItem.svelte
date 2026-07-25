@@ -1,8 +1,8 @@
 <script lang="ts">
-	import StatusIndicator from './StatusIndicator.svelte';
-	import TechBackdrop from './TechBackdrop.svelte';
+	import StatusIndicator from '../../feedback/StatusIndicator.svelte';
+	import TechBackdrop from '../../media/TechBackdrop.svelte';
 	import DetailsModal from './DetailsModal.svelte';
-	import { getFormattedDate } from '../util/dates';
+	import { getFormattedDate } from '../../../util/dates';
 	import { GithubIcon } from '@lucide/svelte';
 	import * as Fathom from 'fathom-client';
 
