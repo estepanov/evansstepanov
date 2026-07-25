@@ -11,3 +11,7 @@ node_modules
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# Storybook build output
+/storybook-static
+*storybook.log

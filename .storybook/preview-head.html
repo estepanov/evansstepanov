@@ -1,0 +1,40 @@
+<!-- Mirrors the font loading in src/app.html. Without these, --font-sans
+     resolves to a face the preview iframe never fetched. -->
+<link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
+<link
+	rel="preload"
+	href="https://fonts.bunny.net/albert-sans/files/albert-sans-latin-400-normal.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="https://fonts.bunny.net/albert-sans/files/albert-sans-latin-500-normal.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="https://fonts.bunny.net/albert-sans/files/albert-sans-latin-600-normal.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin
+/>
+<link
+	href="https://fonts.bunny.net/css?family=albert-sans:400,500,600&display=swap"
+	rel="stylesheet"
+/>
+
+<style>
+	/* app.html sets color-scheme imperatively at boot; the theme decorator only
+	   toggles the class, so mirror it here to keep form controls and scrollbars
+	   in step with the selected theme. */
+	html {
+		color-scheme: light;
+	}
+	html.dark {
+		color-scheme: dark;
+	}
+</style>
