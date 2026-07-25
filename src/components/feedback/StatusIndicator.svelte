@@ -12,7 +12,7 @@
 </span>
 
 <style lang="postcss">
-	@reference "../app.css";
+	@reference "../../app.css";
 
 	.status {
 		@apply inline-flex items-center gap-1.5 select-none;

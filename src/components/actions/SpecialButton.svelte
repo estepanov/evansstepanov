@@ -9,7 +9,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "../app.css";
+	@reference "../../app.css";
 
 	@property --bg-angle {
 		inherits: false;
