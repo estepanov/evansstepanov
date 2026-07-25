@@ -11,6 +11,14 @@ export const sampleWorkItem = {
 	techTags: ['TypeScript', 'Svelte', 'PostgreSQL']
 };
 
+export const samplePastWorkItem = {
+	...sampleWorkItem,
+	title: 'Senior Engineer',
+	isCurrent: false,
+	startDate: new Date('2019-03-01'),
+	endDate: new Date('2021-12-15')
+};
+
 export const sampleTech = [
 	{ name: 'TypeScript', type: 'Language', proficiencyWeight: 5 },
 	{ name: 'Svelte', type: 'Framework', proficiencyWeight: 4 },
