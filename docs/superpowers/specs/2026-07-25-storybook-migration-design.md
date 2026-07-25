@@ -1,7 +1,7 @@
 # Storybook migration & functional grouping
 
 **Date:** 2026-07-25  
-**Status:** Draft for review  
+**Status:** Accepted  
 **Scope:** Reorganize components on disk to mirror Storybook taxonomy, migrate full story coverage, extract presentational shells for analytics-coupled composites.
 
 ## Goals
