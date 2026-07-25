@@ -1,7 +1,10 @@
 <script lang="ts">
 	import LogoIcon from './LogoIcon.svelte';
 
-	export let slug: string | undefined = undefined;
+	export let rootLabel: string = 'Tech';
+	export let rootHref: string = '/tech';
+	/** When set, shows `rootLabel / leaf`; otherwise a single non-link leaf of `rootLabel`. */
+	export let leaf: string | undefined = undefined;
 </script>
 
 <header class="tech-header w-full flex items-center gap-4">
@@ -16,17 +19,17 @@
 		aria-label="Breadcrumb"
 		class="crumbs min-w-0 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400"
 	>
-		{#if slug}
+		{#if leaf}
 			<a
-				href="/tech"
+				href={rootHref}
 				class="crumb-root transition-colors hover:text-slate-900 dark:hover:text-slate-100"
 			>
-				Tech
+				{rootLabel}
 			</a>
 			<span class="crumb-sep text-slate-300 dark:text-slate-700" aria-hidden="true">/</span>
-			<span class="crumb-leaf truncate text-slate-700 dark:text-slate-300">{slug}</span>
+			<span class="crumb-leaf truncate text-slate-700 dark:text-slate-300">{leaf}</span>
 		{:else}
-			<span class="crumb-leaf text-slate-700 dark:text-slate-300">Tech</span>
+			<span class="crumb-leaf text-slate-700 dark:text-slate-300">{rootLabel}</span>
 		{/if}
 	</nav>
 </header>

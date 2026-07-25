@@ -32,7 +32,7 @@
 </svelte:head>
 
 <PageContainer class="mt-10 space-y-16">
-	<TechHeader slug={tech.name} />
+	<TechHeader leaf={tech.name} />
 
 	<main class="w-full">
 		<section
