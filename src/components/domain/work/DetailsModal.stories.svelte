@@ -14,7 +14,7 @@
 					component:
 						'Presentational details dialog for work roles and projects. Stories target ' +
 						'`DetailsModalView`; the public `DetailsModal` container re-exports the same props ' +
-						'for route/GridItem imports.'
+						'for route/ProjectCard imports.'
 				}
 			}
 		}

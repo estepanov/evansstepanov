@@ -1,11 +1,13 @@
 <script lang="ts">
 	import * as Fathom from 'fathom-client';
 	import WorkExperienceCardView from './WorkExperienceCardView.svelte';
+	import { workExperienceHref } from '../../../util/work-experience-href';
+	import type { Work } from '../../../data/work';
 
-	export let item: any;
+	export let item: Work;
 
 	const handleCardClick = () => {
-		if (!item?.companySlug) return;
+		if (!workExperienceHref(item.companySlug)) return;
 		Fathom.trackEvent(`click_work_card-${item.title}`);
 	};
 </script>

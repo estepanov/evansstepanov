@@ -5,6 +5,25 @@
 	z-index: 3;
 }
 
+.card-heading {
+	font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem);
+	line-height: 1.2;
+}
+
+.card-description,
+.card-meta {
+	text-shadow:
+		0 0 1px var(--color-white),
+		0 1px 1px var(--color-white);
+}
+
+html.dark .card-description,
+html.dark .card-meta {
+	text-shadow:
+		0 0 1px var(--color-gray-900),
+		0 1px 1px var(--color-gray-900);
+}
+
 .grid-card {
 	--grid-glow-x: 86%;
 	--grid-glow-y: 14%;

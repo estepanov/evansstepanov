@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as Fathom from 'fathom-client';
-	import GridItemView from './GridItemView.svelte';
+	import ProjectCardView from './ProjectCardView.svelte';
+	import type { Project } from '../../../data/projects';
 
-	export let item: any;
+	export let item: Project;
 	export let idHash: ((name: string) => string) | undefined = undefined;
 	export let tech: Array<{ name: string; type?: string }> = [];
 
-	const handleLinkClick = (_linkType: string, itemName: string) => {
+	const handleLinkClick = (itemName: string) => {
 		Fathom.trackEvent(`click_project_link-${itemName}`);
 	};
 
@@ -19,7 +20,7 @@
 	};
 </script>
 
-<GridItemView
+<ProjectCardView
 	{item}
 	{idHash}
 	{tech}

@@ -5,11 +5,13 @@
 	import DetailsModal from './DetailsModal.svelte';
 	import { getFormattedDate } from '../../../util/dates';
 	import { GithubIcon } from '@lucide/svelte';
+	import { handleGlowLeave, handleGlowMove } from './gridCardGlow';
+	import type { Project } from '../../../data/projects';
 
-	export let item: any;
+	export let item: Project;
 	export let idHash: ((name: string) => string) | undefined = undefined;
 	export let tech: Array<{ name: string; type?: string }> = [];
-	export let onLinkClick: (linkType: string, itemName: string) => void = () => {};
+	export let onLinkClick: (itemName: string) => void = () => {};
 	export let onSourceClick: (itemName: string) => void = () => {};
 	export let onDetailsClick: () => void = () => {};
 
@@ -17,37 +19,12 @@
 
 	$: isActive = Boolean(item.isActive);
 	$: titleField = item.name;
-	$: techTags = (item.techTags as string[] | undefined) ?? [];
-
-	const handleLinkClick = (linkType: string, itemName: string) => {
-		onLinkClick(linkType, itemName);
-	};
-
-	const handleSourceClick = (itemName: string) => {
-		onSourceClick(itemName);
-	};
+	$: techTags = item.techTags ?? [];
 
 	const handleDetailsClick = () => {
 		onDetailsClick();
 		detailsOpen = true;
 	};
-
-	function handleGlowMove(event: PointerEvent) {
-		const target = event.currentTarget as HTMLElement;
-		const rect = target.getBoundingClientRect();
-		const x = ((event.clientX - rect.left) / rect.width) * 100;
-		const y = ((event.clientY - rect.top) / rect.height) * 100;
-
-		target.style.setProperty('--grid-glow-x', `${x}%`);
-		target.style.setProperty('--grid-glow-y', `${y}%`);
-	}
-
-	function handleGlowLeave() {
-		// Intentionally do not reset --grid-glow-x/y here: the spotlight ::after
-		// transitions opacity but not background-position, so resetting would
-		// snap the gradient to the default corner mid-fade. Leaving the last
-		// cursor position in place lets it fade out smoothly where it was.
-	}
 </script>
 
 <li
@@ -78,7 +55,7 @@
 						target="_blank"
 						rel="noopener"
 						referrerpolicy="no-referrer"
-						on:click={() => handleLinkClick('project', titleField)}
+						on:click={() => onLinkClick(titleField)}
 						href={item.url}
 						class="text-gray-700 dark:text-gray-200 line-clamp-1 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in"
 						>{titleField}</a
@@ -109,7 +86,7 @@
 						target="_blank"
 						rel="noopener"
 						referrerpolicy="no-referrer"
-						on:click={() => handleSourceClick(item.name)}
+						on:click={() => onSourceClick(item.name)}
 						href={item.source}
 						class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in"
 					>
@@ -150,25 +127,6 @@
 </li>
 
 <style>
-	.card-heading {
-		font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem);
-		line-height: 1.2;
-	}
-
-	.card-description,
-	.card-meta {
-		text-shadow:
-			0 0 1px var(--color-white),
-			0 1px 1px var(--color-white);
-	}
-
-	:global(html.dark) .card-description,
-	:global(html.dark) .card-meta {
-		text-shadow:
-			0 0 1px var(--color-gray-900),
-			0 1px 1px var(--color-gray-900);
-	}
-
 	@media (min-width: 640px) and (hover: hover) {
 		.details-btn-wrap {
 			opacity: 0;

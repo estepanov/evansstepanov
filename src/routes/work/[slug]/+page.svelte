@@ -1,5 +1,5 @@
 <script lang="ts">
-	import GridItem from '../../../components/domain/work/GridItem.svelte';
+	import ProjectCard from '../../../components/domain/work/ProjectCard.svelte';
 	import ButtonContainer from '../../../components/actions/ButtonContainer.svelte';
 	import AnchorButton from '../../../components/actions/AnchorButton.svelte';
 	import TopicHero from '../../../components/domain/tech/TopicHero.svelte';
@@ -166,7 +166,7 @@
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedProjects as project}
-						<GridItem item={project} tech={allTech} />
+						<ProjectCard item={project} tech={allTech} />
 					{/each}
 				</ul>
 			</section>

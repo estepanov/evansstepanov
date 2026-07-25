@@ -3,36 +3,17 @@
 	import TechBackdrop from '../../media/TechBackdrop.svelte';
 	import { getFormattedDate } from '../../../util/dates';
 	import { workExperienceHref } from '../../../util/work-experience-href';
+	import { handleGlowLeave, handleGlowMove } from './gridCardGlow';
+	import type { Work } from '../../../data/work';
 	import './gridCardChrome.css';
 
-	export let item: {
-		title: string;
-		companyName: string;
-		companySlug?: string;
-		description: string;
-		isCurrent?: boolean;
-		startDate?: Date;
-		endDate?: Date;
-		techTags?: string[];
-	};
+	/** Slug is optional here so the card can render its unlinked fallback. */
+	export let item: Omit<Work, 'companySlug'> & { companySlug?: string };
 	export let onCardClick: () => void = () => {};
 
 	$: href = workExperienceHref(item.companySlug);
 	$: isActive = Boolean(item.isCurrent);
 	$: techTags = item.techTags ?? [];
-
-	function handleGlowMove(event: PointerEvent) {
-		const target = event.currentTarget as HTMLElement;
-		const rect = target.getBoundingClientRect();
-		const x = ((event.clientX - rect.left) / rect.width) * 100;
-		const y = ((event.clientY - rect.top) / rect.height) * 100;
-		target.style.setProperty('--grid-glow-x', `${x}%`);
-		target.style.setProperty('--grid-glow-y', `${y}%`);
-	}
-
-	function handleGlowLeave() {
-		// Keep last glow position while opacity fades (same as GridItemView).
-	}
 </script>
 
 {#snippet cardBody()}
@@ -52,7 +33,9 @@
 			<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">{item.title}</h3>
 			<p class="mt-2.5 text-sm italic text-gray-500 dark:text-gray-400">
 				<span class="mr-1">at</span>
-				<span class="not-italic font-medium text-gray-700 dark:text-gray-200">{item.companyName}</span>
+				<span class="not-italic font-medium text-gray-700 dark:text-gray-200"
+					>{item.companyName}</span
+				>
 			</p>
 		</div>
 
@@ -82,8 +65,9 @@
 	{#if href}
 		<a
 			{href}
-			class="card card--interactive grid-card relative p-6 sm:p-7 flex flex-col no-underline text-inherit"
+			class="card card--interactive grid-card relative h-full p-6 sm:p-7 flex flex-col no-underline text-inherit"
 			class:active-border={isActive}
+			aria-label="{item.title} at {item.companyName}"
 			on:click={onCardClick}
 			on:pointerenter={handleGlowMove}
 			on:pointermove={handleGlowMove}
@@ -93,7 +77,7 @@
 		</a>
 	{:else}
 		<div
-			class="card grid-card relative p-6 sm:p-7 flex flex-col"
+			class="card grid-card relative h-full p-6 sm:p-7 flex flex-col"
 			class:active-border={isActive}
 			on:pointerenter={handleGlowMove}
 			on:pointermove={handleGlowMove}
@@ -103,24 +87,3 @@
 		</div>
 	{/if}
 </li>
-
-<style>
-	.card-heading {
-		font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem);
-		line-height: 1.2;
-	}
-
-	.card-description,
-	.card-meta {
-		text-shadow:
-			0 0 1px var(--color-white),
-			0 1px 1px var(--color-white);
-	}
-
-	:global(html.dark) .card-description,
-	:global(html.dark) .card-meta {
-		text-shadow:
-			0 0 1px var(--color-gray-900),
-			0 1px 1px var(--color-gray-900);
-	}
-</style>
