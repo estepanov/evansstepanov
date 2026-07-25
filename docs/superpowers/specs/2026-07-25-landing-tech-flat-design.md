@@ -53,7 +53,7 @@ Information architecture is unchanged — this cleanup is purely visual.
 
 - Hover and focus tint the item's name and icon emerald (`emerald-600` light, `emerald-400` dark), matching the tone the current tech cards use. Nothing scales, lifts, or underlines.
 - Focus-visible ring is preserved on every link (`emerald-500/60`, `emerald-400/60` dark).
-- Entrance is one fade-slide per row via `--row-delay: {i * 70}ms`, reusing the existing `revealOnView` action and the `landing-content-in` keyframe that Work and Projects already use.
+- Entrance is one fade-slide per row via `--item-delay: {i * 70}ms`, reusing the existing `revealOnView` action and the `landing-content-in` keyframe that Work and Projects already use. The variable is `--item-delay` rather than a new `--row-delay` because the page's shared reveal rule already reads `calc(var(--reveal-delay, 0ms) + var(--item-delay, 40ms))`.
 - The `prefers-reduced-motion` block covers `.tech-row` in place of `.tech-group-card`.
 - The sticky shrinking section header stays, so Tech continues to match Work and Projects.
 
