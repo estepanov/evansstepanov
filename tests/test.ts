@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('index page has expected h1', async ({ page }) => {
+test('index page has expected title', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { name: 'Evans Stepanov' })).toBeVisible();
+	await expect(page).toHaveTitle('Evans Stepanov');
 });
 
 test('tech section renders flat category rows', async ({ page }) => {
@@ -28,4 +28,25 @@ test('tech section has no card surfaces or proficiency controls', async ({ page 
 	await expect(page.locator('.tech-tile')).toHaveCount(0);
 	await expect(page.locator('.prof-mini__bar')).toHaveCount(0);
 	await expect(page.getByRole('button', { name: /proficiency/i })).toHaveCount(0);
+});
+
+test('work index lists companies and links to detail', async ({ page }) => {
+	await page.goto('/work');
+	const companyLinks = page.locator('a[href^="/work/"]');
+	expect(await companyLinks.count()).toBeGreaterThan(0);
+	const href = await companyLinks.first().getAttribute('href');
+	expect(href).toMatch(/^\/work\/[a-z0-9-]+\/?$/);
+	await companyLinks.first().click();
+	// Site uses trailingSlash: 'always'
+	await expect(page).toHaveURL(new RegExp(`${href!.replace(/\/$/, '')}/?$`));
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+});
+
+test('home work company links to work detail', async ({ page }) => {
+	await page.goto('/');
+	const workCompany = page.locator('a[href^="/work/"]').first();
+	await expect(workCompany).toBeVisible();
+	const href = await workCompany.getAttribute('href');
+	await workCompany.click();
+	await expect(page).toHaveURL(new RegExp(`${href!.replace(/\/$/, '')}/?$`));
 });
