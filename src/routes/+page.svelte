@@ -18,7 +18,8 @@
 	];
 
 	import LinksSection from '../components/domain/links/LinksSection.svelte';
-	import GridItem from '../components/domain/work/GridItem.svelte';
+	import ProjectCard from '../components/domain/work/ProjectCard.svelte';
+	import WorkExperienceCard from '../components/domain/work/WorkExperienceCard.svelte';
 	import ProfileDiamond from '../components/media/ProfileDiamond.svelte';
 	import PageContainer from '../components/layout/PageContainer.svelte';
 	import StickySectionHeader from '../components/layout/StickySectionHeader.svelte';
@@ -168,7 +169,7 @@
 			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.work as work}
-					<GridItem item={work} type="work" tech={data.tech} />
+					<WorkExperienceCard item={work} />
 				{/each}
 			</ul>
 		</section>
@@ -183,7 +184,7 @@
 			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 				{#each data.projects as project}
-					<GridItem item={project} type="project" {idHash} tech={data.tech} />
+					<ProjectCard item={project} {idHash} tech={data.tech} />
 				{/each}
 			</ul>
 		</section>
@@ -265,7 +266,7 @@
 	:global(html.js)
 		.landing-section:global(.reveal-ready):not(:global(.is-visible))
 		.landing-grid
-		> :global(.grid-card),
+		> :global(li),
 	:global(html.js)
 		.landing-section:global(.reveal-ready):not(:global(.is-visible))
 		.tech-rows
@@ -290,7 +291,7 @@
 
 	.landing-section:global(.is-visible) .about-copy > p,
 	.landing-section:global(.is-visible) .link-list-motion :global(li),
-	.landing-section:global(.is-visible) .landing-grid > :global(.grid-card),
+	.landing-section:global(.is-visible) .landing-grid > :global(li),
 	.landing-section:global(.is-visible) .tech-rows .tech-row,
 	.landing-footer:global(.is-visible) > * {
 		animation: landing-content-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -314,58 +315,58 @@
 
 	.about-copy > p:nth-child(1),
 	.link-list-motion :global(li:nth-child(1)),
-	.landing-grid > :global(.grid-card:nth-child(1)) {
+	.landing-grid > :global(li:nth-child(1)) {
 		--item-delay: 40ms;
 	}
 
 	.about-copy > p:nth-child(2),
 	.link-list-motion :global(li:nth-child(2)),
-	.landing-grid > :global(.grid-card:nth-child(2)) {
+	.landing-grid > :global(li:nth-child(2)) {
 		--item-delay: 80ms;
 	}
 
 	.about-copy > p:nth-child(3),
 	.link-list-motion :global(li:nth-child(3)),
-	.landing-grid > :global(.grid-card:nth-child(3)) {
+	.landing-grid > :global(li:nth-child(3)) {
 		--item-delay: 120ms;
 	}
 
 	.link-list-motion :global(li:nth-child(4)),
-	.landing-grid > :global(.grid-card:nth-child(4)) {
+	.landing-grid > :global(li:nth-child(4)) {
 		--item-delay: 160ms;
 	}
 
 	.link-list-motion :global(li:nth-child(5)),
-	.landing-grid > :global(.grid-card:nth-child(5)) {
+	.landing-grid > :global(li:nth-child(5)) {
 		--item-delay: 200ms;
 	}
 
 	.link-list-motion :global(li:nth-child(6)),
-	.landing-grid > :global(.grid-card:nth-child(6)) {
+	.landing-grid > :global(li:nth-child(6)) {
 		--item-delay: 240ms;
 	}
 
-	.landing-grid > :global(.grid-card:nth-child(7)) {
+	.landing-grid > :global(li:nth-child(7)) {
 		--item-delay: 280ms;
 	}
 
-	.landing-grid > :global(.grid-card:nth-child(8)) {
+	.landing-grid > :global(li:nth-child(8)) {
 		--item-delay: 320ms;
 	}
 
-	.landing-grid > :global(.grid-card:nth-child(9)) {
+	.landing-grid > :global(li:nth-child(9)) {
 		--item-delay: 360ms;
 	}
 
-	.landing-grid > :global(.grid-card:nth-child(10)) {
+	.landing-grid > :global(li:nth-child(10)) {
 		--item-delay: 400ms;
 	}
 
-	.landing-grid > :global(.grid-card:nth-child(11)) {
+	.landing-grid > :global(li:nth-child(11)) {
 		--item-delay: 440ms;
 	}
 
-	.landing-grid > :global(.grid-card:nth-child(12)) {
+	.landing-grid > :global(li:nth-child(12)) {
 		--item-delay: 480ms;
 	}
 
@@ -436,7 +437,7 @@
 		.landing-section > :first-child,
 		.about-copy > p,
 		.link-list-motion :global(li),
-		.landing-grid > :global(.grid-card),
+		.landing-grid > :global(li),
 		.tech-rows .tech-row,
 		.landing-footer > * {
 			animation: none !important;
