@@ -17,7 +17,6 @@
 		'AI'
 	];
 
-	import { SiReact, SiTypescript } from '@icons-pack/svelte-simple-icons';
 	import LinksSection from '../components/domain/links/LinksSection.svelte';
 	import ProjectCard from '../components/domain/work/ProjectCard.svelte';
 	import WorkExperienceCard from '../components/domain/work/WorkExperienceCard.svelte';
@@ -116,13 +115,21 @@
 					systems to enhancing accessibility and streamlining cloud infrastructure.
 				</p>
 				<p class="leading-relaxed">
-					I primarily work in <span class="font-semibold text-purple-700 dark:text-purple-400">
-						TypeScript <span class="inline-block"><SiTypescript size={16} /></span>
-					</span>
-					and specialize in
+					I primarily work in
 					<span class="font-semibold text-purple-700 dark:text-purple-400">
-						React <span class="inline-block"><SiReact size={16} /></span>
-					</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with
+						TypeScript
+						<span class="inline-block"><TechIcon icon={getTechIcon('TypeScript')} size={16} /></span>
+					</span>, building
+					<span class="font-semibold text-purple-700 dark:text-purple-400">
+						Node.js
+						<span class="inline-block"><TechIcon icon={getTechIcon('Node.js')} size={16} /></span>
+					</span>
+					backends and
+					<span class="font-semibold text-purple-700 dark:text-purple-400">
+						React
+						<span class="inline-block"><TechIcon icon={getTechIcon('React')} size={16} /></span>
+					</span>
+					frontends, with modern JavaScript tooling. I thrive on solving complex technical challenges with
 					elegant, user-focused solutions.
 				</p>
 				<p class="leading-relaxed">
