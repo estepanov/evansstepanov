@@ -1,21 +1,17 @@
 <script lang="ts">
-	import ProjectCard from '../../../components/domain/work/ProjectCard.svelte';
+	import GridItem from '../../../components/domain/work/GridItem.svelte';
 	import ButtonContainer from '../../../components/actions/ButtonContainer.svelte';
 	import AnchorButton from '../../../components/actions/AnchorButton.svelte';
 	import TopicHero from '../../../components/domain/tech/TopicHero.svelte';
 	import TechHeader from '../../../components/domain/tech/TechHeader.svelte';
-	import DetailsModal from '../../../components/domain/work/DetailsModal.svelte';
 	import StickySectionHeader from '../../../components/layout/StickySectionHeader.svelte';
 	import PageContainer from '../../../components/layout/PageContainer.svelte';
 	import { formatDateRange } from '../../../util/dates';
-	import type { Work } from '../../../data/work';
 	import { House, Table, ArrowUpRight } from '@lucide/svelte';
 
 	export let data;
 
 	const { company, allTech, relatedProjects } = data;
-
-	let openRole: Work | null = null;
 
 	const tenure = formatDateRange(company.startDate, company.endDate, company.isCurrent);
 </script>
@@ -94,37 +90,24 @@
 				<ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
 					{#each company.roles as role}
 						{@const range = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
-						<li class="py-6 first:pt-0 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
-							<div class="min-w-0 flex-1 space-y-2">
-								<h3
-									class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100"
-								>
-									{role.title}
-								</h3>
-								{#if range}
-									<p
-										class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide"
-									>
-										{range}
-									</p>
-								{/if}
-								{#if role.description}
-									<p
-										class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2"
-									>
-										{role.description}
-									</p>
-								{/if}
-							</div>
-							<button
-								type="button"
-								on:click={() => (openRole = role)}
-								aria-haspopup="dialog"
-								aria-expanded={openRole === role}
-								class="shrink-0 self-start text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 underline underline-offset-4 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline-offset-2 transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 rounded-xs"
+						<li class="py-6 first:pt-0 space-y-2">
+							<h3
+								class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100"
 							>
-								Details
-							</button>
+								{role.title}
+							</h3>
+							{#if range}
+								<p
+									class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide"
+								>
+									{range}
+								</p>
+							{/if}
+							{#if role.description}
+								<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+									{role.description}
+								</p>
+							{/if}
 						</li>
 					{/each}
 				</ul>
@@ -166,7 +149,7 @@
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
 					{#each relatedProjects as project}
-						<ProjectCard item={project} tech={allTech} />
+						<GridItem item={project} type="project" tech={allTech} />
 					{/each}
 				</ul>
 			</section>
@@ -186,11 +169,3 @@
 		</ButtonContainer>
 	</div>
 </PageContainer>
-
-<DetailsModal
-	open={openRole !== null}
-	item={openRole}
-	type="work"
-	tech={allTech}
-	onClose={() => (openRole = null)}
-/>
