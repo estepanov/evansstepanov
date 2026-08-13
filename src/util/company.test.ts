@@ -127,6 +127,32 @@ describe('companyHighlights', () => {
 		];
 
 		expect(companyHighlights(work)[0].description).toBe('Staff summary');
+		expect(companyHighlights(work)[0].isCurrent).toBe(true);
+	});
+
+	it('ends the company at the latest role end, not the newest role end', () => {
+		// The newest-started role ended first; the company's tenure must run to the
+		// later end date, so this can only pass if the highlight takes endDate from
+		// the company rather than from roles[0].
+		const work: Work[] = [
+			role({
+				companyName: 'Acme',
+				title: 'Advisor',
+				startDate: new Date('2024-01-01'),
+				endDate: new Date('2024-06-01')
+			}),
+			role({
+				companyName: 'Acme',
+				title: 'Engineer',
+				startDate: new Date('2022-01-01'),
+				endDate: new Date('2025-01-01')
+			})
+		];
+
+		const highlight = companyHighlights(work)[0];
+
+		expect(highlight.title).toBe('Advisor');
+		expect(highlight.endDate).toEqual(new Date('2025-01-01'));
 	});
 
 	it('spans the full company tenure rather than the newest role start', () => {

@@ -65,7 +65,8 @@ export async function load({
 	return {
 		tech,
 		allTech: allTechItems,
-		// one entry per company, newest matching role first
+		// One entry per company, newest matching role first. Note the rows were already
+		// filtered to this tag, so tenure and isCurrent reflect only the matching roles.
 		relatedWork: companyHighlights(relatedWork),
 		// sort projects by isActive first and then by startDate
 		relatedProjects: relatedProjects.sort((a, b) => {
