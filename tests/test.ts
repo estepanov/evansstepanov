@@ -60,3 +60,17 @@ test('home work cards link to work detail without nested details controls', asyn
 	await expect(page).toHaveURL(new RegExp(`${href!.replace(/\/$/, '')}/?$`));
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
+
+test('home work section shows one card per company', async ({ page }) => {
+	await page.goto('/');
+
+	const workSection = page.locator('section').filter({
+		has: page.getByRole('heading', { name: 'Work', exact: true })
+	});
+	const hrefs = await workSection
+		.locator('.landing-grid a[href^="/work/"]')
+		.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+
+	expect(hrefs.length).toBeGreaterThan(0);
+	expect(new Set(hrefs).size).toBe(hrefs.length);
+});

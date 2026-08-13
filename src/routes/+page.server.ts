@@ -8,13 +8,9 @@ import { type Tech } from '../data/tech';
 import { type Work } from '../data/work';
 import { type Project } from '../data/projects';
 import { normalizeExternalLink, type ExternalLink } from '../util/links';
-import {
-	buildTechIdToName,
-	mapProject,
-	mapTech,
-	mapWork
-} from '../util/notion-mappers';
+import { buildTechIdToName, mapProject, mapTech, mapWork } from '../util/notion-mappers';
 import { queryNotion } from '../util/notion';
+import { companyHighlights } from '../util/company';
 
 interface LoadResults {
 	links: ExternalLink[];
@@ -55,12 +51,8 @@ export async function load(): Promise<LoadResults> {
 			.filter((link): link is ExternalLink => Boolean(link)),
 		// sort tech by highest proficiencyWeight
 		tech: techResults.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight),
-		// sort work by startDate
-		work: workResults.sort((a, b) => {
-			if (a.startDate && b.startDate)
-				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
-			return 0;
-		}),
+		// one entry per company, newest role first — a promotion must not add a card
+		work: companyHighlights(workResults),
 		// sort projects by isActive first and then by startDate
 		projects: projectsResults.sort((a, b) => {
 			if (a.isActive && !b.isActive) return -1;
