@@ -60,3 +60,27 @@ test('home work cards link to work detail without nested details controls', asyn
 	await expect(page).toHaveURL(new RegExp(`${href!.replace(/\/$/, '')}/?$`));
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
+
+test('home work section shows one card per company', async ({ page }) => {
+	await page.goto('/');
+
+	const workSection = page.locator('section').filter({
+		has: page.getByRole('heading', { name: 'Work', exact: true })
+	});
+	const hrefs = await workSection
+		.locator('.landing-grid a[href^="/work/"]')
+		.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+
+	expect(hrefs.length).toBeGreaterThan(0);
+	expect(new Set(hrefs).size).toBe(hrefs.length);
+});
+
+test('work index shows every role at a company', async ({ page }) => {
+	await page.goto('/work');
+
+	const clear = page.locator('.timeline-item').filter({ hasText: 'CLEAR' }).first();
+	await expect(clear.getByText('Staff Software Engineer')).toBeVisible();
+	await expect(clear.getByText('Senior Software Engineer')).toBeVisible();
+	await expect(clear.getByText('August 2026 — Present')).toBeVisible();
+	await expect(clear.getByText('June 2023 — August 2026')).toBeVisible();
+});

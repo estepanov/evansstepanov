@@ -63,9 +63,7 @@ export function groupWorkByCompany(work: Work[]): Company[] {
 			for (const t of r.techTags ?? []) techSet.add(t);
 		}
 
-		const endDates = sortedRoles
-			.map((r) => r.endDate)
-			.filter((d): d is Date => Boolean(d));
+		const endDates = sortedRoles.map((r) => r.endDate).filter((d): d is Date => Boolean(d));
 		const endDate = isCurrent
 			? undefined
 			: endDates.length
@@ -90,4 +88,20 @@ export function groupWorkByCompany(work: Work[]): Company[] {
 		const bt = latestStart(b.roles)?.getTime() ?? 0;
 		return bt - at;
 	});
+}
+
+/**
+ * One card-ready entry per company: the newest role's identity carried on
+ * company-level tenure and tech. Returns `Work[]` so the existing work cards
+ * render it unchanged — a promotion adds a Notion row without adding a card.
+ */
+export function companyHighlights(work: Work[]): Work[] {
+	return groupWorkByCompany(work).map((company) => ({
+		...company.roles[0],
+		description: company.summary,
+		techTags: company.techTags,
+		startDate: company.startDate,
+		endDate: company.endDate,
+		isCurrent: company.isCurrent
+	}));
 }

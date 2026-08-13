@@ -1,18 +1,10 @@
-import {
-	TECH_NOTION_DB_ID,
-	PROJECTS_NOTION_DB_ID,
-	WORK_NOTION_DB_ID
-} from '$env/static/private';
+import { TECH_NOTION_DB_ID, PROJECTS_NOTION_DB_ID, WORK_NOTION_DB_ID } from '$env/static/private';
 import { type Tech } from '../../../data/tech';
 import { type Work } from '../../../data/work';
 import { type Project } from '../../../data/projects';
-import {
-	buildTechIdToName,
-	mapProject,
-	mapTech,
-	mapWork
-} from '../../../util/notion-mappers';
+import { buildTechIdToName, mapProject, mapTech, mapWork } from '../../../util/notion-mappers';
 import { queryNotion } from '../../../util/notion';
+import { companyHighlights } from '../../../util/company';
 import { error } from '@sveltejs/kit';
 
 export async function load({
@@ -73,12 +65,9 @@ export async function load({
 	return {
 		tech,
 		allTech: allTechItems,
-		// sort work by startDate
-		relatedWork: relatedWork.sort((a, b) => {
-			if (a.startDate && b.startDate)
-				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
-			return 0;
-		}),
+		// One entry per company, newest matching role first. Note the rows were already
+		// filtered to this tag, so tenure and isCurrent reflect only the matching roles.
+		relatedWork: companyHighlights(relatedWork),
 		// sort projects by isActive first and then by startDate
 		relatedProjects: relatedProjects.sort((a, b) => {
 			if (a.isActive && !b.isActive) return -1;
