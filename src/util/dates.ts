@@ -1,7 +1,8 @@
-// input JS Date expect Month Year fromate
+// Notion dates arrive as ISO date strings, which `new Date` parses as UTC midnight.
+// Format in UTC so a 1st-of-month date cannot roll back into the previous month.
 export const getFormattedDate = (date: Date): string => {
-	const month = date.toLocaleString('default', { month: 'long' });
-	const year = date.getFullYear();
+	const month = date.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+	const year = date.getUTCFullYear();
 	return `${month} ${year}`;
 };
 
