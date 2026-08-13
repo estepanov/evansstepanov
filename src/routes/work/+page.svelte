@@ -35,7 +35,7 @@
 			<span class="timeline-rail" aria-hidden="true"></span>
 			{#each companies as company}
 				{@const range = formatDateRange(company.startDate, company.endDate, company.isCurrent)}
-				{@const latestTitle = company.roles[0]?.title}
+				{@const showRoleDates = company.roles.length > 1}
 				<li class="timeline-item relative pb-12 pl-8 last:pb-0">
 					<span
 						class="timeline-dot absolute top-[0.55rem] size-2.5 rounded-full ring-4 ring-white dark:ring-slate-950 {company.isCurrent
@@ -62,11 +62,23 @@
 						</p>
 					{/if}
 
-					{#if latestTitle}
-						<p class="mt-2 leading-relaxed text-slate-600 dark:text-slate-400">
-							{latestTitle}
-						</p>
-					{/if}
+					<ul class="mt-3 space-y-3">
+						{#each company.roles as role}
+							{@const roleRange = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
+							<li>
+								<p class="leading-relaxed text-slate-600 dark:text-slate-400">
+									{role.title}
+								</p>
+								{#if showRoleDates && roleRange}
+									<p
+										class="mt-0.5 text-sm tabular-nums tracking-wide text-slate-500 dark:text-slate-400"
+									>
+										{roleRange}
+									</p>
+								{/if}
+							</li>
+						{/each}
+					</ul>
 				</li>
 			{/each}
 		</ol>
