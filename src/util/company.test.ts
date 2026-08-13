@@ -105,7 +105,28 @@ describe('companyHighlights', () => {
 	});
 
 	it('describes the company with the current role summary', () => {
-		expect(companyHighlights(clearRoles())[0].description).toBe('Staff summary');
+		// The current role is deliberately NOT the newest-started one, so
+		// company.summary ('Staff summary') and roles[0].description
+		// ('Advisor summary') differ and the assertion can only pass if the
+		// highlight sources its description from the company summary.
+		const work: Work[] = [
+			role({
+				companyName: 'CLEAR',
+				title: 'Staff Software Engineer',
+				description: 'Staff summary',
+				startDate: new Date('2026-08-01'),
+				isCurrent: true
+			}),
+			role({
+				companyName: 'CLEAR',
+				title: 'Advisor',
+				description: 'Advisor summary',
+				startDate: new Date('2026-09-01'),
+				isCurrent: false
+			})
+		];
+
+		expect(companyHighlights(work)[0].description).toBe('Staff summary');
 	});
 
 	it('spans the full company tenure rather than the newest role start', () => {
