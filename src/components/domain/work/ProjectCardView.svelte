@@ -40,7 +40,7 @@
 
 	{#if isActive}
 		<span class="status-anchor">
-			<StatusIndicator label="In progress" variant="subtle" />
+			<StatusIndicator label="In progress" variant="subtle" animation="orbit" />
 		</span>
 		<span class="active-glare" aria-hidden="true">
 			<span class="active-glare__spot"></span>
