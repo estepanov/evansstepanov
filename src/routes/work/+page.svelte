@@ -16,9 +16,7 @@
 	<TechHeader rootLabel="Work" rootHref="/work" />
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
-			<p
-				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
-			>
+			<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 				Experience
 			</p>
 			<h1

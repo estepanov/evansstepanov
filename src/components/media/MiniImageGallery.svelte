@@ -53,7 +53,7 @@
 				alt={selectedImage.alt}
 				class="max-w-full max-h-[80vh] object-contain"
 			/>
-			<button class="absolute top-4 right-4 text-3xl text-gray-200" on:click={closeModal}>
+			<button class="absolute top-4 right-4 text-3xl text-slate-200" on:click={closeModal}>
 				&times;
 			</button>
 		</div>

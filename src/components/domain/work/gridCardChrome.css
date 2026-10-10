@@ -20,8 +20,8 @@
 html.dark .card-description,
 html.dark .card-meta {
 	text-shadow:
-		0 0 1px var(--color-gray-900),
-		0 1px 1px var(--color-gray-900);
+		0 0 1px var(--color-slate-900),
+		0 1px 1px var(--color-slate-900);
 }
 
 .grid-card {
@@ -137,23 +137,23 @@ html.dark .grid-card::before {
 }
 
 .active-border {
-	--ab-accent: var(--color-emerald-500);
-	--ab-edge: color-mix(in oklab, var(--color-emerald-500) 32%, transparent);
+	--ab-accent: var(--color-jade-500);
+	--ab-edge: color-mix(in oklab, var(--color-jade-500) 32%, transparent);
 	position: relative;
-	border-color: color-mix(in oklab, var(--color-emerald-500) 18%, transparent);
+	border-color: color-mix(in oklab, var(--color-jade-500) 18%, transparent);
 }
 
 html.dark .active-border {
-	--ab-accent: var(--color-emerald-400);
-	--ab-edge: color-mix(in oklab, var(--color-emerald-400) 32%, transparent);
-	border-color: color-mix(in oklab, var(--color-emerald-400) 18%, transparent);
+	--ab-accent: var(--color-jade-400);
+	--ab-edge: color-mix(in oklab, var(--color-jade-400) 32%, transparent);
+	border-color: color-mix(in oklab, var(--color-jade-400) 18%, transparent);
 }
 
 .active-border--subtle {
 	--ab-accent: var(--color-slate-600);
-	--ab-edge: color-mix(in oklab, var(--color-slate-500) 40%, transparent);
+	--ab-edge: color-mix(in oklab, var(--color-mist-500) 40%, transparent);
 	--glare-opacity: 0.62;
-	border-color: color-mix(in oklab, var(--color-slate-500) 28%, transparent);
+	border-color: color-mix(in oklab, var(--color-mist-500) 28%, transparent);
 }
 
 html.dark .active-border--subtle {

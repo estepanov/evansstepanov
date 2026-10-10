@@ -348,11 +348,11 @@
 		font-size: 0.75rem;
 		font-weight: 500;
 		letter-spacing: 0.01em;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 		margin-bottom: 0.4rem;
 	}
 	:global(.dark) .eyebrow {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 
 	.modal-title {
@@ -374,10 +374,10 @@
 	.modal-meta {
 		margin-top: 0.5rem;
 		font-size: 0.8125rem;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 	}
 	:global(.dark) .modal-meta {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 
 	.close-btn {
@@ -418,7 +418,7 @@
 		box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.18);
 	}
 	:global(.dark) .close-btn {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 		border-color: rgba(255, 255, 255, 0.12);
 	}
 	:global(.dark) .close-btn:hover {
@@ -492,11 +492,11 @@
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 		margin-bottom: 0.9rem;
 	}
 	:global(.dark) .section-label {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 
 	/* Description */
@@ -531,10 +531,10 @@
 	.stack-cat {
 		padding-top: 0.35rem;
 		font-size: 0.75rem;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 	}
 	:global(.dark) .stack-cat {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 	.stack-chips {
 		display: flex;
@@ -685,7 +685,7 @@
 	}
 
 	:global(.dark) .link-out {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 	:global(.dark) .link-out:hover {
 		color: rgb(241 245 249);

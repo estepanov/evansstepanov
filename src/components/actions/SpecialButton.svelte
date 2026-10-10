@@ -29,13 +29,13 @@
 		background: transparent;
 		z-index: 0;
 		@apply transition-all duration-300 ease-in-out;
-		@apply text-gray-700 dark:text-gray-300;
+		@apply text-slate-700 dark:text-slate-300;
 	}
 
 	.tag-highlighter:hover {
 		transform: scale(1.03);
 		border-color: transparent;
-		@apply text-emerald-500;
+		@apply text-jade-500;
 		@apply shadow-lg shadow-slate-300/30 dark:shadow-slate-900/50;
 	}
 
@@ -70,15 +70,15 @@
 		background:
 			linear-gradient(
 					to bottom,
-					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
-					color-mix(in oklab, var(--color-emerald-500) 70%, transparent),
-					color-mix(in oklab, var(--color-emerald-500) 10%, transparent)
+					color-mix(in oklab, var(--color-jade-500) 10%, transparent),
+					color-mix(in oklab, var(--color-jade-500) 70%, transparent),
+					color-mix(in oklab, var(--color-jade-500) 10%, transparent)
 				)
 				padding-box,
 			conic-gradient(
 					from var(--bg-angle),
-					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
-					color-mix(in oklab, var(--color-emerald-500) 70%, transparent)
+					color-mix(in oklab, var(--color-jade-500) 10%, transparent),
+					color-mix(in oklab, var(--color-jade-500) 70%, transparent)
 				)
 				border-box;
 		opacity: 1;
@@ -89,15 +89,15 @@
 		background:
 			linear-gradient(
 					to bottom,
-					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
-					color-mix(in oklab, var(--color-emerald-500) 70%, transparent),
-					color-mix(in oklab, var(--color-emerald-500) 10%, transparent)
+					color-mix(in oklab, var(--color-jade-500) 10%, transparent),
+					color-mix(in oklab, var(--color-jade-500) 70%, transparent),
+					color-mix(in oklab, var(--color-jade-500) 10%, transparent)
 				)
 				padding-box,
 			conic-gradient(
 					from var(--bg-angle),
-					color-mix(in oklab, var(--color-emerald-500) 10%, transparent),
-					color-mix(in oklab, var(--color-emerald-500) 70%, transparent)
+					color-mix(in oklab, var(--color-jade-500) 10%, transparent),
+					color-mix(in oklab, var(--color-jade-500) 70%, transparent)
 				)
 				border-box;
 		opacity: 1;

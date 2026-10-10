@@ -16,7 +16,7 @@
 			docs: {
 				description: {
 					component:
-						'A plain inline link with emerald hover. `rel` defaults to `noopener noreferrer` ' +
+						'A plain inline link with jade hover. `rel` defaults to `noopener noreferrer` ' +
 						'even for same-tab links. `onClick` is a plain callback prop, not a Svelte event.'
 				}
 			}

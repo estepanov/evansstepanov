@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let label: string = 'Now';
-	export let variant: 'emerald' | 'subtle' = 'emerald';
+	export let variant: 'jade' | 'subtle' = 'jade';
 	export let className: string = '';
 </script>
 
@@ -46,21 +46,21 @@
 		padding-top: 1px;
 	}
 
-	.status--emerald {
-		--status-color: var(--color-emerald-500);
-		--status-halo: color-mix(in oklab, var(--color-emerald-500) 18%, transparent);
-		--status-label: var(--color-emerald-700);
+	.status--jade {
+		--status-color: var(--color-jade-500);
+		--status-halo: color-mix(in oklab, var(--color-jade-500) 18%, transparent);
+		--status-label: var(--color-jade-700);
 	}
 
-	:global(html.dark) .status--emerald {
-		--status-color: var(--color-emerald-400);
-		--status-halo: color-mix(in oklab, var(--color-emerald-400) 22%, transparent);
-		--status-label: var(--color-emerald-300);
+	:global(html.dark) .status--jade {
+		--status-color: var(--color-jade-400);
+		--status-halo: color-mix(in oklab, var(--color-jade-400) 22%, transparent);
+		--status-label: var(--color-jade-300);
 	}
 
 	.status--subtle {
-		--status-color: var(--color-slate-500);
-		--status-halo: color-mix(in oklab, var(--color-slate-500) 18%, transparent);
+		--status-color: var(--color-mist-500);
+		--status-halo: color-mix(in oklab, var(--color-mist-500) 18%, transparent);
 		--status-label: var(--color-slate-600);
 	}
 

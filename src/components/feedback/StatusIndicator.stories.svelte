@@ -8,7 +8,7 @@
 		tags: ['autodocs'],
 		argTypes: {
 			label: { control: 'text' },
-			variant: { control: 'inline-radio', options: ['emerald', 'subtle'] },
+			variant: { control: 'inline-radio', options: ['jade', 'subtle'] },
 			className: { control: 'text' }
 		},
 		parameters: {
@@ -24,17 +24,17 @@
 	});
 </script>
 
-<Story name="Emerald" args={{ label: 'Now', variant: 'emerald' }} />
+<Story name="Jade" args={{ label: 'Now', variant: 'jade' }} />
 
 <Story name="Subtle" args={{ label: 'Archived', variant: 'subtle' }} />
 
 <!-- The label is uppercased in CSS and letter-spaced, so long text gets wide. -->
-<Story name="Custom Label" args={{ label: 'Currently building', variant: 'emerald' }} />
+<Story name="Custom Label" args={{ label: 'Currently building', variant: 'jade' }} />
 
 <Story name="Both Variants">
 	{#snippet template()}
 		<div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-			<StatusIndicator label="Now" variant="emerald" />
+			<StatusIndicator label="Now" variant="jade" />
 			<StatusIndicator label="Archived" variant="subtle" />
 		</div>
 	{/snippet}

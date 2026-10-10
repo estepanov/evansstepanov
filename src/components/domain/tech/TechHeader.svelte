@@ -11,13 +11,13 @@
 	<a
 		href="/"
 		aria-label="Evans Stepanov — back to home"
-		class="logo-link group inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-900 transition-colors hover:text-emerald-600 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:text-slate-100 dark:hover:text-emerald-400"
+		class="logo-link group inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-900 transition-colors hover:text-jade-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-jade-700 dark:text-slate-100 dark:hover:text-jade-400"
 	>
 		<LogoIcon />
 	</a>
 	<nav
 		aria-label="Breadcrumb"
-		class="crumbs min-w-0 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400"
+		class="crumbs min-w-0 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-mist-500 dark:text-mist-400"
 	>
 		{#if leaf}
 			<a

@@ -164,7 +164,7 @@
 		align-items: center;
 		gap: 0.4rem;
 		background: transparent;
-		border: 1px solid color-mix(in oklab, var(--color-slate-400) 35%, transparent);
+		border: 1px solid color-mix(in oklab, var(--color-mist-400) 35%, transparent);
 		border-radius: 999px;
 		padding: 4px 8px 4px 12px;
 		font-size: 10px;
@@ -183,38 +183,38 @@
 	}
 
 	:global(html.dark) .select__trigger {
-		border-color: color-mix(in oklab, var(--color-slate-500) 35%, transparent);
+		border-color: color-mix(in oklab, var(--color-mist-500) 35%, transparent);
 		color: var(--color-slate-300);
 	}
 
 	.select__trigger:hover {
-		border-color: color-mix(in oklab, var(--color-violet-500) 40%, transparent);
-		background-color: color-mix(in oklab, var(--color-violet-500) 6%, transparent);
-		color: var(--color-violet-600);
+		border-color: color-mix(in oklab, var(--color-iris-500) 40%, transparent);
+		background-color: color-mix(in oklab, var(--color-iris-500) 6%, transparent);
+		color: var(--color-iris-600);
 	}
 
 	:global(html.dark) .select__trigger:hover {
-		border-color: color-mix(in oklab, var(--color-violet-400) 40%, transparent);
-		background-color: color-mix(in oklab, var(--color-violet-400) 10%, transparent);
-		color: var(--color-violet-300);
+		border-color: color-mix(in oklab, var(--color-iris-400) 40%, transparent);
+		background-color: color-mix(in oklab, var(--color-iris-400) 10%, transparent);
+		color: var(--color-iris-300);
 	}
 
 	.select__trigger:focus-visible {
 		outline: none;
-		border-color: color-mix(in oklab, var(--color-violet-500) 60%, transparent);
-		box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-violet-500) 25%, transparent);
+		border-color: color-mix(in oklab, var(--color-iris-500) 60%, transparent);
+		box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-iris-500) 25%, transparent);
 	}
 
 	.select--open .select__trigger {
-		color: var(--color-violet-600);
-		border-color: color-mix(in oklab, var(--color-violet-500) 50%, transparent);
-		background-color: color-mix(in oklab, var(--color-violet-500) 7%, transparent);
+		color: var(--color-iris-600);
+		border-color: color-mix(in oklab, var(--color-iris-500) 50%, transparent);
+		background-color: color-mix(in oklab, var(--color-iris-500) 7%, transparent);
 	}
 
 	:global(html.dark) .select--open .select__trigger {
-		color: var(--color-violet-300);
-		border-color: color-mix(in oklab, var(--color-violet-400) 45%, transparent);
-		background-color: color-mix(in oklab, var(--color-violet-400) 10%, transparent);
+		color: var(--color-iris-300);
+		border-color: color-mix(in oklab, var(--color-iris-400) 45%, transparent);
+		background-color: color-mix(in oklab, var(--color-iris-400) 10%, transparent);
 	}
 
 	.select__trigger :global(.select__chevron) {
@@ -292,22 +292,22 @@
 
 	.select__option--active,
 	.select__option:hover {
-		background-color: color-mix(in oklab, var(--color-violet-500) 10%, transparent);
-		color: var(--color-violet-700);
+		background-color: color-mix(in oklab, var(--color-iris-500) 10%, transparent);
+		color: var(--color-iris-700);
 	}
 
 	:global(html.dark) .select__option--active,
 	:global(html.dark) .select__option:hover {
-		background-color: color-mix(in oklab, var(--color-violet-400) 14%, transparent);
-		color: var(--color-violet-200);
+		background-color: color-mix(in oklab, var(--color-iris-400) 14%, transparent);
+		color: var(--color-iris-200);
 	}
 
 	.select__option[aria-selected='true'] {
-		color: var(--color-violet-700);
+		color: var(--color-iris-700);
 	}
 
 	:global(html.dark) .select__option[aria-selected='true'] {
-		color: var(--color-violet-300);
+		color: var(--color-iris-300);
 	}
 
 	.select__option-check {
@@ -317,11 +317,11 @@
 		width: 14px;
 		height: 14px;
 		flex-shrink: 0;
-		color: var(--color-violet-600);
+		color: var(--color-iris-600);
 	}
 
 	:global(html.dark) .select__option-check {
-		color: var(--color-violet-300);
+		color: var(--color-iris-300);
 	}
 
 	.select__option-label {
@@ -332,12 +332,12 @@
 
 	.select__option-meta {
 		font-size: 11px;
-		color: var(--color-slate-400);
+		color: var(--color-mist-400);
 		font-variant-numeric: tabular-nums;
 	}
 
 	:global(html.dark) .select__option-meta {
-		color: var(--color-slate-500);
+		color: var(--color-mist-500);
 	}
 
 	.select__value {

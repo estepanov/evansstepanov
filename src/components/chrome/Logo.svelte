@@ -14,11 +14,11 @@
 			y2="117.85"
 		>
 			<stop offset="0%" stop-color="white" stop-opacity="0" />
-			<stop offset="38%" stop-color="#34d399" stop-opacity="0" />
-			<stop offset="47%" stop-color="#34d399" stop-opacity="0.55" />
+			<stop offset="38%" class="shine-signal" stop-opacity="0" />
+			<stop offset="47%" class="shine-signal" stop-opacity="0.55" />
 			<stop offset="52%" stop-color="white" stop-opacity="0.82" />
-			<stop offset="57%" stop-color="#a78bfa" stop-opacity="0.5" />
-			<stop offset="66%" stop-color="#a78bfa" stop-opacity="0" />
+			<stop offset="57%" class="shine-emphasis" stop-opacity="0.5" />
+			<stop offset="66%" class="shine-emphasis" stop-opacity="0" />
 			<stop offset="100%" stop-color="white" stop-opacity="0" />
 			<animate
 				attributeName="x1"
@@ -64,6 +64,20 @@
 <style>
 	.logo-shine {
 		pointer-events: none;
+	}
+
+	/* Shine stops follow the tuned palette per theme: jade signal, iris emphasis. */
+	.shine-signal {
+		stop-color: #009d75;
+	}
+	.shine-emphasis {
+		stop-color: #7a61ce;
+	}
+	:global(html.dark) .shine-signal {
+		stop-color: #5cd1a3;
+	}
+	:global(html.dark) .shine-emphasis {
+		stop-color: #9f90e6;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

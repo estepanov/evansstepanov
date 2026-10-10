@@ -15,9 +15,7 @@
 	<SiteHeader />
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
-			<p
-				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
-			>
+			<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 				Bookmarks
 			</p>
 			<h1
@@ -25,7 +23,7 @@
 			>
 				A loose collection of links worth keeping
 			</h1>
-			<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+			<p class="text-slate-600 dark:text-mist-400 leading-relaxed">
 				Tools, articles, and references I return to. Grouped by topic.
 			</p>
 		</header>
@@ -88,7 +86,7 @@
 				</div>
 			</section>
 
-			<p class="text-xs text-slate-400 dark:text-slate-500 italic text-center">
+			<p class="text-xs text-mist-500 dark:text-mist-400 italic text-center">
 				Data as of {data.lastChecked}
 			</p>
 		{/if}
