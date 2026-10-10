@@ -9,7 +9,7 @@
 	<a
 		href="/"
 		aria-label="Evans Stepanov — back to home"
-		class="group inline-flex items-center justify-center h-10 w-10 shrink-0 text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+		class="group inline-flex items-center justify-center h-10 w-10 shrink-0 text-slate-900 dark:text-slate-100 hover:text-jade-700 dark:hover:text-jade-400 transition-colors"
 	>
 		<LogoIcon />
 	</a>
@@ -17,7 +17,7 @@
 		<div class="min-w-0">
 			{#if eyebrow}
 				<p
-					class="text-[10px] font-medium tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400"
+					class="text-[10px] font-medium tracking-[0.2em] uppercase text-mist-500 dark:text-mist-400"
 				>
 					{eyebrow}
 				</p>

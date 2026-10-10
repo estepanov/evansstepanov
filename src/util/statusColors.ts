@@ -3,14 +3,14 @@ import { TechProficiency } from '../data/tech';
 export const getColorFromWeight = (proficiency: TechProficiency) => {
 	switch (proficiency) {
 		case TechProficiency.Expert:
-			return 'text-purple-900 border-purple-900 dark:text-purple-200 dark:border-purple-200';
+			return 'text-iris-800 border-iris-800 dark:text-iris-200 dark:border-iris-200';
 		case TechProficiency.Advanced:
-			return 'text-purple-800 border-purple-800 dark:text-purple-300 dark:border-purple-300';
+			return 'text-iris-700 border-iris-700 dark:text-iris-300 dark:border-iris-300';
 		case TechProficiency.Intermediate:
-			return 'text-purple-700 border-purple-700 dark:text-purple-400 dark:border-purple-400';
+			return 'text-iris-600 border-iris-600 dark:text-iris-400 dark:border-iris-400';
 		case TechProficiency.Beginner:
-			return 'text-gray-500 border-gray-500 dark:text-gray-500 dark:border-gray-500';
+			return 'text-mist-500 border-mist-500 dark:text-mist-400 dark:border-mist-400';
 		default:
-			return 'text-gray-500 border-gray-500 dark:text-gray-500 dark:border-gray-500';
+			return 'text-mist-500 border-mist-500 dark:text-mist-400 dark:border-mist-400';
 	}
 };

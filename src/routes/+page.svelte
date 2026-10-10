@@ -87,7 +87,7 @@
 		<div class="landing-logo w-56 md:w-64">
 			<Logo />
 		</div>
-		<!-- <p class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400">
+		<!-- <p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 			Product-focused software engineer
 		</p> -->
 	</header>
@@ -104,11 +104,11 @@
 				<p class="leading-relaxed">
 					<ProfileDiamond />
 					I'm a
-					<span class="font-semibold text-purple-700 dark:text-purple-400"
+					<span class="font-semibold text-iris-700 dark:text-iris-300"
 						>product focused <span class="inline-block"><ShoppingCart size={16} /></span></span
 					>
 					software engineer with a passion for building scalable, high-performance
-					<span class="font-semibold text-purple-700 dark:text-purple-400"
+					<span class="font-semibold text-iris-700 dark:text-iris-300"
 						>web applications <span class="inline-block"><MousePointer size={16} /></span></span
 					>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
 					full-stack initiatives, from architecting frontend applications and optimizing legacy
@@ -116,17 +116,17 @@
 				</p>
 				<p class="leading-relaxed">
 					I primarily work in
-					<span class="font-semibold text-purple-700 dark:text-purple-400">
+					<span class="font-semibold text-iris-700 dark:text-iris-300">
 						TypeScript
 						<span class="inline-block"><TechIcon icon={getTechIcon('TypeScript')} size={16} /></span
 						>
 					</span>, building
-					<span class="font-semibold text-purple-700 dark:text-purple-400">
+					<span class="font-semibold text-iris-700 dark:text-iris-300">
 						Node.js
 						<span class="inline-block"><TechIcon icon={getTechIcon('Node.js')} size={16} /></span>
 					</span>
 					backends and
-					<span class="font-semibold text-purple-700 dark:text-purple-400">
+					<span class="font-semibold text-iris-700 dark:text-iris-300">
 						React
 						<span class="inline-block"><TechIcon icon={getTechIcon('React')} size={16} /></span>
 					</span>
@@ -135,14 +135,14 @@
 				</p>
 				<p class="leading-relaxed">
 					When I'm not <code>coding</code>, you can find me
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">dading</span>
+					<span class="font-semibold text-jade-700 dark:text-jade-400">dading</span>
 					🍼,
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">reading</span>
+					<span class="font-semibold text-jade-700 dark:text-jade-400">reading</span>
 					📚,
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">skiing</span>
-					⛷️, playing <span class="font-semibold text-emerald-700 dark:text-emerald-400">Halo</span>
+					<span class="font-semibold text-jade-700 dark:text-jade-400">skiing</span>
+					⛷️, playing <span class="font-semibold text-jade-700 dark:text-jade-400">Halo</span>
 					🎮, or
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">sleeping</span> 🛌.
+					<span class="font-semibold text-jade-700 dark:text-jade-400">sleeping</span> 🛌.
 				</p>
 			</div>
 		</section>
@@ -234,7 +234,7 @@
 		</section>
 	</main>
 	<footer use:revealOnView class="landing-footer reveal-ready mt-10">
-		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">
+		<div class="my-5 text-xs text-mist-500 dark:text-mist-400 text-center">
 			<span class="italic">“I have not failed. I've just found 10,000 ways that won't work.”</span> ―
 			Thomas A. Edison
 		</div>
@@ -467,12 +467,12 @@
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		color: var(--color-slate-500);
+		color: var(--color-mist-500);
 		transition: color 200ms ease;
 	}
 
 	:global(html.dark) .tech-row__label {
-		color: var(--color-slate-400);
+		color: var(--color-mist-400);
 	}
 
 	.tech-row__label-text {
@@ -498,12 +498,12 @@
 
 	.tech-row__label:hover,
 	.tech-row__label:focus-visible {
-		color: var(--color-emerald-600);
+		color: var(--color-jade-700);
 	}
 
 	:global(html.dark) .tech-row__label:hover,
 	:global(html.dark) .tech-row__label:focus-visible {
-		color: var(--color-emerald-400);
+		color: var(--color-jade-400);
 	}
 
 	.tech-row__items {
@@ -527,26 +527,26 @@
 
 	.tech-item:hover,
 	.tech-item:focus-visible {
-		color: var(--color-emerald-600);
+		color: var(--color-jade-700);
 	}
 
 	:global(html.dark) .tech-item:hover,
 	:global(html.dark) .tech-item:focus-visible {
-		color: var(--color-emerald-400);
+		color: var(--color-jade-400);
 	}
 
 	/* outline (not a box-shadow ring) so the focus indicator can sit outside the
 	 * element without a wrapper — these links have no padding to inset into. */
 	.tech-row__label:focus-visible,
 	.tech-item:focus-visible {
-		outline: 2px solid color-mix(in oklab, var(--color-emerald-500) 60%, transparent);
+		outline: 2px solid var(--color-jade-700);
 		outline-offset: 3px;
 		border-radius: 0.25rem;
 	}
 
 	:global(html.dark) .tech-row__label:focus-visible,
 	:global(html.dark) .tech-item:focus-visible {
-		outline-color: color-mix(in oklab, var(--color-emerald-400) 60%, transparent);
+		outline-color: color-mix(in oklab, var(--color-jade-400) 60%, transparent);
 	}
 
 	.tech-item__icon {
@@ -567,7 +567,7 @@
 		height: 18px;
 		border-radius: 0.25rem;
 		background-color: var(--color-slate-100);
-		color: var(--color-slate-500);
+		color: var(--color-mist-500);
 		font-size: 10px;
 		font-weight: 600;
 		line-height: 1;
@@ -575,7 +575,7 @@
 
 	:global(html.dark) .tech-item__fallback {
 		background-color: var(--color-slate-800);
-		color: var(--color-slate-400);
+		color: var(--color-mist-400);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

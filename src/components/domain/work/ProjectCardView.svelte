@@ -57,23 +57,23 @@
 						referrerpolicy="no-referrer"
 						on:click={() => onLinkClick(titleField)}
 						href={item.url}
-						class="text-gray-700 dark:text-gray-200 line-clamp-1 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in"
+						class="text-slate-700 dark:text-slate-200 line-clamp-1 underline underline-offset-2 hover:underline-offset-4 hover:text-jade-700 dark:hover:text-jade-400 transition-all duration-200 ease-in"
 						>{titleField}</a
 					>
 				{:else}
-					<span class="text-gray-700 dark:text-gray-200 line-clamp-1">{titleField}</span>
+					<span class="text-slate-700 dark:text-slate-200 line-clamp-1">{titleField}</span>
 				{/if}
 			</h3>
 		</div>
 
-		<p class="card-description leading-snug dark:text-gray-200 text-gray-600 line-clamp-4">
+		<p class="card-description leading-snug dark:text-slate-200 text-slate-600 line-clamp-4">
 			{item.description}
 		</p>
 
 		<div class="flex grow"></div>
 
 		<ul
-			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center text-gray-700"
+			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-slate-300 items-center text-slate-700"
 		>
 			{#if item.startDate}
 				<li class="opacity-80 special">
@@ -88,7 +88,7 @@
 						referrerpolicy="no-referrer"
 						on:click={() => onSourceClick(item.name)}
 						href={item.source}
-						class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in"
+						class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-jade-700 dark:hover:text-jade-400 transition-all duration-200 ease-in"
 					>
 						{#if item.source?.includes('github.com')}
 							<GithubIcon class="h-3 w-3 mr-1" />
@@ -103,7 +103,7 @@
 					on:click={handleDetailsClick}
 					aria-haspopup="dialog"
 					aria-expanded={detailsOpen}
-					class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 ease-in focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 rounded-xs"
+					class="capitalize flex flex-row justify-center items-center opacity-80 underline underline-offset-2 hover:underline-offset-4 hover:text-jade-700 dark:hover:text-jade-400 transition-all duration-200 ease-in focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-jade-700 rounded-xs"
 				>
 					Details
 				</button>
@@ -115,7 +115,7 @@
 					aria-label="View details for {titleField}"
 					aria-haspopup="dialog"
 					aria-expanded={detailsOpen}
-					class="details-btn group/details relative inline-flex items-center py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 focus-visible:outline-hidden focus-visible:text-emerald-700 dark:focus-visible:text-emerald-300 transition-colors duration-200"
+					class="details-btn group/details relative inline-flex items-center py-0.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300 hover:text-jade-700 dark:hover:text-jade-300 focus-visible:outline-hidden focus-visible:text-jade-700 dark:focus-visible:text-jade-300 transition-colors duration-200"
 				>
 					<span class="details-btn__label">View details</span>
 				</button>
@@ -151,8 +151,8 @@
 
 	:global(html.dark) .details-btn {
 		text-shadow:
-			0 0 1px var(--color-gray-900),
-			0 1px 1px var(--color-gray-900);
+			0 0 1px var(--color-slate-900),
+			0 1px 1px var(--color-slate-900);
 	}
 
 	.details-btn::before {
@@ -170,7 +170,7 @@
 	}
 
 	:global(html.dark) .details-btn::before {
-		background: var(--color-gray-900);
+		background: var(--color-slate-900);
 		box-shadow:
 			0 1px 2px rgba(0, 0, 0, 0.3),
 			0 0 0 1px rgba(255, 255, 255, 0.06);

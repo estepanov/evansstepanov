@@ -40,9 +40,7 @@
 	<TechHeader />
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
-			<p
-				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
-			>
+			<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 				Tech Stack
 			</p>
 			<h1
@@ -50,7 +48,7 @@
 			>
 				Tools and technologies I build with
 			</h1>
-			<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+			<p class="text-slate-600 dark:text-mist-400 leading-relaxed">
 				Organized by category. Select any item to see related work and projects.
 			</p>
 		</header>
@@ -76,7 +74,7 @@
 							>
 								{#if techIcon}
 									<span
-										class="shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+										class="shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 group-hover:bg-jade-50 dark:group-hover:bg-jade-500/10 group-hover:text-jade-700 dark:group-hover:text-jade-400 transition-colors"
 									>
 										<TechIcon icon={techIcon} size={22} />
 									</span>
@@ -94,7 +92,7 @@
 									</div>
 									{#if techItem.description}
 										<p
-											class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2"
+											class="text-sm text-slate-600 dark:text-mist-400 leading-relaxed line-clamp-2"
 										>
 											{techItem.description}
 										</p>

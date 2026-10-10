@@ -14,7 +14,7 @@
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test:unit": "vitest",
+		"test:unit": "vitest run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
 		"lint": "prettier --check . && eslint .",

@@ -3,10 +3,11 @@
 	import { GithubIcon } from '@lucide/svelte';
 	import { onDestroy } from 'svelte';
 	import { getFormattedDate } from '../../../util/dates';
+	import type { Work } from '../../../data/work';
+	import type { Project } from '../../../data/projects';
 
 	export let open = false;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- modal renders either Work or Project shapes; a discriminated union would require reworking both call sites' templates
-	export let item: any;
+	export let item: Work | Project | undefined = undefined;
 	export let type: 'work' | 'project' = 'work';
 	export let tech: Array<{ name: string; type?: string; proficiencyWeight?: number }> = [];
 	export let onClose: () => void = () => {};
@@ -17,11 +18,11 @@
 	let closing = false;
 	const EXIT_MS = 200;
 
-	$: title = type === 'work' ? item?.title : item?.name;
-	$: subtitle = type === 'work' ? item?.companyName : undefined;
+	$: title =
+		type === 'work' ? (item as Work | undefined)?.title : (item as Project | undefined)?.name;
+	$: subtitle = type === 'work' ? (item as Work | undefined)?.companyName : undefined;
 	$: techTags = (item?.techTags as string[] | undefined) ?? [];
 	$: techTypeByName = new Map(tech.map((t) => [t.name, t.type ?? 'Other']));
-
 	function sortByProficiency(tags: string[]) {
 		const weights = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
 		return tags.slice().sort((a, b) => {
@@ -46,10 +47,14 @@
 		if (other && other.length) ordered.push({ category: 'Other', tags: sortByProficiency(other) });
 		return ordered;
 	})();
-	$: media = (type === 'project' ? (item?.media as string[] | undefined) : undefined) ?? [];
-	$: heroImage = type === 'work' ? item?.image : undefined;
+	$: media =
+		(type === 'project'
+			? ((item as Project | undefined)?.media as string[] | undefined)
+			: undefined) ?? [];
+	$: heroImage = type === 'work' ? (item as Work | undefined)?.image : undefined;
 	$: primaryUrl = item?.url as string | undefined;
-	$: sourceUrl = type === 'project' ? (item?.source as string | undefined) : undefined;
+	$: sourceUrl =
+		type === 'project' ? ((item as Project | undefined)?.source as string | undefined) : undefined;
 	$: dateRange = (() => {
 		if (!item?.startDate) return null;
 		const start = getFormattedDate(item.startDate);
@@ -351,11 +356,11 @@
 		font-size: 0.75rem;
 		font-weight: 500;
 		letter-spacing: 0.01em;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 		margin-bottom: 0.4rem;
 	}
 	:global(.dark) .eyebrow {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 
 	.modal-title {
@@ -377,10 +382,10 @@
 	.modal-meta {
 		margin-top: 0.5rem;
 		font-size: 0.8125rem;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 	}
 	:global(.dark) .modal-meta {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 
 	.close-btn {
@@ -421,7 +426,7 @@
 		box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.18);
 	}
 	:global(.dark) .close-btn {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 		border-color: rgba(255, 255, 255, 0.12);
 	}
 	:global(.dark) .close-btn:hover {
@@ -495,11 +500,11 @@
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 		margin-bottom: 0.9rem;
 	}
 	:global(.dark) .section-label {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 
 	/* Description */
@@ -534,10 +539,10 @@
 	.stack-cat {
 		padding-top: 0.35rem;
 		font-size: 0.75rem;
-		color: rgb(100 116 139);
+		color: rgb(95 109 128);
 	}
 	:global(.dark) .stack-cat {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 	.stack-chips {
 		display: flex;
@@ -688,7 +693,7 @@
 	}
 
 	:global(.dark) .link-out {
-		color: rgb(148 163 184);
+		color: rgb(147 161 181);
 	}
 	:global(.dark) .link-out:hover {
 		color: rgb(241 245 249);

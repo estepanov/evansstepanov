@@ -17,3 +17,11 @@ vite.config.ts.timestamp-*
 # Playwright MCP scratch output
 /.playwright-mcp
 .worktrees
+
+# Agent harness & skill install artifacts (machine-local)
+/.agents
+/.claude
+/.codex
+/.cursor
+/.opencode
+/.pi

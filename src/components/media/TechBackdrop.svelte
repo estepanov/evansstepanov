@@ -223,12 +223,12 @@
 	}
 
 	.lattice--accent {
-		color: var(--color-violet-700);
+		color: var(--color-iris-700);
 		opacity: 0.45;
 	}
 
 	:global(html.dark) .lattice--accent {
-		color: var(--color-violet-300);
+		color: var(--color-iris-300);
 		opacity: 0.55;
 	}
 

@@ -16,9 +16,7 @@
 	<TechHeader rootLabel="Work" rootHref="/work" />
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
-			<p
-				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
-			>
+			<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 				Experience
 			</p>
 			<h1
@@ -26,7 +24,7 @@
 			>
 				Where I’ve built and led
 			</h1>
-			<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+			<p class="text-slate-600 dark:text-mist-400 leading-relaxed">
 				Roles and companies, newest first. Open any entry for the full story.
 			</p>
 		</header>
@@ -39,7 +37,7 @@
 				<li class="timeline-item relative pb-12 pl-8 last:pb-0">
 					<span
 						class="timeline-dot absolute top-[0.55rem] size-2.5 rounded-full ring-4 ring-white dark:ring-slate-950 {company.isCurrent
-							? 'bg-emerald-500 dark:bg-emerald-400'
+							? 'bg-jade-500 dark:bg-jade-400'
 							: 'bg-slate-300 dark:bg-slate-600'}"
 						aria-hidden="true"
 					></span>
@@ -47,17 +45,17 @@
 					<div class="mb-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
 						<a
 							href="/work/{company.slug}"
-							class="text-xl font-semibold tracking-tight text-slate-900 transition-colors hover:text-emerald-600 dark:text-slate-100 dark:hover:text-emerald-400"
+							class="text-xl font-semibold tracking-tight text-slate-900 transition-colors hover:text-jade-700 dark:text-slate-100 dark:hover:text-jade-400"
 						>
 							{company.companyName}
 						</a>
 						{#if company.isCurrent}
-							<StatusIndicator label="Now" variant="emerald" animation="orbit" />
+							<StatusIndicator label="Now" variant="jade" animation="orbit" />
 						{/if}
 					</div>
 
 					{#if range}
-						<p class="text-sm tabular-nums tracking-wide text-slate-500 dark:text-slate-400">
+						<p class="text-sm tabular-nums tracking-wide text-mist-500 dark:text-mist-400">
 							{range}
 						</p>
 					{/if}
@@ -66,12 +64,12 @@
 						{#each company.roles as role (role.title)}
 							{@const roleRange = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 							<li>
-								<p class="leading-relaxed text-slate-600 dark:text-slate-400">
+								<p class="leading-relaxed text-slate-600 dark:text-mist-400">
 									{role.title}
 								</p>
 								{#if showRoleDates && roleRange}
 									<p
-										class="mt-0.5 text-sm tabular-nums tracking-wide text-slate-500 dark:text-slate-400"
+										class="mt-0.5 text-sm tabular-nums tracking-wide text-mist-500 dark:text-mist-400"
 									>
 										{roleRange}
 									</p>

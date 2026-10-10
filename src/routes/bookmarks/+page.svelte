@@ -15,9 +15,7 @@
 	<SiteHeader />
 	<main class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
-			<p
-				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
-			>
+			<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 				Bookmarks
 			</p>
 			<h1
@@ -25,7 +23,7 @@
 			>
 				A loose collection of links worth keeping
 			</h1>
-			<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+			<p class="text-slate-600 dark:text-mist-400 leading-relaxed">
 				Tools, articles, and references I return to. Grouped by topic.
 			</p>
 		</header>
@@ -40,7 +38,7 @@
 					>
 						Categories
 					</h2>
-					<span class="text-xs font-medium text-slate-400 dark:text-slate-500 tabular-nums">
+					<span class="text-xs font-medium text-mist-500 dark:text-mist-400 tabular-nums">
 						{data.tags.length}
 					</span>
 				</div>
@@ -52,13 +50,11 @@
 								class="flex items-baseline justify-between gap-2 mb-3 pb-3 border-b border-slate-200/70 dark:border-slate-800/70"
 							>
 								<h3
-									class="text-[11px] font-semibold tracking-[0.15em] uppercase text-slate-600 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+									class="text-[11px] font-semibold tracking-[0.15em] uppercase text-slate-600 dark:text-mist-400 group-hover:text-jade-700 dark:group-hover:text-jade-400 transition-colors"
 								>
 									{tag.name}
 								</h3>
-								<span
-									class="text-[10px] font-medium text-slate-400 dark:text-slate-500 tabular-nums"
-								>
+								<span class="text-[10px] font-medium text-mist-500 dark:text-mist-400 tabular-nums">
 									{tag.Links.length}
 								</span>
 							</div>
@@ -69,10 +65,10 @@
 											href={bookmark.URL}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="group/link inline-flex items-start gap-1.5 text-sm text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors rounded-xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 dark:focus-visible:ring-emerald-400/60"
+											class="group/link inline-flex items-start gap-1.5 text-sm text-slate-700 dark:text-slate-300 hover:text-jade-700 dark:hover:text-jade-400 transition-colors rounded-xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-jade-700 dark:focus-visible:ring-jade-400/60"
 										>
 											<span
-												class="underline underline-offset-4 decoration-slate-300 dark:decoration-slate-700 group-hover/link:decoration-emerald-500/60"
+												class="underline underline-offset-4 decoration-slate-300 dark:decoration-slate-700 group-hover/link:decoration-jade-600/60"
 											>
 												{bookmark.Name}
 											</span>
@@ -88,7 +84,7 @@
 				</div>
 			</section>
 
-			<p class="text-xs text-slate-400 dark:text-slate-500 italic text-center">
+			<p class="text-xs text-mist-500 dark:text-mist-400 italic text-center">
 				Data as of {data.lastChecked}
 			</p>
 		{/if}

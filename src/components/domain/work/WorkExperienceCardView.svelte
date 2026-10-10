@@ -21,7 +21,7 @@
 
 	{#if isActive}
 		<span class="status-anchor">
-			<StatusIndicator label="Now" variant="emerald" animation="orbit" />
+			<StatusIndicator label="Now" variant="jade" animation="orbit" />
 		</span>
 		<span class="active-glare" aria-hidden="true">
 			<span class="active-glare__spot"></span>
@@ -31,22 +31,22 @@
 	<div class="relative z-[1] flex flex-col grow">
 		<div class="relative mb-7">
 			<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">{item.title}</h3>
-			<p class="mt-2.5 text-sm italic text-gray-500 dark:text-gray-400">
+			<p class="mt-2.5 text-sm italic text-mist-500 dark:text-mist-400">
 				<span class="mr-1">at</span>
-				<span class="not-italic font-medium text-gray-700 dark:text-gray-200"
+				<span class="not-italic font-medium text-slate-700 dark:text-slate-200"
 					>{item.companyName}</span
 				>
 			</p>
 		</div>
 
-		<p class="card-description leading-snug dark:text-gray-200 text-gray-600">
+		<p class="card-description leading-snug dark:text-slate-200 text-slate-600">
 			{item.description}
 		</p>
 
 		<div class="flex grow"></div>
 
 		<ul
-			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center text-gray-500"
+			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-slate-300 items-center text-mist-500"
 		>
 			{#if item.startDate}
 				<li class="opacity-80">

@@ -31,7 +31,7 @@
 		<TopicHero tags={company.techTags}>
 			<div class="flex items-center justify-between gap-4">
 				<span
-					class="text-[10px] font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400"
+					class="text-[10px] font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400"
 				>
 					Company
 				</span>
@@ -40,10 +40,10 @@
 						href={company.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors group"
+						class="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-jade-700 dark:text-jade-400 hover:text-jade-800 dark:hover:text-jade-300 transition-colors group"
 					>
 						<span
-							class="underline underline-offset-4 decoration-emerald-600/30 group-hover:decoration-emerald-600"
+							class="underline underline-offset-4 decoration-jade-600/30 group-hover:decoration-jade-600"
 						>
 							Visit
 						</span>
@@ -62,7 +62,7 @@
 				</h1>
 				{#if tenure}
 					<p
-						class="mt-4 text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400 tabular-nums"
+						class="mt-4 text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400 tabular-nums"
 					>
 						{tenure}
 					</p>
@@ -95,12 +95,12 @@
 								{role.title}
 							</h3>
 							{#if range}
-								<p class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide">
+								<p class="text-sm text-mist-500 dark:text-mist-400 tabular-nums tracking-wide">
 									{range}
 								</p>
 							{/if}
 							{#if role.description}
-								<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+								<p class="text-sm text-slate-600 dark:text-mist-400 leading-relaxed">
 									{role.description}
 								</p>
 							{/if}
@@ -124,7 +124,7 @@
 						<li>
 							<a
 								href="/tech/{tag}"
-								class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 rounded-lg hover:border-emerald-500/40 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+								class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 rounded-lg hover:border-jade-600/50 hover:text-jade-700 dark:hover:text-jade-400 transition-colors"
 							>
 								{tag}
 							</a>
