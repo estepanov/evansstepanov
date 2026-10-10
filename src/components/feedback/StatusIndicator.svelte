@@ -3,13 +3,13 @@
 	export let variant: 'emerald' | 'subtle' = 'emerald';
 	export let animation: 'ping' | 'orbit' = 'ping';
 	export let className: string = '';
+
+	$: classes = ['status', `status--${variant}`, `status--${animation}`, className]
+		.filter(Boolean)
+		.join(' ');
 </script>
 
-<span
-	class="status status--{variant} status--{animation} {className}"
-	role="status"
-	aria-label={label}
->
+<span class={classes} role="status" aria-label={label}>
 	<span class="status__dot" aria-hidden="true">
 		{#if animation === 'ping'}
 			<span class="status__ping"></span>

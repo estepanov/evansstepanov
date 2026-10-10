@@ -84,3 +84,17 @@ test('work index shows every role at a company', async ({ page }) => {
 	await expect(clear.getByText('August 2026 — Present')).toBeVisible();
 	await expect(clear.getByText('June 2023 — August 2026')).toBeVisible();
 });
+
+test('live items show the orbit status indicator', async ({ page }) => {
+	await page.goto('/work');
+
+	const clear = page.locator('.timeline-item').filter({ hasText: 'CLEAR' }).first();
+	await expect(clear.locator('.status--orbit .status__ring')).toBeAttached();
+	await expect(clear.locator('.status--orbit .status__sat')).toBeAttached();
+
+	await page.goto('/');
+
+	const card = page.locator('.landing-grid li').filter({ hasText: 'CLEAR' }).first();
+	await expect(card.locator('.status--orbit .status__ring')).toBeAttached();
+	await expect(card.locator('.status--orbit .status__sat')).toBeAttached();
+});
