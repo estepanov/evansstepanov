@@ -47,13 +47,15 @@ import {
 	SiGatsby,
 	SiApachekafka
 } from '@icons-pack/svelte-simple-icons';
+import type { ComponentType } from 'svelte';
+import type { IconSvgElement } from '@hugeicons/svelte';
 
 export type TechIcon =
-	| { kind: 'simple'; component: any }
-	| { kind: 'hugeicons'; icon: any };
+	| { kind: 'simple'; component: ComponentType }
+	| { kind: 'hugeicons'; icon: IconSvgElement };
 
-const simple = (component: any): TechIcon => ({ kind: 'simple', component });
-const huge = (icon: any): TechIcon => ({ kind: 'hugeicons', icon });
+const simple = (component: ComponentType): TechIcon => ({ kind: 'simple', component });
+const huge = (icon: IconSvgElement): TechIcon => ({ kind: 'hugeicons', icon });
 
 export const techIconMap: Record<string, TechIcon> = {
 	'Microsoft Azure': simple(AzureIcon),
@@ -68,7 +70,7 @@ export const techIconMap: Record<string, TechIcon> = {
 	'AWS CDK': simple(AwsIcon),
 	'Amazon CloudWatch': simple(AwsIcon),
 	'Amazon Web Services': simple(AwsIcon),
-	'Amazon': simple(AwsIcon),
+	Amazon: simple(AwsIcon),
 	'Amazon CloudWatch.': simple(AwsIcon),
 	Cloudflare: simple(SiCloudflare),
 	'Claude Code': huge(ClaudeIcon),

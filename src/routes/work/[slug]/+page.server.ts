@@ -1,8 +1,4 @@
-import {
-	WORK_NOTION_DB_ID,
-	TECH_NOTION_DB_ID,
-	PROJECTS_NOTION_DB_ID
-} from '$env/static/private';
+import { WORK_NOTION_DB_ID, TECH_NOTION_DB_ID, PROJECTS_NOTION_DB_ID } from '$env/static/private';
 import { error } from '@sveltejs/kit';
 import type { Company } from '../../../data/work';
 import type { Tech } from '../../../data/tech';
@@ -10,6 +6,7 @@ import type { Project } from '../../../data/projects';
 import { groupWorkByCompany } from '../../../util/company';
 import {
 	buildTechIdToName,
+	isFullPage,
 	mapProject,
 	mapTech,
 	mapWork
@@ -24,11 +21,9 @@ async function loadCompaniesAndTech() {
 	const techPages = tech.results.filter(
 		(p): p is typeof p & { properties: object } => 'properties' in p
 	);
-	const techIdToName = buildTechIdToName(techPages as any);
-	const allTech = techPages.map((p) => mapTech(p as any));
-	const roles = work.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapWork(page as any, techIdToName));
+	const techIdToName = buildTechIdToName(techPages);
+	const allTech = techPages.map((p) => mapTech(p));
+	const roles = work.results.filter(isFullPage).map((page) => mapWork(page, techIdToName));
 	return { companies: groupWorkByCompany(roles), allTech, techIdToName, techPages };
 }
 
@@ -47,8 +42,8 @@ export async function load({
 	const projectsResult = await queryNotion({ database_id: PROJECTS_NOTION_DB_ID as string });
 	const companyTagSet = new Set(company.techTags);
 	const relatedProjects = projectsResult.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapProject(page as any, techIdToName))
+		.filter(isFullPage)
+		.map((page) => mapProject(page, techIdToName))
 		.filter((p) => (p.techTags ?? []).some((t) => companyTagSet.has(t)))
 		.sort((a, b) => {
 			if (a.isActive && !b.isActive) return -1;

@@ -2,7 +2,13 @@ import { TECH_NOTION_DB_ID, PROJECTS_NOTION_DB_ID, WORK_NOTION_DB_ID } from '$en
 import { type Tech } from '../../../data/tech';
 import { type Work } from '../../../data/work';
 import { type Project } from '../../../data/projects';
-import { buildTechIdToName, mapProject, mapTech, mapWork } from '../../../util/notion-mappers';
+import {
+	buildTechIdToName,
+	isFullPage,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../../../util/notion-mappers';
 import { queryNotion } from '../../../util/notion';
 import { companyHighlights } from '../../../util/company';
 import { error } from '@sveltejs/kit';
@@ -45,22 +51,18 @@ export async function load({
 		})
 	]);
 
-	const techIdToName = buildTechIdToName(
-		allTech.results.filter((p): p is typeof p & { properties: object } => 'properties' in p)
-	);
-	const allTechItems = allTech.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapTech(page as any));
+	const techIdToName = buildTechIdToName(allTech.results.filter(isFullPage));
+	const allTechItems = allTech.results.filter(isFullPage).map((page) => mapTech(page));
 
-	const tech = mapTech(techPage as any);
+	const tech = mapTech(techPage);
 
 	const relatedProjects = relatedProjectsResults.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapProject(page as any, techIdToName));
+		.filter(isFullPage)
+		.map((page) => mapProject(page, techIdToName));
 
 	const relatedWork = relatedWorkResults.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapWork(page as any, techIdToName));
+		.filter(isFullPage)
+		.map((page) => mapWork(page, techIdToName));
 
 	return {
 		tech,

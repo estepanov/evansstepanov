@@ -46,7 +46,7 @@
 				</div>
 
 				<div class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-					{#each data.tags as tag}
+					{#each data.tags as tag (tag.id)}
 						<div class="card card--interactive break-inside-avoid group p-5">
 							<div
 								class="flex items-baseline justify-between gap-2 mb-3 pb-3 border-b border-slate-200/70 dark:border-slate-800/70"
@@ -63,7 +63,7 @@
 								</span>
 							</div>
 							<ul class="space-y-1.5">
-								{#each tag.Links as bookmark}
+								{#each tag.Links as bookmark (bookmark.id)}
 									<li>
 										<a
 											href={bookmark.URL}

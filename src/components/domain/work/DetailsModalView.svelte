@@ -5,6 +5,7 @@
 	import { getFormattedDate } from '../../../util/dates';
 
 	export let open = false;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- modal renders either Work or Project shapes; a discriminated union would require reworking both call sites' templates
 	export let item: any;
 	export let type: 'work' | 'project' = 'work';
 	export let tech: Array<{ name: string; type?: string; proficiencyWeight?: number }> = [];
@@ -20,12 +21,14 @@
 	$: subtitle = type === 'work' ? item?.companyName : undefined;
 	$: techTags = (item?.techTags as string[] | undefined) ?? [];
 	$: techTypeByName = new Map(tech.map((t) => [t.name, t.type ?? 'Other']));
-	$: techWeightByName = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
-	$: sortByProficiency = (tags: string[]) =>
-		tags.slice().sort((a, b) => {
-			const wd = (techWeightByName.get(b) ?? -1) - (techWeightByName.get(a) ?? -1);
+
+	function sortByProficiency(tags: string[]) {
+		const weights = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
+		return tags.slice().sort((a, b) => {
+			const wd = (weights.get(b) ?? -1) - (weights.get(a) ?? -1);
 			return wd !== 0 ? wd : a.localeCompare(b);
 		});
+	}
 	$: groupedTech = (() => {
 		const groups = new Map<string, string[]>();
 		for (const tag of techTags) {

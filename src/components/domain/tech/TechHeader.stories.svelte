@@ -33,7 +33,4 @@
 <!-- The leaf crumb is `truncate`, so overlong labels clip rather than wrap. -->
 <Story name="Long Leaf" args={{ leaf: 'model-context-protocol-server-tooling' }} />
 
-<Story
-	name="Work"
-	args={{ rootLabel: 'Work', rootHref: '/work', leaf: 'Cursor' }}
-/>
+<Story name="Work" args={{ rootLabel: 'Work', rootHref: '/work', leaf: 'Cursor' }} />

@@ -118,11 +118,76 @@
 	// Icons placed around the diamond like the old sparkles — larger,
 	// different sizes, twinkling. Position is wrapper-relative %.
 	const sparkleIcons = [
-		{ component: SiReact, size: 36, top: '8%', left: '70%', dur: 2.4, delay: 0, scale: 1, dx: 1, dy: 1, driftDur: 7.5, driftDelay: 0, spin: 1 },
-		{ component: SiTypescript, size: 28, top: '54%', left: '94%', dur: 3.1, delay: 0.6, scale: 0.9, dx: 1, dy: 1, driftDur: 9.2, driftDelay: 1.3, spin: -1 },
-		{ component: MousePointer, size: 24, top: '88%', left: '38%', dur: 2.7, delay: 1.2, scale: 1.1, dx: 1, dy: -1, driftDur: 6.8, driftDelay: 2.1, spin: 1 },
-		{ component: ShoppingCart, size: 32, top: '22%', left: '10%', dur: 2.9, delay: 0.3, scale: 0.85, dx: -1, dy: -1, driftDur: 8.4, driftDelay: 0.7, spin: -1 },
-		{ component: SiNodedotjs, size: 30, top: '72%', left: '12%', dur: 2.6, delay: 0.9, scale: 0.95, dx: -1, dy: 1, driftDur: 7.8, driftDelay: 1.8, spin: 1 }
+		{
+			component: SiReact,
+			size: 36,
+			top: '8%',
+			left: '70%',
+			dur: 2.4,
+			delay: 0,
+			scale: 1,
+			dx: 1,
+			dy: 1,
+			driftDur: 7.5,
+			driftDelay: 0,
+			spin: 1
+		},
+		{
+			component: SiTypescript,
+			size: 28,
+			top: '54%',
+			left: '94%',
+			dur: 3.1,
+			delay: 0.6,
+			scale: 0.9,
+			dx: 1,
+			dy: 1,
+			driftDur: 9.2,
+			driftDelay: 1.3,
+			spin: -1
+		},
+		{
+			component: MousePointer,
+			size: 24,
+			top: '88%',
+			left: '38%',
+			dur: 2.7,
+			delay: 1.2,
+			scale: 1.1,
+			dx: 1,
+			dy: -1,
+			driftDur: 6.8,
+			driftDelay: 2.1,
+			spin: 1
+		},
+		{
+			component: ShoppingCart,
+			size: 32,
+			top: '22%',
+			left: '10%',
+			dur: 2.9,
+			delay: 0.3,
+			scale: 0.85,
+			dx: -1,
+			dy: -1,
+			driftDur: 8.4,
+			driftDelay: 0.7,
+			spin: -1
+		},
+		{
+			component: SiNodedotjs,
+			size: 30,
+			top: '72%',
+			left: '12%',
+			dur: 2.6,
+			delay: 0.9,
+			scale: 0.95,
+			dx: -1,
+			dy: 1,
+			driftDur: 7.8,
+			driftDelay: 1.8,
+			spin: 1
+		}
 	] as const;
 </script>
 
@@ -159,7 +224,6 @@
 				stroke-linejoin="round"
 			/> -->
 		</g>
-
 	</svg>
 
 	<span class="planet" aria-hidden="true">
@@ -206,10 +270,7 @@
 	}
 
 	.parallax-image {
-		transform: translate(
-			calc(var(--mx) * -10px),
-			calc(var(--my) * -10px + var(--sy) * -22px)
-		);
+		transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px + var(--sy) * -22px));
 	}
 
 	.profile-image {

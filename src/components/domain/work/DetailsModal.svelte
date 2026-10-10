@@ -2,6 +2,7 @@
 	import DetailsModalView from './DetailsModalView.svelte';
 
 	export let open = false;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- passthrough to DetailsModalView, which renders either Work or Project shapes
 	export let item: any;
 	export let type: 'work' | 'project' = 'work';
 	export let tech: Array<{ name: string; type?: string; proficiencyWeight?: number }> = [];

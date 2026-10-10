@@ -55,7 +55,7 @@
 			</p>
 		</header>
 
-		{#each categories as techType}
+		{#each categories as techType (techType)}
 			{@const techItems = tech.filter((t) => t.type === techType)}
 			{#if techItems.length > 0}
 				<section id={techType.toLowerCase()} class="scroll-mt-24">
@@ -67,7 +67,7 @@
 						</h2>
 					</div>
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-						{#each techItems as techItem}
+						{#each techItems as techItem (techItem.name)}
 							{@const techIcon = getTechIcon(techItem.name)}
 							{@const proficiencyColor = getColorFromWeight(techItem.proficiency)}
 							<a
