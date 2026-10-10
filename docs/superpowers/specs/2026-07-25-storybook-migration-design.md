@@ -20,13 +20,13 @@
 
 ## Decisions
 
-| Topic | Choice |
-| --- | --- |
-| Catalog vs QA | Catalog first; structure enables QA later |
+| Topic                | Choice                                                                    |
+| -------------------- | ------------------------------------------------------------------------- |
+| Catalog vs QA        | Catalog first; structure enables QA later                                 |
 | Sidebar organization | Hybrid: function groups for primitives, `Domain/<feature>` for composites |
-| Disk layout | Mirror Storybook taxonomy (Approach 2) |
-| Coverage | Full inventory |
-| Analytics / data | Extract presentational shells; fixtures in stories |
+| Disk layout          | Mirror Storybook taxonomy (Approach 2)                                    |
+| Coverage             | Full inventory                                                            |
+| Analytics / data     | Extract presentational shells; fixtures in stories                        |
 
 ## Taxonomy & folder layout
 
@@ -59,11 +59,11 @@ src/components/
 
 ## Presentational shells
 
-| Public export (routes keep this name) | Shell | Shell owns | Container owns |
-| --- | --- | --- | --- |
-| `domain/work/GridItem.svelte` | `GridItemView.svelte` | Markup, open-state UI, callback props (`onLinkClick`, `onSourceClick`, `onDetailsClick`) | Map `item` / `type`, Fathom, wire callbacks |
-| `domain/work/DetailsModal.svelte` | `DetailsModalView.svelte` | Dialog chrome, grouped tech list, close animation | Item → view props (no Fathom today; split is for Storybook props / size) |
-| `domain/links/LinkItem.svelte` | `LinkItemView.svelte` | Icon resolve + link row UI | `Fathom.trackEvent` on click |
+| Public export (routes keep this name) | Shell                     | Shell owns                                                                               | Container owns                                                           |
+| ------------------------------------- | ------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `domain/work/GridItem.svelte`         | `GridItemView.svelte`     | Markup, open-state UI, callback props (`onLinkClick`, `onSourceClick`, `onDetailsClick`) | Map `item` / `type`, Fathom, wire callbacks                              |
+| `domain/work/DetailsModal.svelte`     | `DetailsModalView.svelte` | Dialog chrome, grouped tech list, close animation                                        | Item → view props (no Fathom today; split is for Storybook props / size) |
+| `domain/links/LinkItem.svelte`        | `LinkItemView.svelte`     | Icon resolve + link row UI                                                               | `Fathom.trackEvent` on click                                             |
 
 **Conventions**
 
@@ -95,13 +95,13 @@ Each wave should stay reviewable (`git mv`, update imports, `npm run check`).
 
 ## Risks & mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Import churn across routes | Wave-1 moves only; `git mv`; `npm run check` per wave |
-| `ThemeToggle` `$lib` path | Single consumer in `+layout.svelte` — update in place |
-| Shell split regressions | Containers keep the existing public prop API; spot-check landing, work detail, bookmarks |
-| ThemeToggle vs Storybook theme toolbar | Document in story (already); do not “fix” in this project |
-| DetailsModal size | File split only; no UI redesign while moving |
+| Risk                                   | Mitigation                                                                               |
+| -------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Import churn across routes             | Wave-1 moves only; `git mv`; `npm run check` per wave                                    |
+| `ThemeToggle` `$lib` path              | Single consumer in `+layout.svelte` — update in place                                    |
+| Shell split regressions                | Containers keep the existing public prop API; spot-check landing, work detail, bookmarks |
+| ThemeToggle vs Storybook theme toolbar | Document in story (already); do not “fix” in this project                                |
+| DetailsModal size                      | File split only; no UI redesign while moving                                             |
 
 ## Testing
 

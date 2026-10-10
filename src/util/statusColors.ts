@@ -1,4 +1,4 @@
-import { TechProficiency } from "../data/tech";
+import { TechProficiency } from '../data/tech';
 
 export const getColorFromWeight = (proficiency: TechProficiency) => {
 	switch (proficiency) {

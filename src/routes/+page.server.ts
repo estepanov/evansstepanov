@@ -8,7 +8,13 @@ import { type Tech } from '../data/tech';
 import { type Work } from '../data/work';
 import { type Project } from '../data/projects';
 import { normalizeExternalLink, type ExternalLink } from '../util/links';
-import { buildTechIdToName, mapProject, mapTech, mapWork } from '../util/notion-mappers';
+import {
+	buildTechIdToName,
+	isFullPage,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../util/notion-mappers';
 import { queryNotion } from '../util/notion';
 import { companyHighlights } from '../util/company';
 
@@ -26,28 +32,25 @@ export async function load(): Promise<LoadResults> {
 		queryNotion({ database_id: WORK_NOTION_DB_ID as string }),
 		queryNotion({ database_id: TECH_NOTION_DB_ID as string })
 	]);
-	const techIdToName = buildTechIdToName(
-		tech.results.filter((p): p is typeof p & { properties: object } => 'properties' in p)
-	);
+	const techIdToName = buildTechIdToName(tech.results.filter(isFullPage));
 	const projectsResults = projects.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapProject(page as any, techIdToName));
-	const workResults = work.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapWork(page as any, techIdToName));
-	const techResults = tech.results
-		.filter((page): page is typeof page & { properties: object } => 'properties' in page)
-		.map((page) => mapTech(page as any));
+		.filter(isFullPage)
+		.map((page) => mapProject(page, techIdToName));
+	const workResults = work.results.filter(isFullPage).map((page) => mapWork(page, techIdToName));
+	const techResults = tech.results.filter(isFullPage).map((page) => mapTech(page));
 
 	return {
 		links: links.results
-			.filter((page): page is any => 'properties' in page)
-			.map((page) =>
-				normalizeExternalLink({
-					title: (page.properties.Name as any).title[0]?.plain_text,
-					url: (page.properties.URL as any).url
-				})
-			)
+			.filter(isFullPage)
+			.map((page) => {
+				const name = page.properties.Name;
+				const url = page.properties.URL;
+				if (name?.type !== 'title' || url?.type !== 'url') return undefined;
+				return normalizeExternalLink({
+					title: name.title[0]?.plain_text,
+					url: url.url ?? undefined
+				});
+			})
 			.filter((link): link is ExternalLink => Boolean(link)),
 		// sort tech by highest proficiencyWeight
 		tech: techResults.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight),

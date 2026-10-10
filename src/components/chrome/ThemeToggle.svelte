@@ -73,12 +73,7 @@
 	title={label[theme.mode]}
 	onclick={() => theme.cycle()}
 >
-	<span
-		class="mode-label"
-		class:is-visible={labelVisible}
-		aria-live="polite"
-		aria-atomic="true"
-	>
+	<span class="mode-label" class:is-visible={labelVisible} aria-live="polite" aria-atomic="true">
 		<span class="mode-label__text">{modeName[labelMode]}</span>
 	</span>
 	<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -114,8 +109,25 @@
 	{#if theme.mode === 'system'}
 		<span class="system-badge" aria-hidden="true">
 			<svg viewBox="0 0 12 12" focusable="false">
-				<rect x="1.25" y="2" width="9.5" height="6.5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.1" />
-				<line x1="4" y1="10" x2="8" y2="10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+				<rect
+					x="1.25"
+					y="2"
+					width="9.5"
+					height="6.5"
+					rx="1.2"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.1"
+				/>
+				<line
+					x1="4"
+					y1="10"
+					x2="8"
+					y2="10"
+					stroke="currentColor"
+					stroke-width="1.1"
+					stroke-linecap="round"
+				/>
 			</svg>
 		</span>
 	{/if}
@@ -187,14 +199,12 @@
 		border-radius: inherit;
 		pointer-events: none;
 		z-index: -1;
-		background: radial-gradient(
-			closest-side,
-			currentColor,
-			transparent 70%
-		);
+		background: radial-gradient(closest-side, currentColor, transparent 70%);
 		opacity: 0;
 		transform: scale(0.9);
-		transition: opacity 420ms ease, transform 420ms ease;
+		transition:
+			opacity 420ms ease,
+			transform 420ms ease;
 	}
 	.theme-toggle:hover .halo {
 		opacity: 0.12;
@@ -210,11 +220,7 @@
 		inset: 0;
 		border-radius: inherit;
 		pointer-events: none;
-		background: radial-gradient(
-			circle at center,
-			currentColor 0%,
-			transparent 60%
-		);
+		background: radial-gradient(circle at center, currentColor 0%, transparent 60%);
 		opacity: 0;
 		transform: scale(0.4);
 	}
@@ -222,8 +228,14 @@
 		animation: ripple 480ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	@keyframes ripple {
-		0% { opacity: 0.22; transform: scale(0.4); }
-		100% { opacity: 0; transform: scale(1.4); }
+		0% {
+			opacity: 0.22;
+			transform: scale(0.4);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(1.4);
+		}
 	}
 
 	/* System-mode indicator: tiny monitor glyph clipped to bottom-right */
@@ -239,21 +251,31 @@
 		border-radius: 9999px;
 		background: rgba(255, 255, 255, 0.95);
 		color: #475569;
-		box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow:
+			0 0 0 1.5px rgba(0, 0, 0, 0.04),
+			0 1px 2px rgba(0, 0, 0, 0.1);
 		animation: badge-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
 	:global(.dark) .system-badge {
 		background: #1f2937;
 		color: #cbd5e1;
-		box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.5);
+		box-shadow:
+			0 0 0 1.5px rgba(255, 255, 255, 0.06),
+			0 1px 2px rgba(0, 0, 0, 0.5);
 	}
 	.system-badge svg {
 		width: 9px;
 		height: 9px;
 	}
 	@keyframes badge-in {
-		from { transform: scale(0); opacity: 0; }
-		to { transform: scale(1); opacity: 1; }
+		from {
+			transform: scale(0);
+			opacity: 0;
+		}
+		to {
+			transform: scale(1);
+			opacity: 1;
+		}
 	}
 
 	.theme-toggle svg {
@@ -347,16 +369,34 @@
 	}
 
 	@keyframes star-drift-a {
-		from { transform: translate3d(0, 0, 0) scale(1); opacity: 0.6; }
-		to { transform: translate3d(2px, 1px, 0) scale(1.4); opacity: 1; }
+		from {
+			transform: translate3d(0, 0, 0) scale(1);
+			opacity: 0.6;
+		}
+		to {
+			transform: translate3d(2px, 1px, 0) scale(1.4);
+			opacity: 1;
+		}
 	}
 	@keyframes star-drift-b {
-		from { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
-		to { transform: translate3d(-2px, -1.5px, 0) scale(0.7); opacity: 0.5; }
+		from {
+			transform: translate3d(0, 0, 0) scale(1);
+			opacity: 1;
+		}
+		to {
+			transform: translate3d(-2px, -1.5px, 0) scale(0.7);
+			opacity: 0.5;
+		}
 	}
 	@keyframes star-drift-c {
-		from { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0.3; }
-		to { transform: translate3d(1.5px, -2px, 0) scale(1.3); opacity: 0.9; }
+		from {
+			transform: translate3d(0, 0, 0) scale(0.8);
+			opacity: 0.3;
+		}
+		to {
+			transform: translate3d(1.5px, -2px, 0) scale(1.3);
+			opacity: 0.9;
+		}
 	}
 
 	/* Light-mode ambient — gentle ray pulse */
@@ -368,8 +408,12 @@
 		animation-play-state: running;
 	}
 	@keyframes ray-breathe {
-		from { transform: scale(1) rotate(0deg); }
-		to { transform: scale(1.06) rotate(8deg); }
+		from {
+			transform: scale(1) rotate(0deg);
+		}
+		to {
+			transform: scale(1.06) rotate(8deg);
+		}
 	}
 
 	/* Mode label — fades in on change, fades out after a beat */

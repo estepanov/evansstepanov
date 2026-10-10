@@ -39,30 +39,31 @@ src/components/
 
 **Relative import depth after moves**
 
-| From | To `src/util/*` |
-| --- | --- |
-| `src/components/<group>/*` | `../../util/...` |
-| `src/components/domain/<feature>/*` | `../../../util/...` |
-| `src/components/icons/*` | unchanged (`../../util/...` if needed; icons today are self-contained) |
+| From                                | To `src/util/*`                                                        |
+| ----------------------------------- | ---------------------------------------------------------------------- |
+| `src/components/<group>/*`          | `../../util/...`                                                       |
+| `src/components/domain/<feature>/*` | `../../../util/...`                                                    |
+| `src/components/icons/*`            | unchanged (`../../util/...` if needed; icons today are self-contained) |
 
 **Cross-component imports after moves**
 
-| File | Import |
-| --- | --- |
-| `media/TechBackdrop.svelte` | `../domain/tech/TechIcon.svelte` |
-| `domain/tech/TopicHero.svelte` | `../../media/TechBackdrop.svelte` |
-| `domain/tech/TechHeader.svelte` | `../../chrome/LogoIcon.svelte` |
-| `chrome/SiteHeader.svelte` | `./LogoIcon.svelte` |
-| `domain/work/GridItem.svelte` | `../../feedback/StatusIndicator.svelte`, `../../media/TechBackdrop.svelte`, `./DetailsModal.svelte` |
-| `media/MiniImageGallery.svelte` | `./LazyLoadImage.svelte` |
-| `domain/links/LinksSection.svelte` | `./LinkItem.svelte` |
-| `util/tech-icons.ts` | paths stay `../components/icons/...` (icons folder does not move) |
+| File                               | Import                                                                                              |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `media/TechBackdrop.svelte`        | `../domain/tech/TechIcon.svelte`                                                                    |
+| `domain/tech/TopicHero.svelte`     | `../../media/TechBackdrop.svelte`                                                                   |
+| `domain/tech/TechHeader.svelte`    | `../../chrome/LogoIcon.svelte`                                                                      |
+| `chrome/SiteHeader.svelte`         | `./LogoIcon.svelte`                                                                                 |
+| `domain/work/GridItem.svelte`      | `../../feedback/StatusIndicator.svelte`, `../../media/TechBackdrop.svelte`, `./DetailsModal.svelte` |
+| `media/MiniImageGallery.svelte`    | `./LazyLoadImage.svelte`                                                                            |
+| `domain/links/LinksSection.svelte` | `./LinkItem.svelte`                                                                                 |
+| `util/tech-icons.ts`               | paths stay `../components/icons/...` (icons folder does not move)                                   |
 
 ---
 
 ### Task 1: Scaffold — move inventory + retitle existing stories
 
 **Files:**
+
 - Create dirs: `src/components/{actions,feedback,chrome,layout,media,domain/tech,domain/work,domain/links}/`
 - Move (via `git mv`) every component + existing story listed in the File structure section
 - Move: `src/lib/components/ThemeToggle.svelte` + `ThemeToggle.stories.svelte` → `src/components/chrome/`
@@ -71,25 +72,26 @@ src/components/
 - Test: `npm run check`
 
 **Interfaces:**
+
 - Consumes: existing component public APIs (unchanged)
 - Produces: on-disk taxonomy matching Storybook titles below
 
 **Title map for existing stories**
 
-| Component | New `title` |
-| --- | --- |
-| AnchorButton | `Actions/AnchorButton` |
-| SpecialButton | `Actions/SpecialButton` |
-| ButtonContainer | `Actions/ButtonContainer` |
-| Link | `Actions/Link` |
-| Select | `Actions/Select` |
+| Component       | New `title`                |
+| --------------- | -------------------------- |
+| AnchorButton    | `Actions/AnchorButton`     |
+| SpecialButton   | `Actions/SpecialButton`    |
+| ButtonContainer | `Actions/ButtonContainer`  |
+| Link            | `Actions/Link`             |
+| Select          | `Actions/Select`           |
 | StatusIndicator | `Feedback/StatusIndicator` |
-| SimpleSpinner | `Feedback/SimpleSpinner` |
-| SiteHeader | `Chrome/SiteHeader` |
-| ThemeToggle | `Chrome/ThemeToggle` |
-| Section | `Layout/Section` |
-| TechHeader | `Domain/Tech/TechHeader` |
-| TechIcon | `Domain/Tech/TechIcon` |
+| SimpleSpinner   | `Feedback/SimpleSpinner`   |
+| SiteHeader      | `Chrome/SiteHeader`        |
+| ThemeToggle     | `Chrome/ThemeToggle`       |
+| Section         | `Layout/Section`           |
+| TechHeader      | `Domain/Tech/TechHeader`   |
+| TechIcon        | `Domain/Tech/TechIcon`     |
 
 - [ ] **Step 1: Create folders**
 
@@ -269,6 +271,7 @@ EOF
 ### Task 2: Stories for layout, chrome marks, media, TopicHero
 
 **Files:**
+
 - Create: `src/components/layout/PageContainer.stories.svelte`
 - Create: `src/components/layout/StickySectionHeader.stories.svelte`
 - Create: `src/components/chrome/Logo.stories.svelte`
@@ -281,6 +284,7 @@ EOF
 - Test: `npm run check`
 
 **Interfaces:**
+
 - Consumes: components as moved in Task 1
 - Produces: one Default story (plus listed variants) for each file above
 
@@ -379,8 +383,7 @@ EOF
 		parameters: {
 			docs: {
 				description: {
-					component:
-						'Tech-page hero shell: `TechBackdrop` plus a slotted content area.'
+					component: 'Tech-page hero shell: `TechBackdrop` plus a slotted content area.'
 				}
 			}
 		}
@@ -418,6 +421,7 @@ EOF
 ### Task 3: Icon stories + gallery
 
 **Files:**
+
 - Create: `src/components/icons/AwsIcon.stories.svelte`
 - Create: `src/components/icons/DropwizardIcon.stories.svelte`
 - Create: `src/components/icons/EmotionIcon.stories.svelte`
@@ -427,6 +431,7 @@ EOF
 - Test: `npm run check`
 
 **Interfaces:**
+
 - Consumes: each icon’s `size?: number` prop (default 24)
 - Produces: `Icons/<Name>` Default stories + `Icons/Gallery`
 
@@ -482,7 +487,9 @@ EOF
 
 <Story name="Default">
 	{#snippet template()}
-		<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; color: currentColor;">
+		<div
+			style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; color: currentColor;"
+		>
 			<span title="AWS"><AwsIcon size={40} /></span>
 			<span title="Dropwizard"><DropwizardIcon size={40} /></span>
 			<span title="Emotion"><EmotionIcon size={40} /></span>
@@ -510,6 +517,7 @@ EOF
 ### Task 4: `LinkItemView` shell + fixtures + stories
 
 **Files:**
+
 - Create: `src/components/domain/links/LinkItemView.svelte`
 - Create: `src/components/domain/links/fixtures/sampleLinks.ts`
 - Create: `src/components/domain/links/LinkItem.stories.svelte`
@@ -518,8 +526,10 @@ EOF
 - Test: `npm run check`; `rg "fathom" src/components/domain/links/LinkItemView.svelte` → no matches
 
 **Interfaces:**
+
 - Consumes: `ExternalLink` from `src/util/links.ts`
 - Produces:
+
   - `LinkItemView` props: `link: ExternalLink`, `onClick?: () => void` (default no-op)
   - `LinkItem` public props unchanged: `link: ExternalLink`
   - Fixture: `sampleLinks: ExternalLink[]`
@@ -619,6 +629,7 @@ EOF
 ### Task 5: `DetailsModalView` shell + fixtures + stories
 
 **Files:**
+
 - Create: `src/components/domain/work/DetailsModalView.svelte`
 - Create: `src/components/domain/work/fixtures/sampleWorkItem.ts`
 - Create: `src/components/domain/work/fixtures/sampleProjectItem.ts`
@@ -627,8 +638,10 @@ EOF
 - Test: `npm run check`
 
 **Interfaces:**
+
 - Consumes: same public props as today’s `DetailsModal`
 - Produces:
+
   - `DetailsModalView` props identical to current `DetailsModal`: `open`, `item`, `type`, `tech`, `onClose`
   - `DetailsModal.svelte` re-exports by rendering `<DetailsModalView {...} />` (keeps route import path)
   - Fixtures typed loosely to match `Work` / `Project` shapes used at runtime
@@ -726,14 +739,17 @@ EOF
 ### Task 6: `GridItemView` shell + stories
 
 **Files:**
+
 - Create: `src/components/domain/work/GridItemView.svelte`
 - Create: `src/components/domain/work/GridItem.stories.svelte`
 - Modify: `src/components/domain/work/GridItem.svelte` → Fathom container wrapping the view
 - Test: `npm run check`; confirm no Fathom in `GridItemView.svelte`
 
 **Interfaces:**
+
 - Consumes: `DetailsModal` public API (container or view — prefer importing `DetailsModal` container from GridItemView to avoid double-wiring, OR import `DetailsModalView` and manage `open` locally)
 - Produces:
+
   - `GridItemView` props:
     - `item: any`
     - `type: 'work' | 'project' = 'work'`
@@ -858,11 +874,13 @@ EOF
 ### Task 7: QA hook documentation
 
 **Files:**
+
 - Modify: `README.md` (Storybook section)
 - Modify: `AGENTS.md` (Project Structure bullet for `src/components/` groups)
 - Modify: `docs/superpowers/specs/2026-07-25-storybook-migration-design.md` — set Status to `Accepted`
 
 **Interfaces:**
+
 - Consumes: final story titles / IDs from Tasks 1–6
 - Produces: documented path to future visual QA
 
@@ -942,18 +960,18 @@ EOF
 
 ## Self-review (plan vs spec)
 
-| Spec requirement | Task |
-| --- | --- |
-| Hybrid taxonomy on disk | Task 1 |
-| Retitle existing stories | Task 1 |
-| ThemeToggle → chrome, no `$lib` shim | Task 1 |
-| Full inventory stories (layout/media/chrome/TopicHero) | Task 2 |
-| Icons + Gallery | Task 3 |
-| LinkItemView + fixtures + LinksSection story | Task 4 |
-| DetailsModalView + fixtures | Task 5 |
-| GridItemView + stories | Task 6 |
-| QA hook docs only (no CI) | Task 7 |
-| No Fathom in Views | Tasks 4, 6 (rg gates); DetailsModal has none |
-| `npm run check` per wave | Every task |
+| Spec requirement                                       | Task                                         |
+| ------------------------------------------------------ | -------------------------------------------- |
+| Hybrid taxonomy on disk                                | Task 1                                       |
+| Retitle existing stories                               | Task 1                                       |
+| ThemeToggle → chrome, no `$lib` shim                   | Task 1                                       |
+| Full inventory stories (layout/media/chrome/TopicHero) | Task 2                                       |
+| Icons + Gallery                                        | Task 3                                       |
+| LinkItemView + fixtures + LinksSection story           | Task 4                                       |
+| DetailsModalView + fixtures                            | Task 5                                       |
+| GridItemView + stories                                 | Task 6                                       |
+| QA hook docs only (no CI)                              | Task 7                                       |
+| No Fathom in Views                                     | Tasks 4, 6 (rg gates); DetailsModal has none |
+| `npm run check` per wave                               | Every task                                   |
 
 No TBD/placeholder steps remain. View callback names are consistent across Tasks 4 and 6 (`onClick` for links; `onLinkClick` / `onSourceClick` / `onDetailsClick` for grid).

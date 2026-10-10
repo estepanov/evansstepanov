@@ -33,7 +33,7 @@
 
 		<ol class="timeline relative ml-1">
 			<span class="timeline-rail" aria-hidden="true"></span>
-			{#each companies as company}
+			{#each companies as company (company.slug)}
 				{@const range = formatDateRange(company.startDate, company.endDate, company.isCurrent)}
 				{@const showRoleDates = company.roles.length > 1}
 				<li class="timeline-item relative pb-12 pl-8 last:pb-0">
@@ -63,7 +63,7 @@
 					{/if}
 
 					<ul class="mt-3 space-y-3">
-						{#each company.roles as role}
+						{#each company.roles as role (role.title)}
 							{@const roleRange = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 							<li>
 								<p class="leading-relaxed text-slate-600 dark:text-slate-400">

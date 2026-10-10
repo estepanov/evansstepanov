@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
@@ -11,7 +11,7 @@
 		Fathom.load(PUBLIC_FATHOM_SITE_ID);
 
 		const root = document.documentElement;
-		let idleTimer;
+		let idleTimer: ReturnType<typeof setTimeout> | undefined;
 		let rafPending = false;
 
 		const markIdle = () => {
@@ -38,8 +38,7 @@
 		};
 	});
 
-	$: $page.url.pathname, browser && Fathom.trackPageview();
-
+	$: if (browser && $page.url.pathname) Fathom.trackPageview();
 </script>
 
 <ThemeToggle />

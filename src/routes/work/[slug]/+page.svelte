@@ -88,18 +88,14 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
-					{#each company.roles as role}
+					{#each company.roles as role (role.title)}
 						{@const range = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 						<li class="py-6 first:pt-0 space-y-2">
-							<h3
-								class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100"
-							>
+							<h3 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
 								{role.title}
 							</h3>
 							{#if range}
-								<p
-									class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide"
-								>
+								<p class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide">
 									{range}
 								</p>
 							{/if}
@@ -124,7 +120,7 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 flex flex-wrap gap-2">
-					{#each company.techTags as tag}
+					{#each company.techTags as tag (tag)}
 						<li>
 							<a
 								href="/tech/{tag}"
@@ -148,7 +144,7 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
-					{#each relatedProjects as project}
+					{#each relatedProjects as project (project.name)}
 						<ProjectCard item={project} tech={allTech} />
 					{/each}
 				</ul>

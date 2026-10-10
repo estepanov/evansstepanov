@@ -52,7 +52,7 @@
 	<div class="tech-backdrop" aria-hidden="true" bind:this={root}>
 		<div class="backdrop">
 			<div class="lattice">
-				{#each grid as row, r}
+				{#each grid as row, r (r)}
 					<div class="row" style="--r: {r}">
 						{#each row as icon, c (`${r}-${c}`)}
 							<span class="cell" style="--c: {c}">
@@ -67,7 +67,7 @@
 		</div>
 		<div class="accent-mask">
 			<div class="lattice lattice--accent">
-				{#each grid as row, r}
+				{#each grid as row, r (r)}
 					<div class="row" style="--r: {r}">
 						{#each row as icon, c (`a-${r}-${c}`)}
 							<span class="cell" style="--c: {c}">

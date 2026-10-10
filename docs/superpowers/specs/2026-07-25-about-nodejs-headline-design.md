@@ -18,14 +18,14 @@
 
 ## Decisions
 
-| Topic | Choice |
-| --- | --- |
-| Wording | “I primarily work in TypeScript, building Node.js backends and React frontends, with modern JavaScript tooling.” |
-| Emphasis | Purple semibold on tech **names** only (TypeScript, Node.js, React); “backends” / “frontends” stay plain |
-| Display label | `Node.js` (not `NodeJS`) |
-| Icon lookup keys | `'TypeScript'`, `'Node.js'`, `'React'` via `getTechIcon` |
-| Icon rendering | `<TechIcon icon={…} size={16} />` in an `inline-block` span, matching current About callouts |
-| Approach | Shared `TechIcon` path (not direct `@icons-pack/svelte-simple-icons` on the page) |
+| Topic            | Choice                                                                                                           |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Wording          | “I primarily work in TypeScript, building Node.js backends and React frontends, with modern JavaScript tooling.” |
+| Emphasis         | Purple semibold on tech **names** only (TypeScript, Node.js, React); “backends” / “frontends” stay plain         |
+| Display label    | `Node.js` (not `NodeJS`)                                                                                         |
+| Icon lookup keys | `'TypeScript'`, `'Node.js'`, `'React'` via `getTechIcon`                                                         |
+| Icon rendering   | `<TechIcon icon={…} size={16} />` in an `inline-block` span, matching current About callouts                     |
+| Approach         | Shared `TechIcon` path (not direct `@icons-pack/svelte-simple-icons` on the page)                                |
 
 ## Copy
 

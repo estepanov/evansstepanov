@@ -17,10 +17,7 @@
 	/>
 
 	<!-- Jacket / shoulders (back layer) -->
-	<path
-		opacity="0.35"
-		d="M40 400 L 40 330 L 150 295 L 200 365 L 250 295 L 360 330 L 360 400 Z"
-	/>
+	<path opacity="0.35" d="M40 400 L 40 330 L 150 295 L 200 365 L 250 295 L 360 330 L 360 400 Z" />
 
 	<!-- Face (mid layer) -->
 	<path
@@ -38,10 +35,7 @@
 	<path opacity="0.55" d="M275 200 L 295 230 L 282 270 L 270 250 Z" />
 
 	<!-- Jacket collar (V-neck, mid layer) -->
-	<path
-		opacity="0.55"
-		d="M148 300 L 200 365 L 252 300 L 240 326 L 200 372 L 160 326 Z"
-	/>
+	<path opacity="0.55" d="M148 300 L 200 365 L 252 300 L 240 326 L 200 372 L 160 326 Z" />
 
 	<!-- Lightning bolt across face (foreground) -->
 	<path
