@@ -17,10 +17,11 @@
 		"test:unit": "vitest",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.39.5",
 		"@playwright/test": "^1.28.1",
 		"@storybook/addon-a11y": "^10.5.4",
 		"@storybook/addon-svelte-csf": "^5.1.2",
@@ -36,6 +37,7 @@
 		"eslint": "^9.23.0",
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-plugin-svelte": "^3.3.3",
+		"globals": "^17.13.0",
 		"postcss": "^8.4.24",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
@@ -47,6 +49,7 @@
 		"tslib": "^2.4.1",
 		"tsx": "^4.16.5",
 		"typescript": "^5.0.0",
+		"typescript-eslint": "^8.71.1",
 		"vite": "^6.2.0",
 		"vitest": "^1.0.0"
 	},

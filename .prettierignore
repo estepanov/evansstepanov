@@ -15,3 +15,13 @@ yarn.lock
 # Storybook build output
 /storybook-static
 *storybook.log
+
+# Local agent/tooling state (untracked)
+/.agents
+/.claude
+/.codex
+/.cursor
+/.impeccable
+/.opencode
+/.pi
+/.worktrees
