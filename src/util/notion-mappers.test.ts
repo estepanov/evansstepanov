@@ -1,11 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-	buildTechIdToName,
-	mapTech,
-	mapWork,
-	mapProject,
-	resolveTechTags
-} from './notion-mappers';
+import { buildTechIdToName, mapTech, mapWork, mapProject, resolveTechTags } from './notion-mappers';
 
 const techPage = {
 	id: 'tech-1',

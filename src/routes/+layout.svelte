@@ -11,6 +11,7 @@
 		Fathom.load(PUBLIC_FATHOM_SITE_ID);
 
 		const root = document.documentElement;
+		/** @type {ReturnType<typeof setTimeout> | undefined} */
 		let idleTimer;
 		let rafPending = false;
 

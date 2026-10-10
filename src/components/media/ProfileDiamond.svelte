@@ -224,7 +224,6 @@
 				stroke-linejoin="round"
 			/> -->
 		</g>
-
 	</svg>
 
 	<span class="planet" aria-hidden="true">
@@ -271,10 +270,7 @@
 	}
 
 	.parallax-image {
-		transform: translate(
-			calc(var(--mx) * -10px),
-			calc(var(--my) * -10px + var(--sy) * -22px)
-		);
+		transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px + var(--sy) * -22px));
 	}
 
 	.profile-image {

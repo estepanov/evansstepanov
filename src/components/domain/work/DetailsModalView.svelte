@@ -18,16 +18,18 @@
 	let closing = false;
 	const EXIT_MS = 200;
 
-	$: title = type === 'work' ? item?.title : item?.name;
-	$: subtitle = type === 'work' ? item?.companyName : undefined;
+	$: title =
+		type === 'work' ? (item as Work | undefined)?.title : (item as Project | undefined)?.name;
+	$: subtitle = type === 'work' ? (item as Work | undefined)?.companyName : undefined;
 	$: techTags = (item?.techTags as string[] | undefined) ?? [];
 	$: techTypeByName = new Map(tech.map((t) => [t.name, t.type ?? 'Other']));
 	$: techWeightByName = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
-	$: sortByProficiency = (tags: string[]) =>
-		tags.slice().sort((a, b) => {
+	function sortByProficiency(tags: string[]) {
+		return tags.slice().sort((a, b) => {
 			const wd = (techWeightByName.get(b) ?? -1) - (techWeightByName.get(a) ?? -1);
 			return wd !== 0 ? wd : a.localeCompare(b);
 		});
+	}
 	$: groupedTech = (() => {
 		const groups = new Map<string, string[]>();
 		for (const tag of techTags) {
@@ -45,10 +47,14 @@
 		if (other && other.length) ordered.push({ category: 'Other', tags: sortByProficiency(other) });
 		return ordered;
 	})();
-	$: media = (type === 'project' ? (item?.media as string[] | undefined) : undefined) ?? [];
-	$: heroImage = type === 'work' ? item?.image : undefined;
+	$: media =
+		(type === 'project'
+			? ((item as Project | undefined)?.media as string[] | undefined)
+			: undefined) ?? [];
+	$: heroImage = type === 'work' ? (item as Work | undefined)?.image : undefined;
 	$: primaryUrl = item?.url as string | undefined;
-	$: sourceUrl = type === 'project' ? (item?.source as string | undefined) : undefined;
+	$: sourceUrl =
+		type === 'project' ? ((item as Project | undefined)?.source as string | undefined) : undefined;
 	$: dateRange = (() => {
 		if (!item?.startDate) return null;
 		const start = getFormattedDate(item.startDate);

@@ -23,21 +23,23 @@
 
 ## File structure
 
-| File | Role |
-| --- | --- |
-| `src/routes/+page.svelte` | Home page; About second paragraph + remove unused Simple Icons imports |
-| `src/components/domain/tech/TechIcon.svelte` | Unchanged consumer of icon descriptors |
-| `src/util/tech-icons.ts` | Unchanged; already maps TypeScript, Node.js, React |
+| File                                         | Role                                                                   |
+| -------------------------------------------- | ---------------------------------------------------------------------- |
+| `src/routes/+page.svelte`                    | Home page; About second paragraph + remove unused Simple Icons imports |
+| `src/components/domain/tech/TechIcon.svelte` | Unchanged consumer of icon descriptors                                 |
+| `src/util/tech-icons.ts`                     | Unchanged; already maps TypeScript, Node.js, React                     |
 
 ---
 
 ### Task 1: Update About copy and wire TechIcon
 
 **Files:**
+
 - Modify: `src/routes/+page.svelte` (script imports ~line 20; About second `<p>` ~lines 118–126)
 - Test: manual on `/`; `npm run check`
 
 **Interfaces:**
+
 - Consumes: `getTechIcon(techName: string): TechIcon | null`; `TechIcon` props `{ icon: TechIcon | null; size?: number }` (default size 24)
 - Produces: updated About markup; no new exports
 
@@ -68,8 +70,8 @@ Replace the current block:
 	and specialize in
 	<span class="font-semibold text-purple-700 dark:text-purple-400">
 		React <span class="inline-block"><SiReact size={16} /></span>
-	</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with
-	elegant, user-focused solutions.
+	</span> with modern JavaScript tooling. I thrive on solving complex technical challenges with elegant,
+	user-focused solutions.
 </p>
 ```
 
@@ -91,8 +93,8 @@ with:
 		React
 		<span class="inline-block"><TechIcon icon={getTechIcon('React')} size={16} /></span>
 	</span>
-	frontends, with modern JavaScript tooling. I thrive on solving complex technical challenges with
-	elegant, user-focused solutions.
+	frontends, with modern JavaScript tooling. I thrive on solving complex technical challenges with elegant,
+	user-focused solutions.
 </p>
 ```
 
@@ -131,12 +133,12 @@ EOF
 
 ## Spec coverage (self-review)
 
-| Spec requirement | Task |
-| --- | --- |
-| New wording + tooling clause + thrive sentence | Task 1 Step 2 |
-| Purple on names only | Task 1 Step 2 markup |
-| `Node.js` label + `'Node.js'` key | Task 1 Step 2 |
-| `TechIcon` / `getTechIcon` at size 16 | Task 1 Step 2 |
-| Remove direct Simple Icons imports | Task 1 Step 1 |
-| Do not edit `tech-icons.ts` | Global constraint; no task touches it |
-| Manual verify; no automated tests | Task 1 Steps 3–4 |
+| Spec requirement                               | Task                                  |
+| ---------------------------------------------- | ------------------------------------- |
+| New wording + tooling clause + thrive sentence | Task 1 Step 2                         |
+| Purple on names only                           | Task 1 Step 2 markup                  |
+| `Node.js` label + `'Node.js'` key              | Task 1 Step 2                         |
+| `TechIcon` / `getTechIcon` at size 16          | Task 1 Step 2                         |
+| Remove direct Simple Icons imports             | Task 1 Step 1                         |
+| Do not edit `tech-icons.ts`                    | Global constraint; no task touches it |
+| Manual verify; no automated tests              | Task 1 Steps 3–4                      |

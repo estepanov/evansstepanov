@@ -73,7 +73,7 @@ export const techIconMap: Record<string, TechIcon> = {
 	'AWS CDK': simple(AwsIcon),
 	'Amazon CloudWatch': simple(AwsIcon),
 	'Amazon Web Services': simple(AwsIcon),
-	'Amazon': simple(AwsIcon),
+	Amazon: simple(AwsIcon),
 	'Amazon CloudWatch.': simple(AwsIcon),
 	Cloudflare: simple(SiCloudflare),
 	'Claude Code': huge(ClaudeIcon),
