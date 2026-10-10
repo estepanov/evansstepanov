@@ -15,3 +15,11 @@ yarn.lock
 # Storybook build output
 /storybook-static
 *storybook.log
+
+# Agent harness & skill install artifacts
+/.agents
+/.claude
+/.codex
+/.cursor
+/.opencode
+/.pi
