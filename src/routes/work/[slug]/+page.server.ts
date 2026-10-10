@@ -4,15 +4,23 @@ import type { Company } from '../../../data/work';
 import type { Tech } from '../../../data/tech';
 import type { Project } from '../../../data/projects';
 import { groupWorkByCompany } from '../../../util/company';
-import { buildTechIdToName, mapProject, mapTech, mapWork } from '../../../util/notion-mappers';
-import { queryNotion, isFullPage } from '../../../util/notion';
+import {
+	buildTechIdToName,
+	isFullPage,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../../../util/notion-mappers';
+import { queryNotion } from '../../../util/notion';
 
 async function loadCompaniesAndTech() {
 	const [work, tech] = await Promise.all([
 		queryNotion({ database_id: WORK_NOTION_DB_ID as string }),
 		queryNotion({ database_id: TECH_NOTION_DB_ID as string })
 	]);
-	const techPages = tech.results.filter(isFullPage);
+	const techPages = tech.results.filter(
+		(p): p is typeof p & { properties: object } => 'properties' in p
+	);
 	const techIdToName = buildTechIdToName(techPages);
 	const allTech = techPages.map((p) => mapTech(p));
 	const roles = work.results.filter(isFullPage).map((page) => mapWork(page, techIdToName));

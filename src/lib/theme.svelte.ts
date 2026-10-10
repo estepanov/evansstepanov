@@ -56,13 +56,13 @@ class ThemeController {
 				try {
 					localStorage.removeItem(STORAGE_KEY);
 				} catch {
-					// storage unavailable (e.g. private browsing) — theme still applies for this session
+					// storage unavailable (private mode); theme still applies in-memory
 				}
 			} else {
 				try {
 					localStorage.setItem(STORAGE_KEY, next);
 				} catch {
-					// storage unavailable (e.g. private browsing) — theme still applies for this session
+					// storage unavailable (private mode); theme still applies in-memory
 				}
 			}
 		};

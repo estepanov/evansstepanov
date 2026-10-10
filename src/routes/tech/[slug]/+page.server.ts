@@ -2,8 +2,14 @@ import { TECH_NOTION_DB_ID, PROJECTS_NOTION_DB_ID, WORK_NOTION_DB_ID } from '$en
 import { type Tech } from '../../../data/tech';
 import { type Work } from '../../../data/work';
 import { type Project } from '../../../data/projects';
-import { buildTechIdToName, mapProject, mapTech, mapWork } from '../../../util/notion-mappers';
-import { queryNotion, isFullPage } from '../../../util/notion';
+import {
+	buildTechIdToName,
+	isFullPage,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../../../util/notion-mappers';
+import { queryNotion } from '../../../util/notion';
 import { companyHighlights } from '../../../util/company';
 import { error } from '@sveltejs/kit';
 

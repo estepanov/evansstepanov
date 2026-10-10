@@ -8,8 +8,8 @@
 	let loaded = false;
 	let imageElement: HTMLImageElement;
 
+	/* eslint-disable svelte/infinite-reactive-loop -- loadImage only writes imageElement.src/onload on the bound element; the loaded flag breaks any cycle */
 	$: if (shouldLoad && imageElement && !loaded) {
-		// eslint-disable-next-line svelte/infinite-reactive-loop -- terminates: loadImage flips `loaded`, which guards this statement
 		loadImage();
 	}
 
@@ -30,7 +30,6 @@
 				imageCache.addImage(src, dataUrl);
 			};
 			setTimeout(() => {
-				// eslint-disable-next-line svelte/infinite-reactive-loop -- one-shot src assign; `loaded` guards re-entry
 				imageElement.src = src;
 			}, 500);
 		}

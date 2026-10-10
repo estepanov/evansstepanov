@@ -80,7 +80,11 @@ const downloadSingleImage = (
 					const originalPath = path.join(subdirectory, `${filename}.${ext}`);
 					fs.writeFileSync(originalPath, buffer);
 
-					if ((WEBP_COMPATIBLE_EXTENSIONS as readonly string[]).includes(ext.toLowerCase())) {
+					if (
+						WEBP_COMPATIBLE_EXTENSIONS.includes(
+							ext.toLowerCase() as (typeof WEBP_COMPATIBLE_EXTENSIONS)[number]
+						)
+					) {
 						await convertToWebp(buffer, ext, filename, subdirectory, originalPath);
 					} else {
 						console.log(`Image downloaded: ${originalPath}`);

@@ -1,8 +1,8 @@
 import { WORK_NOTION_DB_ID, TECH_NOTION_DB_ID } from '$env/static/private';
 import type { Company } from '../../data/work';
 import { groupWorkByCompany } from '../../util/company';
-import { buildTechIdToName, mapWork } from '../../util/notion-mappers';
-import { queryNotion, isFullPage } from '../../util/notion';
+import { buildTechIdToName, isFullPage, mapWork } from '../../util/notion-mappers';
+import { queryNotion } from '../../util/notion';
 
 export async function load(): Promise<{ companies: Company[] }> {
 	const [work, tech] = await Promise.all([

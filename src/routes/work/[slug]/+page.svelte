@@ -88,7 +88,7 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
-					{#each company.roles as role, i (i)}
+					{#each company.roles as role (role.title)}
 						{@const range = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 						<li class="py-6 first:pt-0 space-y-2">
 							<h3 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">

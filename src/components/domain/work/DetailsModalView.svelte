@@ -23,10 +23,10 @@
 	$: subtitle = type === 'work' ? (item as Work | undefined)?.companyName : undefined;
 	$: techTags = (item?.techTags as string[] | undefined) ?? [];
 	$: techTypeByName = new Map(tech.map((t) => [t.name, t.type ?? 'Other']));
-	$: techWeightByName = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
 	function sortByProficiency(tags: string[]) {
+		const weights = new Map(tech.map((t) => [t.name, t.proficiencyWeight ?? -1]));
 		return tags.slice().sort((a, b) => {
-			const wd = (techWeightByName.get(b) ?? -1) - (techWeightByName.get(a) ?? -1);
+			const wd = (weights.get(b) ?? -1) - (weights.get(a) ?? -1);
 			return wd !== 0 ? wd : a.localeCompare(b);
 		});
 	}

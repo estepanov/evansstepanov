@@ -50,7 +50,7 @@
 							{company.companyName}
 						</a>
 						{#if company.isCurrent}
-							<StatusIndicator label="Now" variant="jade" />
+							<StatusIndicator label="Now" variant="jade" animation="orbit" />
 						{/if}
 					</div>
 
@@ -61,7 +61,7 @@
 					{/if}
 
 					<ul class="mt-3 space-y-3">
-						{#each company.roles as role, i (i)}
+						{#each company.roles as role (role.title)}
 							{@const roleRange = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 							<li>
 								<p class="leading-relaxed text-slate-600 dark:text-mist-400">

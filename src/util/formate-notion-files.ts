@@ -13,15 +13,14 @@ type InnerFile = {
 };
 
 export const formatNotionFiles = (files: NotionFile[]): string[] => {
-	console.log(files);
 	return files.map((item) => {
 		const fileName = hashFileName(item.file.url);
 		const fileExtension = getFileExtension(item.file.url);
-		const lowerExtension = fileExtension?.toLowerCase();
-		const ext =
-			lowerExtension && (WEBP_COMPATIBLE_EXTENSIONS as readonly string[]).includes(lowerExtension)
-				? 'webp'
-				: (fileExtension ?? '');
+		const ext = WEBP_COMPATIBLE_EXTENSIONS.includes(
+			fileExtension?.toLowerCase() as (typeof WEBP_COMPATIBLE_EXTENSIONS)[number]
+		)
+			? 'webp'
+			: (fileExtension ?? '');
 		return `_dld/static/${fileName}${ext ? '.' + ext : ''}`;
 	});
 };

@@ -16,10 +16,12 @@ yarn.lock
 /storybook-static
 *storybook.log
 
-# Agent harness & skill install artifacts
+# Local agent/tooling state (untracked)
 /.agents
 /.claude
 /.codex
 /.cursor
+/.impeccable
 /.opencode
 /.pi
+/.worktrees

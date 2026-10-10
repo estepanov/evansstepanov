@@ -1,7 +1,7 @@
 import { TECH_NOTION_DB_ID } from '$env/static/private';
 import { type Tech } from '../../data/tech';
-import { mapTech } from '../../util/notion-mappers';
-import { queryNotion, isFullPage } from '../../util/notion';
+import { isFullPage, mapTech } from '../../util/notion-mappers';
+import { queryNotion } from '../../util/notion';
 
 export async function load(): Promise<{ tech: Tech[] }> {
 	const techResults = await queryNotion({

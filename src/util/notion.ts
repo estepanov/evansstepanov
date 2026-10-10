@@ -1,17 +1,9 @@
 import { Client, APIResponseError, APIErrorCode } from '@notionhq/client';
 import type {
 	QueryDatabaseParameters,
-	QueryDatabaseResponse,
-	PageObjectResponse
+	QueryDatabaseResponse
 } from '@notionhq/client/build/src/api-endpoints';
 import { NOTION_TOKEN } from '$env/static/private';
-
-/** Narrows a database query row to a full page (partial pages carry no properties). */
-export function isFullPage(
-	page: QueryDatabaseResponse['results'][number]
-): page is PageObjectResponse {
-	return 'properties' in page;
-}
 
 const RETRYABLE_CODES = new Set([
 	APIErrorCode.RateLimited,

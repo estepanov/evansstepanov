@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { afterNavigate } from '$app/navigation';
+	import { page } from '$app/stores';
 	import * as Fathom from 'fathom-client';
 	import { PUBLIC_FATHOM_SITE_ID } from '$env/static/public';
 	import ThemeToggle from '../components/chrome/ThemeToggle.svelte';
@@ -11,8 +11,7 @@
 		Fathom.load(PUBLIC_FATHOM_SITE_ID);
 
 		const root = document.documentElement;
-		/** @type {ReturnType<typeof setTimeout> | undefined} */
-		let idleTimer;
+		let idleTimer: ReturnType<typeof setTimeout> | undefined;
 		let rafPending = false;
 
 		const markIdle = () => {
@@ -39,9 +38,7 @@
 		};
 	});
 
-	afterNavigate(() => {
-		if (browser) Fathom.trackPageview();
-	});
+	$: if (browser && $page.url.pathname) Fathom.trackPageview();
 </script>
 
 <ThemeToggle />

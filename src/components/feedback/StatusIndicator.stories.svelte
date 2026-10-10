@@ -8,16 +8,30 @@
 		tags: ['autodocs'],
 		argTypes: {
 			label: { control: 'text' },
-			variant: { control: 'inline-radio', options: ['jade', 'subtle'] },
+			// Explicit enum types: svelte-csf infers TS unions as `union`, which Storybook's
+			// URL-args coercion (mapArgsToTypes) silently drops.
+			variant: {
+				control: 'inline-radio',
+				options: ['jade', 'subtle'],
+				type: { name: 'enum', value: ['jade', 'subtle'] }
+			},
+			animation: {
+				control: 'inline-radio',
+				options: ['ping', 'orbit'],
+				type: { name: 'enum', value: ['ping', 'orbit'] }
+			},
 			className: { control: 'text' }
 		},
 		parameters: {
 			docs: {
 				description: {
 					component:
-						'A small dot-plus-label badge with a pinging halo. The dot colour is driven by ' +
-						'`--status-color` custom properties set per variant, so the two variants differ ' +
-						'in hue only. The ping animation is disabled under `prefers-reduced-motion`.'
+						'A small dot-plus-label badge. Colours are driven by `--status-*` custom ' +
+						'properties set per variant (`jade`, `subtle`), so variants differ in hue only. ' +
+						'The `animation` prop picks the motion: `ping` pulses an expanding halo, `orbit` ' +
+						'sweeps a satellite around a static ring (used by the work-grid cards for ' +
+						'active/in-progress items). Both animations are disabled under ' +
+						'`prefers-reduced-motion`.'
 				}
 			}
 		}
@@ -31,11 +45,20 @@
 <!-- The label is uppercased in CSS and letter-spaced, so long text gets wide. -->
 <Story name="Custom Label" args={{ label: 'Currently building', variant: 'jade' }} />
 
-<Story name="Both Variants">
-	{#snippet template()}
+<Story name="Orbit Jade" args={{ label: 'Now', variant: 'jade', animation: 'orbit' }} />
+
+<Story name="Orbit Subtle" args={{ label: 'In progress', variant: 'subtle', animation: 'orbit' }} />
+
+<!-- Variant is fixed per row here (that's the point of the story), so its control is hidden. -->
+<Story
+	name="Both Variants"
+	args={{ label: 'Now', animation: 'ping' }}
+	parameters={{ controls: { exclude: ['variant'] } }}
+>
+	{#snippet template(args)}
 		<div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-			<StatusIndicator label="Now" variant="jade" />
-			<StatusIndicator label="Archived" variant="subtle" />
+			<StatusIndicator label={args.label} variant="jade" animation={args.animation} />
+			<StatusIndicator label={args.label} variant="subtle" animation={args.animation} />
 		</div>
 	{/snippet}
 </Story>

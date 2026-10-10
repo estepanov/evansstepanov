@@ -3,10 +3,21 @@ import type { Work } from '../data/work';
 import type { Project } from '../data/projects';
 import { formatNotionFiles } from './formate-notion-files';
 import { companySlug } from './company';
+import type {
+	PageObjectResponse,
+	QueryDatabaseResponse
+} from '@notionhq/client/build/src/api-endpoints';
 
-// Notion payloads are externally shaped; a precise SDK-level property type is tracked separately.
+// Notion property payloads are external and loosely shaped; the mappers below
+// read them defensively (optional chaining) against this loose record.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props = Record<string, any>;
+
+export function isFullPage(
+	page: QueryDatabaseResponse['results'][number]
+): page is PageObjectResponse {
+	return 'properties' in page;
+}
 
 export function buildTechIdToName(
 	pages: Array<{ id: string; properties?: Props }>

@@ -1,10 +1,10 @@
 import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 import svelte from 'eslint-plugin-svelte';
 import prettier from 'eslint-config-prettier';
-import tseslint from 'typescript-eslint';
-import globals from 'globals';
 
-export default tseslint.config(
+export default [
 	{
 		ignores: [
 			'.DS_Store',
@@ -12,22 +12,21 @@ export default tseslint.config(
 			'build/**',
 			'.svelte-kit/**',
 			'package/**',
-			'storybook-static/**',
-			'*storybook.log',
 			'.env',
 			'.env.*',
+			'!.env.example',
 			'pnpm-lock.yaml',
 			'package-lock.json',
 			'yarn.lock',
-			// Agent harness & skill install artifacts
+			'storybook-static/**',
+			'*storybook.log',
 			'.agents/**',
 			'.claude/**',
 			'.codex/**',
 			'.cursor/**',
+			'.impeccable/**',
 			'.opencode/**',
 			'.pi/**',
-			// Scratch & worktree output
-			'.playwright-mcp/**',
 			'.worktrees/**'
 		]
 	},
@@ -37,9 +36,8 @@ export default tseslint.config(
 	prettier,
 	...svelte.configs['flat/prettier'],
 	{
+		files: ['**/*.ts', '**/*.svelte'],
 		languageOptions: {
-			ecmaVersion: 2020,
-			sourceType: 'module',
 			globals: {
 				...globals.browser,
 				...globals.node,
@@ -48,18 +46,11 @@ export default tseslint.config(
 		}
 	},
 	{
-		files: ['**/*.svelte'],
+		files: ['**/*.svelte', '**/*.svelte.*'],
 		languageOptions: {
 			parserOptions: {
 				parser: tseslint.parser
 			}
 		}
-	},
-	{
-		// runes modules (.svelte.ts/.svelte.js) are plain TS/JS, not components
-		files: ['**/*.svelte.ts', '**/*.svelte.js'],
-		languageOptions: {
-			parser: tseslint.parser
-		}
 	}
-);
+];

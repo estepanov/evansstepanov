@@ -8,12 +8,15 @@ import { type Tech } from '../data/tech';
 import { type Work } from '../data/work';
 import { type Project } from '../data/projects';
 import { normalizeExternalLink, type ExternalLink } from '../util/links';
-import { buildTechIdToName, mapProject, mapTech, mapWork } from '../util/notion-mappers';
-import { queryNotion, isFullPage } from '../util/notion';
+import {
+	buildTechIdToName,
+	isFullPage,
+	mapProject,
+	mapTech,
+	mapWork
+} from '../util/notion-mappers';
+import { queryNotion } from '../util/notion';
 import { companyHighlights } from '../util/company';
-import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-
-type NotionProperty = PageObjectResponse['properties'][string];
 
 interface LoadResults {
 	links: ExternalLink[];
@@ -39,13 +42,15 @@ export async function load(): Promise<LoadResults> {
 	return {
 		links: links.results
 			.filter(isFullPage)
-			.map((page) =>
-				normalizeExternalLink({
-					title: (page.properties.Name as Extract<NotionProperty, { type: 'title' }>).title[0]
-						?.plain_text,
-					url: (page.properties.URL as Extract<NotionProperty, { type: 'url' }>).url
-				})
-			)
+			.map((page) => {
+				const name = page.properties.Name;
+				const url = page.properties.URL;
+				if (name?.type !== 'title' || url?.type !== 'url') return undefined;
+				return normalizeExternalLink({
+					title: name.title[0]?.plain_text,
+					url: url.url ?? undefined
+				});
+			})
 			.filter((link): link is ExternalLink => Boolean(link)),
 		// sort tech by highest proficiencyWeight
 		tech: techResults.sort((a, b) => b.proficiencyWeight - a.proficiencyWeight),

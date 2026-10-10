@@ -21,7 +21,7 @@
 
 	{#if isActive}
 		<span class="status-anchor">
-			<StatusIndicator label="Now" variant="jade" />
+			<StatusIndicator label="Now" variant="jade" animation="orbit" />
 		</span>
 		<span class="active-glare" aria-hidden="true">
 			<span class="active-glare__spot"></span>
