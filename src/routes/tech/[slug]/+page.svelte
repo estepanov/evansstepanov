@@ -117,7 +117,7 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
-					{#each relatedWork as work}
+					{#each relatedWork as work (work.companySlug)}
 						<WorkExperienceCard item={work} />
 					{/each}
 				</ul>
@@ -134,7 +134,7 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
-					{#each relatedProjects as project}
+					{#each relatedProjects as project (project.name)}
 						<ProjectCard item={project} tech={allTech} />
 					{/each}
 				</ul>

@@ -55,17 +55,22 @@ class ThemeController {
 			if (next === 'system') {
 				try {
 					localStorage.removeItem(STORAGE_KEY);
-				} catch {}
+				} catch {
+					// storage unavailable (e.g. private browsing) — theme still applies for this session
+				}
 			} else {
 				try {
 					localStorage.setItem(STORAGE_KEY, next);
-				} catch {}
+				} catch {
+					// storage unavailable (e.g. private browsing) — theme still applies for this session
+				}
 			}
 		};
 
-		const doc = browser ? (document as Document & { startViewTransition?: (cb: () => void) => void }) : null;
-		const reduced =
-			browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const doc = browser
+			? (document as Document & { startViewTransition?: (cb: () => void) => void })
+			: null;
+		const reduced = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (doc?.startViewTransition && !reduced) {
 			doc.startViewTransition(run);
 		} else {

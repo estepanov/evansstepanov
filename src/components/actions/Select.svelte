@@ -2,8 +2,8 @@
 	import { ChevronDown, Check } from '@lucide/svelte';
 	import { tick, createEventDispatcher, onMount } from 'svelte';
 
-	export let options: Array<{ value: any; label: string; meta?: string }> = [];
-	export let value: any = null;
+	export let options: Array<{ value: string; label: string; meta?: string }> = [];
+	export let value: string | null = null;
 	/** Visible label for the trigger when no value is selected. */
 	export let placeholder: string = 'Select';
 	/** Accessible name for the control (screen readers). */
@@ -18,7 +18,7 @@
 	let listboxEl: HTMLUListElement;
 	let optionRefs: HTMLElement[] = [];
 
-	const dispatch = createEventDispatcher<{ change: any }>();
+	const dispatch = createEventDispatcher<{ change: string | null }>();
 
 	$: selectedIndex = options.findIndex((o) => o.value === value);
 	$: currentLabel = selectedIndex >= 0 ? options[selectedIndex].label : placeholder;

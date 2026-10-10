@@ -169,7 +169,7 @@
 				</h2>
 			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-				{#each data.work as work}
+				{#each data.work as work (work.companySlug)}
 					<WorkExperienceCard item={work} />
 				{/each}
 			</ul>
@@ -184,7 +184,7 @@
 				</h2>
 			</StickySectionHeader>
 			<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-				{#each data.projects as project}
+				{#each data.projects as project (project.name)}
 					<ProjectCard item={project} {idHash} tech={data.tech} />
 				{/each}
 			</ul>
@@ -199,7 +199,7 @@
 				</h2>
 			</StickySectionHeader>
 			<div class="tech-rows mt-6">
-				{#each techTypes as techType, rowIdx}
+				{#each techTypes as techType, rowIdx (techType)}
 					{@const techItems = data.tech
 						.filter((tech) => tech.type === techType)
 						.slice()
@@ -211,7 +211,7 @@
 								<span class="tech-row__rule" aria-hidden="true"></span>
 							</a>
 							<ul class="tech-row__items">
-								{#each techItems as tech}
+								{#each techItems as tech (tech.name)}
 									{@const techIcon = getTechIcon(tech.name)}
 									<li>
 										<a href="/tech/{tech.name}" class="tech-item" title={tech.name}>

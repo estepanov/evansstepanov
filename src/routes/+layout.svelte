@@ -2,7 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
 	import * as Fathom from 'fathom-client';
 	import { PUBLIC_FATHOM_SITE_ID } from '$env/static/public';
 	import ThemeToggle from '../components/chrome/ThemeToggle.svelte';
@@ -38,8 +38,9 @@
 		};
 	});
 
-	$: $page.url.pathname, browser && Fathom.trackPageview();
-
+	afterNavigate(() => {
+		if (browser) Fathom.trackPageview();
+	});
 </script>
 
 <ThemeToggle />

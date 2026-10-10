@@ -4,6 +4,8 @@ import type { Project } from '../data/projects';
 import { formatNotionFiles } from './formate-notion-files';
 import { companySlug } from './company';
 
+// Notion payloads are externally shaped; a precise SDK-level property type is tracked separately.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props = Record<string, any>;
 
 export function buildTechIdToName(

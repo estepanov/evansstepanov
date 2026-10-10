@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ArrowUpRight, Globe2, LinkedinIcon, Mail } from '@lucide/svelte';
+	import type { IconComponent } from '../../../util/tech-icons';
 	import {
 		SiBehance,
 		SiBluesky,
@@ -52,7 +53,7 @@
 		target.style.removeProperty('--link-glow-y');
 	}
 
-	const logoIcons: Partial<Record<ExternalLinkKind, any>> = {
+	const logoIcons: Partial<Record<ExternalLinkKind, IconComponent>> = {
 		behance: SiBehance,
 		bluesky: SiBluesky,
 		calendly: SiCalendly,

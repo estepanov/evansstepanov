@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import LazyLoadImage from './LazyLoadImage.svelte';
 
 	export let isOpen: boolean = false;
-	const dispatch = createEventDispatcher();
 
 	type Image = {
 		url: string;
@@ -22,15 +20,15 @@
 </script>
 
 <div
-	class={`w-full bg-gradient-to-br from-gray-200 to-emerald-200 dark:from-gray-800 dark:to-emerald-900 rounded-xl ${
+	class={`w-full bg-gradient-to-br from-slate-200 to-jade-200 dark:from-slate-800 dark:to-jade-950 rounded-xl ${
 		isOpen ? 'h-40 mt-2' : 'h-0 mt-0'
 	} overflow-hidden transition-all ease-in-out duration-500`}
 >
 	<div class="flex overflow-x-auto space-x-4 p-4">
-		{#each images as image}
+		{#each images as image (image.url)}
 			<button on:click={() => openModal(image)}>
 				<LazyLoadImage
-					classNames={`scale-100 ring-2 ring-white/20 dark:ring-black/20 hover:scale-105 w-auto object-cover cursor-pointer rounded-sm shadow-xs hover:shadow-lg duration-300 transition-all ease-in-out`}
+					classNames="scale-100 ring-2 ring-white/20 dark:ring-black/20 hover:scale-105 w-auto object-cover cursor-pointer rounded-sm shadow-xs hover:shadow-lg duration-300 transition-all ease-in-out"
 					src={image.url}
 					shouldLoad={isOpen}
 					alt={image.alt}

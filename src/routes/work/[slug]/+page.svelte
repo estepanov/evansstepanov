@@ -88,23 +88,19 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
-					{#each company.roles as role}
+					{#each company.roles as role, i (i)}
 						{@const range = formatDateRange(role.startDate, role.endDate, role.isCurrent)}
 						<li class="py-6 first:pt-0 space-y-2">
-							<h3
-								class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100"
-							>
+							<h3 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
 								{role.title}
 							</h3>
 							{#if range}
-								<p
-									class="text-sm text-slate-500 dark:text-slate-400 tabular-nums tracking-wide"
-								>
+								<p class="text-sm text-mist-500 dark:text-mist-400 tabular-nums tracking-wide">
 									{range}
 								</p>
 							{/if}
 							{#if role.description}
-								<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+								<p class="text-sm text-slate-600 dark:text-mist-400 leading-relaxed">
 									{role.description}
 								</p>
 							{/if}
@@ -124,11 +120,11 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 flex flex-wrap gap-2">
-					{#each company.techTags as tag}
+					{#each company.techTags as tag (tag)}
 						<li>
 							<a
 								href="/tech/{tag}"
-								class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 rounded-lg hover:border-emerald-500/40 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+								class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 rounded-lg hover:border-jade-600/50 hover:text-jade-700 dark:hover:text-jade-400 transition-colors"
 							>
 								{tag}
 							</a>
@@ -148,7 +144,7 @@
 					</h2>
 				</StickySectionHeader>
 				<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
-					{#each relatedProjects as project}
+					{#each relatedProjects as project (project.name)}
 						<ProjectCard item={project} tech={allTech} />
 					{/each}
 				</ul>
