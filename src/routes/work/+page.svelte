@@ -52,7 +52,12 @@
 							{company.companyName}
 						</a>
 						{#if company.isCurrent}
-							<StatusIndicator label="Now" variant="emerald" animation="orbit" />
+							<StatusIndicator
+								label="Now"
+								variant="emerald"
+								animation="orbit"
+								className="self-center"
+							/>
 						{/if}
 					</div>
 

@@ -98,3 +98,20 @@ test('live items show the orbit status indicator', async ({ page }) => {
 	await expect(card.locator('.status--orbit .status__ring')).toBeAttached();
 	await expect(card.locator('.status--orbit .status__sat')).toBeAttached();
 });
+
+test('work timeline centers the current indicator on the company name line', async ({ page }) => {
+	await page.goto('/work');
+
+	const item = page.locator('.timeline-item').filter({ hasText: 'CLEAR' }).first();
+	const link = item.locator('a[href^="/work/"]').first();
+	const status = item.locator('.status').first();
+
+	const linkBox = await link.boundingBox();
+	const statusBox = await status.boundingBox();
+	expect(linkBox).not.toBeNull();
+	expect(statusBox).not.toBeNull();
+
+	const linkCenter = linkBox!.y + linkBox!.height / 2;
+	const statusCenter = statusBox!.y + statusBox!.height / 2;
+	expect(Math.abs(statusCenter - linkCenter)).toBeLessThanOrEqual(1);
+});
