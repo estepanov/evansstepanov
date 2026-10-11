@@ -87,11 +87,9 @@
 		<div class="landing-logo w-56 md:w-64">
 			<Logo />
 		</div>
-		<!-- <p class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400">
-			Product-focused software engineer
-		</p> -->
+		<h1 class="sr-only">Evans Stepanov — product-focused software engineer</h1>
 	</header>
-	<main class="w-full">
+	<main id="main-content" class="w-full">
 		<section class="landing-section reveal-on-load space-y-6 pb-16">
 			<div class="flex items-baseline justify-between py-3">
 				<h2

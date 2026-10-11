@@ -27,7 +27,7 @@
 <PageContainer class="mt-10 space-y-16">
 	<TechHeader rootLabel="Work" rootHref="/work" leaf={company.companyName} />
 
-	<main class="w-full">
+	<main id="main-content" class="w-full">
 		<TopicHero tags={company.techTags}>
 			<div class="flex items-center justify-between gap-4">
 				<span

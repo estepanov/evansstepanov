@@ -35,7 +35,7 @@
 <PageContainer class="mt-10 space-y-16">
 	<TechHeader leaf={tech.name} />
 
-	<main class="w-full">
+	<main id="main-content" class="w-full">
 		<TopicHero tags={[tech.name]}>
 			<div class="flex items-center justify-between gap-4">
 				{#if tech.type}

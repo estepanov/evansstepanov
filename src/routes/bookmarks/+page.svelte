@@ -13,7 +13,7 @@
 
 <PageContainer class="space-y-20 mt-12">
 	<SiteHeader />
-	<main class="w-full space-y-16">
+	<main id="main-content" class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
 			<p
 				class="text-xs font-medium tracking-[0.2em] uppercase text-emerald-600 dark:text-emerald-400"
