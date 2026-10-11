@@ -398,11 +398,11 @@
 			background 220ms cubic-bezier(0.22, 1, 0.36, 1),
 			color 220ms cubic-bezier(0.22, 1, 0.36, 1),
 			border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
-			transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
 			box-shadow 220ms;
 	}
 	.close-btn :global(svg) {
-		transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.close-btn:hover {
 		background: rgba(15, 23, 42, 0.06);
