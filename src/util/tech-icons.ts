@@ -1,3 +1,5 @@
+import type { Component, ComponentType, SvelteComponent } from 'svelte';
+import type { IconSvgElement } from '@hugeicons/svelte';
 import { ClaudeIcon, JavaIcon, McpServerIcon } from '@hugeicons/core-free-icons';
 import DropwizardIcon from '../components/icons/DropwizardIcon.svelte';
 import OpenCodeIcon from '../components/icons/OpenCodeIcon.svelte';
@@ -47,14 +49,15 @@ import {
 	SiGatsby,
 	SiApachekafka
 } from '@icons-pack/svelte-simple-icons';
-import type { ComponentType } from 'svelte';
-import type { IconSvgElement } from '@hugeicons/svelte';
+
+// legacy class components (@icons-pack/svelte-simple-icons) and Svelte 5 function components coexist
+export type IconComponent = Component | ComponentType<SvelteComponent>;
 
 export type TechIcon =
-	| { kind: 'simple'; component: ComponentType }
+	| { kind: 'simple'; component: IconComponent }
 	| { kind: 'hugeicons'; icon: IconSvgElement };
 
-const simple = (component: ComponentType): TechIcon => ({ kind: 'simple', component });
+const simple = (component: IconComponent): TechIcon => ({ kind: 'simple', component });
 const huge = (icon: IconSvgElement): TechIcon => ({ kind: 'hugeicons', icon });
 
 export const techIconMap: Record<string, TechIcon> = {

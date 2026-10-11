@@ -199,7 +199,7 @@
 		viewBox="-40 -40 240 320"
 		role="img"
 		aria-label="me"
-		class="profile-image text-gray-300 dark:text-gray-700"
+		class="profile-image text-slate-300 dark:text-slate-700"
 		overflow="visible"
 	>
 		<defs>
@@ -289,7 +289,7 @@
 		align-items: center;
 		justify-content: center;
 		pointer-events: none;
-		color: rgb(126 34 206); /* purple-700 */
+		color: rgb(92 64 167); /* iris-700 */
 		z-index: 2;
 		transform: translate(
 				calc(-50% + var(--mx) * 14px * var(--dx)),
@@ -300,7 +300,7 @@
 		filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.4));
 	}
 	:global(.dark) .sparkle-icon {
-		color: rgb(192 132 252);
+		color: rgb(171 155 246);
 	}
 
 	.sparkle-inner {

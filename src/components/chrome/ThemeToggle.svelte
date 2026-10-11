@@ -149,7 +149,7 @@
 		backdrop-filter: blur(10px) saturate(140%);
 		-webkit-backdrop-filter: blur(10px) saturate(140%);
 		border: 1px solid rgba(0, 0, 0, 0.08);
-		color: #1f2937;
+		color: #1e293b;
 		cursor: pointer;
 		transition:
 			background 240ms ease,
@@ -166,7 +166,7 @@
 	:global(.dark) .theme-toggle {
 		background: rgba(17, 17, 17, 0.55);
 		border-color: rgba(255, 255, 255, 0.1);
-		color: #f3f4f6;
+		color: #f1f5f9;
 		box-shadow:
 			0 1px 2px rgba(0, 0, 0, 0.4),
 			0 10px 28px -12px rgba(0, 0, 0, 0.6),
@@ -257,7 +257,7 @@
 		animation: badge-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	:global(.dark) .system-badge {
-		background: #1f2937;
+		background: #1e293b;
 		color: #cbd5e1;
 		box-shadow:
 			0 0 0 1.5px rgba(255, 255, 255, 0.06),
@@ -430,7 +430,7 @@
 		backdrop-filter: blur(12px) saturate(160%);
 		-webkit-backdrop-filter: blur(12px) saturate(160%);
 		border: 1px solid rgba(0, 0, 0, 0.06);
-		color: #1f2937;
+		color: #1e293b;
 		font-family: 'Albert Sans', sans-serif;
 		font-size: 0.68rem;
 		font-weight: 500;
@@ -450,7 +450,7 @@
 	:global(.dark) .mode-label {
 		background: rgba(17, 17, 17, 0.72);
 		border-color: rgba(255, 255, 255, 0.08);
-		color: #f3f4f6;
+		color: #f1f5f9;
 		box-shadow:
 			0 1px 2px rgba(0, 0, 0, 0.4),
 			0 10px 26px -14px rgba(0, 0, 0, 0.7);

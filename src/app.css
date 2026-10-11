@@ -4,6 +4,30 @@
 
 @theme {
 	--font-sans: 'Albert Sans', sans-serif;
+
+	/* Jade — the live signal (live, current, clickable, focus). Tuned in OKLCH. */
+	--color-jade-50: #e4f9f0;
+	--color-jade-200: #baebd4;
+	--color-jade-300: #9ae2c2;
+	--color-jade-400: #5cd1a3;
+	--color-jade-500: #009d75;
+	--color-jade-600: #008664;
+	--color-jade-700: #006d52;
+	--color-jade-800: #005740;
+	--color-jade-950: #053b2c;
+
+	/* Iris — emphasis and subsurface glow. One family, no violet/purple split. */
+	--color-iris-200: #d4cefa;
+	--color-iris-300: #ab9bf6;
+	--color-iris-400: #9f90e6;
+	--color-iris-500: #7a61ce;
+	--color-iris-600: #6b51bb;
+	--color-iris-700: #5c40a7;
+	--color-iris-800: #4b3090;
+
+	/* Mist — the unified cool muted neutral (meta text, labels). */
+	--color-mist-400: #93a1b5;
+	--color-mist-500: #5f6d80;
 }
 
 html {
@@ -11,7 +35,7 @@ html {
 }
 
 body {
-	@apply bg-gradient-to-br from-white to-gray-200 dark:from-gray-800 dark:to-gray-950 bg-fixed bg-cover min-h-screen text-gray-900 dark:text-gray-100;
+	@apply bg-gradient-to-br from-white to-slate-200 dark:from-slate-800 dark:to-slate-950 bg-fixed bg-cover min-h-screen text-slate-900 dark:text-slate-100;
 	overflow-x: clip;
 }
 
@@ -33,7 +57,7 @@ button:not(:disabled),
 		@apply transition-[color,background-color,border-color,box-shadow,transform] duration-200;
 		transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 		@apply hover:border-slate-300 hover:bg-white/70 dark:hover:border-slate-700 dark:hover:bg-slate-900/60;
-		@apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400/60 dark:focus-visible:ring-offset-slate-950;
+		@apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-jade-700 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-jade-400/60 dark:focus-visible:ring-offset-slate-950;
 	}
 }
 

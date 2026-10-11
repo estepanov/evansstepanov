@@ -17,10 +17,10 @@
 	const techIcon = getTechIcon(tech.name);
 
 	const proficiencyTone: Record<string, string> = {
-		Beginner: 'text-slate-500 dark:text-slate-400',
-		Intermediate: 'text-purple-600 dark:text-purple-400',
-		Advanced: 'text-purple-700 dark:text-purple-300',
-		Expert: 'text-purple-800 dark:text-purple-200'
+		Beginner: 'text-mist-500 dark:text-mist-400',
+		Intermediate: 'text-iris-600 dark:text-iris-400',
+		Advanced: 'text-iris-700 dark:text-iris-300',
+		Expert: 'text-iris-800 dark:text-iris-200'
 	};
 </script>
 
@@ -40,7 +40,7 @@
 			<div class="flex items-center justify-between gap-4">
 				{#if tech.type}
 					<span
-						class="text-[10px] font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400"
+						class="text-[10px] font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400"
 					>
 						{tech.type}
 					</span>
@@ -50,10 +50,10 @@
 						href={tech.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors group"
+						class="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-jade-700 dark:text-jade-400 hover:text-jade-800 dark:hover:text-jade-300 transition-colors group"
 					>
 						<span
-							class="underline underline-offset-4 decoration-emerald-600/30 group-hover:decoration-emerald-600"
+							class="underline underline-offset-4 decoration-jade-600/30 group-hover:decoration-jade-600"
 						>
 							Learn more
 						</span>
@@ -80,7 +80,7 @@
 					</h1>
 					<div class="mt-4 flex items-center gap-3 flex-wrap">
 						<span
-							class="text-[10px] font-semibold tracking-[0.22em] uppercase text-slate-500 dark:text-slate-400"
+							class="text-[10px] font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400"
 						>
 							Proficiency
 						</span>

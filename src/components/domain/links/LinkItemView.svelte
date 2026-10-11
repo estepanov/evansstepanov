@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ComponentType } from 'svelte';
 	import { ArrowUpRight, Globe2, LinkedinIcon, Mail } from '@lucide/svelte';
+	import type { IconComponent } from '../../../util/tech-icons';
 	import {
 		SiBehance,
 		SiBluesky,
@@ -53,7 +53,7 @@
 		target.style.removeProperty('--link-glow-y');
 	}
 
-	const logoIcons: Partial<Record<ExternalLinkKind, ComponentType>> = {
+	const logoIcons: Partial<Record<ExternalLinkKind, IconComponent>> = {
 		behance: SiBehance,
 		bluesky: SiBluesky,
 		calendly: SiCalendly,
@@ -91,7 +91,7 @@
 	aria-label="Open {link.title}"
 >
 	<span
-		class="flex h-8 w-8 items-center justify-center rounded-md bg-slate-50 text-slate-500 transition-colors duration-200 group-hover:text-emerald-700 dark:bg-slate-950/40 dark:text-slate-400 dark:group-hover:text-emerald-300"
+		class="flex h-8 w-8 items-center justify-center rounded-md bg-slate-50 text-mist-500 transition-colors duration-200 group-hover:text-jade-700 dark:bg-slate-950/40 dark:text-mist-400 dark:group-hover:text-jade-300"
 		aria-hidden="true"
 	>
 		{#if isGithub}
@@ -109,7 +109,7 @@
 
 	<span class="min-w-0">
 		<span
-			class="block truncate text-sm font-semibold text-slate-800 transition-colors duration-200 group-hover:text-emerald-700 dark:text-slate-100 dark:group-hover:text-emerald-300"
+			class="block truncate text-sm font-semibold text-slate-800 transition-colors duration-200 group-hover:text-jade-700 dark:text-slate-100 dark:group-hover:text-jade-300"
 		>
 			{link.title}
 		</span>
@@ -119,7 +119,7 @@
 	     mailto: hands off to a mail client, so it keeps its Mail icon only. -->
 	{#if target === '_blank'}
 		<ArrowUpRight
-			class="link-card__arrow h-4 w-4 text-slate-400 transition-[color,transform] duration-200 group-hover:text-emerald-600 dark:text-slate-500 dark:group-hover:text-emerald-300"
+			class="link-card__arrow h-4 w-4 text-mist-400 transition-[color,transform] duration-200 group-hover:text-jade-700 dark:text-mist-500 dark:group-hover:text-jade-300"
 			aria-hidden="true"
 		/>
 	{/if}

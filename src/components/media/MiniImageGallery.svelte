@@ -20,7 +20,7 @@
 </script>
 
 <div
-	class={`w-full bg-gradient-to-br from-gray-200 to-emerald-200 dark:from-gray-800 dark:to-emerald-900 rounded-xl ${
+	class={`w-full bg-gradient-to-br from-slate-200 to-jade-200 dark:from-slate-800 dark:to-jade-950 rounded-xl ${
 		isOpen ? 'h-40 mt-2' : 'h-0 mt-0'
 	} overflow-hidden transition-all ease-in-out duration-500`}
 >
@@ -51,7 +51,7 @@
 				alt={selectedImage.alt}
 				class="max-w-full max-h-[80vh] object-contain"
 			/>
-			<button class="absolute top-4 right-4 text-3xl text-gray-200" on:click={closeModal}>
+			<button class="absolute top-4 right-4 text-3xl text-slate-200" on:click={closeModal}>
 				&times;
 			</button>
 		</div>
