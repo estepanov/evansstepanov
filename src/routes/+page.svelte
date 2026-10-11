@@ -560,6 +560,22 @@
 		color: var(--color-slate-400);
 	}
 
+	/* Touch needs finger-sized hit areas on the inline tech links; padding on
+	 * inline boxes grows the target without shifting the row rhythm. */
+	@media (pointer: coarse) {
+		.tech-row__label {
+			padding-block: 0.875rem;
+		}
+
+		.tech-row__items {
+			row-gap: 0.25rem;
+		}
+
+		.tech-item {
+			padding-block: 0.875rem;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.tech-row__label,
 		.tech-row__rule,
