@@ -49,7 +49,7 @@
 
 	<div class="relative z-[1] flex flex-col grow">
 		<div class="flex flex-row items-center mb-7 relative">
-			<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''} flex justify-center items-center">
+			<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">
 				{#if item.url}
 					<a
 						target="_blank"
@@ -129,7 +129,7 @@
 <style>
 	@media (min-width: 640px) and (hover: hover) {
 		.details-btn-wrap {
-			opacity: 0;
+			opacity: 0.55;
 			transform: translateY(2px);
 			transition:
 				opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
