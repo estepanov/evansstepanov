@@ -24,6 +24,16 @@ html.dark .card-meta {
 		0 1px 1px var(--color-slate-900);
 }
 
+/* Touch needs finger-sized hit areas on the inline card links; padding on
+ * inline boxes grows the target without shifting card layout. */
+@media (pointer: coarse) {
+	.card-heading a,
+	.card-meta a,
+	.card-meta button {
+		padding-block: 0.875rem;
+	}
+}
+
 .grid-card {
 	--grid-glow-x: 86%;
 	--grid-glow-y: 14%;

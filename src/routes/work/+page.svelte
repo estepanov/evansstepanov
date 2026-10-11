@@ -14,7 +14,7 @@
 
 <PageContainer class="space-y-12 mt-10">
 	<TechHeader rootLabel="Work" rootHref="/work" />
-	<main class="w-full space-y-16">
+	<main id="main-content" class="w-full space-y-16">
 		<header class="space-y-3 max-w-2xl">
 			<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
 				Experience
@@ -50,7 +50,12 @@
 							{company.companyName}
 						</a>
 						{#if company.isCurrent}
-							<StatusIndicator label="Now" variant="jade" animation="orbit" />
+							<StatusIndicator
+								label="Now"
+								variant="jade"
+								animation="orbit"
+								className="self-center"
+							/>
 						{/if}
 					</div>
 

@@ -136,7 +136,7 @@
 			component: SiTypescript,
 			size: 28,
 			top: '54%',
-			left: '94%',
+			left: '84%',
 			dur: 3.1,
 			delay: 0.6,
 			scale: 0.9,
@@ -191,7 +191,10 @@
 	] as const;
 </script>
 
-<span bind:this={wrapper} class="profile-wrapper float-right ml-2 mb-2 w-28 h-44 sm:w-48 sm:h-72">
+<span
+	bind:this={wrapper}
+	class="profile-wrapper mx-auto mb-6 block w-40 h-56 sm:float-right sm:mx-0 sm:ml-2 sm:mb-2 sm:w-48 sm:h-72"
+>
 	<svg
 		viewBox="-40 -40 240 320"
 		role="img"

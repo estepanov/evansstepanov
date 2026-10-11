@@ -155,7 +155,7 @@
 			background 240ms ease,
 			border-color 240ms ease,
 			color 240ms ease,
-			transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
 			box-shadow 380ms ease;
 		box-shadow:
 			0 1px 2px rgba(0, 0, 0, 0.06),
@@ -254,7 +254,7 @@
 		box-shadow:
 			0 0 0 1.5px rgba(0, 0, 0, 0.04),
 			0 1px 2px rgba(0, 0, 0, 0.1);
-		animation: badge-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+		animation: badge-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	:global(.dark) .system-badge {
 		background: #1e293b;
@@ -306,7 +306,7 @@
 	.mask-circle {
 		transform-origin: 24px 10px;
 		transform: scale(0);
-		transition: transform 560ms cubic-bezier(0.34, 1.46, 0.5, 1);
+		transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.is-dark .mask-circle {
 		transform: scale(1);
@@ -319,7 +319,7 @@
 		transform-origin: 16px 16px;
 		transition:
 			opacity 340ms cubic-bezier(0.4, 0, 0.2, 1) 80ms,
-			transform 680ms cubic-bezier(0.34, 1.2, 0.5, 1);
+			transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
 		opacity: 1;
 		transform: rotate(0deg) scale(1);
 	}

@@ -1,6 +1,6 @@
 <svg
 	class="w-full h-full"
-	aria-label="Evans Stepanov - Full stack engineer"
+	aria-hidden="true"
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 224.88 117.85"
 >

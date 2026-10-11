@@ -218,7 +218,7 @@
 	}
 
 	.select__trigger :global(.select__chevron) {
-		transition: transform 240ms cubic-bezier(0.34, 1.4, 0.5, 1);
+		transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 		opacity: 0.75;
 	}
 

@@ -49,7 +49,7 @@
 			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-slate-300 items-center text-mist-500"
 		>
 			{#if item.startDate}
-				<li class="opacity-80">
+				<li>
 					{getFormattedDate(item.startDate)}
 					{#if item.endDate}
 						<span class="mx-1">-</span>

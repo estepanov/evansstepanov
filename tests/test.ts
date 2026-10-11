@@ -98,3 +98,45 @@ test('live items show the orbit status indicator', async ({ page }) => {
 	await expect(card.locator('.status--orbit .status__ring')).toBeAttached();
 	await expect(card.locator('.status--orbit .status__sat')).toBeAttached();
 });
+
+test('links section keeps a two-column grid on desktop when it has multiple links', async ({
+	page
+}) => {
+	await page.goto('/');
+
+	const section = page
+		.locator('section')
+		.filter({ has: page.getByRole('heading', { name: 'Links', exact: true }) });
+	const list = section.locator('ul');
+	const count = await list.locator('li').count();
+	expect(count).toBeGreaterThan(0);
+
+	const columns = await list.evaluate(
+		(el) => getComputedStyle(el).gridTemplateColumns.split(' ').length
+	);
+
+	// A single link would leave a hollow second column, so it centers as one
+	// column; two or more fill the two-column grid and must keep it.
+	if (count >= 2) {
+		expect(columns).toBe(2);
+	} else {
+		expect(columns).toBe(1);
+	}
+});
+
+test('work timeline centers the current indicator on the company name line', async ({ page }) => {
+	await page.goto('/work');
+
+	const item = page.locator('.timeline-item').filter({ hasText: 'CLEAR' }).first();
+	const link = item.locator('a[href^="/work/"]').first();
+	const status = item.locator('.status').first();
+
+	const linkBox = await link.boundingBox();
+	const statusBox = await status.boundingBox();
+	expect(linkBox).not.toBeNull();
+	expect(statusBox).not.toBeNull();
+
+	const linkCenter = linkBox!.y + linkBox!.height / 2;
+	const statusCenter = statusBox!.y + statusBox!.height / 2;
+	expect(Math.abs(statusCenter - linkCenter)).toBeLessThanOrEqual(1);
+});
