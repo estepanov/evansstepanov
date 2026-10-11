@@ -25,6 +25,8 @@
 
 	export let data;
 
+	const currentYear = new Date().getFullYear();
+
 	$: techTypes = (() => {
 		const present = new Set<string>(
 			data.tech.map((t: { type?: string }) => t.type).filter((t): t is string => Boolean(t))
@@ -216,9 +218,13 @@
 		</section>
 	</main>
 	<footer use:revealOnView class="landing-footer reveal-ready mt-10">
-		<div class="my-5 text-xs text-gray-500 dark:text-gray-400 text-center">
-			<span class="italic">“I have not failed. I've just found 10,000 ways that won't work.”</span> ―
-			Thomas A. Edison
+		<div class="my-5 text-xs text-gray-600 dark:text-gray-400 text-center space-y-2">
+			<p class="italic">
+				“I have not failed. I've just found 10,000 ways that won't work.” ― Thomas A. Edison
+			</p>
+			<p class="text-[10px] font-medium uppercase tracking-[0.18em]">
+				© {currentYear} Evans Stepanov · Built with SvelteKit
+			</p>
 		</div>
 	</footer>
 </PageContainer>
