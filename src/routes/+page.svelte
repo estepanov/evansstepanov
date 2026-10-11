@@ -449,7 +449,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		color: var(--color-slate-500);
+		color: var(--color-slate-600);
 		transition: color 200ms ease;
 	}
 

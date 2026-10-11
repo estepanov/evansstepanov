@@ -31,7 +31,7 @@
 	<div class="relative z-[1] flex flex-col grow">
 		<div class="relative mb-7">
 			<h3 class="card-heading font-bold {isActive ? 'pr-24' : ''}">{item.title}</h3>
-			<p class="mt-2.5 text-sm italic text-gray-500 dark:text-gray-400">
+			<p class="mt-2.5 text-sm italic text-gray-600 dark:text-gray-400">
 				<span class="mr-1">at</span>
 				<span class="not-italic font-medium text-gray-700 dark:text-gray-200"
 					>{item.companyName}</span
@@ -46,10 +46,10 @@
 		<div class="flex grow"></div>
 
 		<ul
-			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center text-gray-500"
+			class="card-meta text-xs md:text-[13px] mt-7 flex flex-row flex-wrap gap-x-4 gap-y-2 dark:text-gray-300 items-center text-gray-600"
 		>
 			{#if item.startDate}
-				<li class="opacity-80">
+				<li>
 					{getFormattedDate(item.startDate)}
 					{#if item.endDate}
 						<span class="mx-1">-</span>
