@@ -3,7 +3,6 @@
 	import { idHash } from '../util/id-hash-link-format';
 	import { getTechIcon } from '../util/tech-icons';
 	import TechIcon from '../components/domain/tech/TechIcon.svelte';
-	import { MousePointer, ShoppingCart } from '@lucide/svelte';
 
 	const preferredTechOrder = [
 		'Runtime',
@@ -102,45 +101,30 @@
 				<p class="leading-relaxed">
 					<ProfileDiamond />
 					I'm a
-					<span class="font-semibold text-purple-700 dark:text-purple-400"
-						>product focused <span class="inline-block"><ShoppingCart size={16} /></span></span
-					>
+					<span class="font-semibold text-purple-700 dark:text-purple-400">product focused</span>
 					software engineer with a passion for building scalable, high-performance
-					<span class="font-semibold text-purple-700 dark:text-purple-400"
-						>web applications <span class="inline-block"><MousePointer size={16} /></span></span
-					>. With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
+					<span class="font-semibold text-purple-700 dark:text-purple-400">web applications</span>.
+					With experience at CLEAR, Amazon Web Services, and beyond, I've led major frontend and
 					full-stack initiatives, from architecting frontend applications and optimizing legacy
 					systems to enhancing accessibility and streamlining cloud infrastructure.
 				</p>
 				<p class="leading-relaxed">
 					I primarily work in
-					<span class="font-semibold text-purple-700 dark:text-purple-400">
-						TypeScript
-						<span class="inline-block"><TechIcon icon={getTechIcon('TypeScript')} size={16} /></span
-						>
-					</span>, building
-					<span class="font-semibold text-purple-700 dark:text-purple-400">
-						Node.js
-						<span class="inline-block"><TechIcon icon={getTechIcon('Node.js')} size={16} /></span>
-					</span>
+					<span class="font-semibold text-purple-700 dark:text-purple-400">TypeScript</span>,
+					building
+					<span class="font-semibold text-purple-700 dark:text-purple-400">Node.js</span>
 					backends and
-					<span class="font-semibold text-purple-700 dark:text-purple-400">
-						React
-						<span class="inline-block"><TechIcon icon={getTechIcon('React')} size={16} /></span>
-					</span>
+					<span class="font-semibold text-purple-700 dark:text-purple-400">React</span>
 					frontends, with modern JavaScript tooling. I thrive on solving complex technical challenges
 					with elegant, user-focused solutions.
 				</p>
 				<p class="leading-relaxed">
 					When I'm not <code>coding</code>, you can find me
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">dading</span>
-					🍼,
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">reading</span>
-					📚,
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">skiing</span>
-					⛷️, playing <span class="font-semibold text-emerald-700 dark:text-emerald-400">Halo</span>
-					🎮, or
-					<span class="font-semibold text-emerald-700 dark:text-emerald-400">sleeping</span> 🛌.
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">dading</span>,
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">reading</span>,
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">skiing</span>, playing
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">Halo</span>, or
+					<span class="font-semibold text-emerald-700 dark:text-emerald-400">sleeping</span>.
 				</p>
 			</div>
 		</section>
