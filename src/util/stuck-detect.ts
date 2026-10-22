@@ -6,7 +6,9 @@ export function stuckDetect(node: HTMLElement) {
 	node.parentElement?.insertBefore(sentinel, node);
 
 	const io = new IntersectionObserver(
-		([entry]) => {
+		(entries) => {
+			// Fast scrolling queues several crossings per delivery; only the last is current.
+			const entry = entries[entries.length - 1];
 			const stuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
 			node.classList.toggle('is-stuck', stuck);
 		},
