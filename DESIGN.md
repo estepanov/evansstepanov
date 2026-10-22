@@ -167,7 +167,7 @@ One cool neutral family by design: **slate** carries ink, hairlines, borders, st
 
 ### Hierarchy
 
-- **Headline** (600, `1.5rem`/24px, line-height 1.2, tracking `0.18em`, uppercase): section titles ("About", "Links", "Work", "Projects", "Tech") and the modal title. In a `StickySectionHeader` it shrinks to `0.875rem` and tightens to `0.15em` when stuck.
+- **Headline** (600, `1.5rem`/24px, line-height 1.2, tracking `0.18em`, uppercase): section titles ("About", "Links", "Work", "Projects", "Tech") and the modal title. In a `StickySectionHeader` it compresses to a visual `0.875rem` when stuck via a compositor-only scale that keeps the `0.18em` track proportional — the header box never reflows beneath the pin.
 - **Title** (700, `clamp(1.05rem, 0.95rem + 0.45vw, 1.375rem)`, line-height 1.2): card headings for work and projects; scales fluidly with viewport.
 - **Body** (400, `1rem`/16px, line-height 1.625 `leading-relaxed` for About prose, `1.375` `leading-snug` for card descriptions): all reading copy. About prose sits in a comfortable measure; card copy tightens to fit the panel.
 - **Label** (500, `0.6875rem`/11px, tracking `0.18em`, uppercase, line-height 1): tech-row labels, breadcrumbs, status labels, the Select trigger, and eyebrows. Eyebrows can drop to `10px` at `0.2em`; modal section labels use `0.75rem` at `0.08em`.
