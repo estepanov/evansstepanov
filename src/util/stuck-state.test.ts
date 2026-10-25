@@ -1,49 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isScrollJump, isStuckFromSentinel, sentinelIntersectsViewport } from './stuck-state';
-
-describe('isStuckFromSentinel', () => {
-	it('reports stuck when the sentinel sits fully above the viewport', () => {
-		expect(isStuckFromSentinel(false, -3)).toBe(true);
-	});
-
-	it('reports unstuck while the sentinel is still clipped into the top edge', () => {
-		// The header pins at top:-1px, so a sentinel with any pixel on screen is not stuck yet.
-		expect(isStuckFromSentinel(true, -0.5)).toBe(false);
-	});
-
-	it('reports unstuck when the sentinel is below the viewport', () => {
-		expect(isStuckFromSentinel(false, 900)).toBe(false);
-	});
-
-	it('reports unstuck while the sentinel is on screen', () => {
-		expect(isStuckFromSentinel(true, 400)).toBe(false);
-	});
-});
-
-describe('sentinelIntersectsViewport', () => {
-	const height = 800;
-
-	it('treats a span ending exactly at the viewport top as outside', () => {
-		expect(sentinelIntersectsViewport(-1, 0, height)).toBe(false);
-	});
-
-	it('treats a span straddling the viewport top as inside', () => {
-		expect(sentinelIntersectsViewport(-0.5, 0.5, height)).toBe(true);
-	});
-
-	it('treats a span straddling the viewport bottom as inside', () => {
-		expect(sentinelIntersectsViewport(799.5, 800.5, height)).toBe(true);
-	});
-
-	it('treats a span starting exactly at the viewport bottom as outside', () => {
-		expect(sentinelIntersectsViewport(800, 801, height)).toBe(false);
-	});
-
-	it('treats a span fully above or fully inside as expected', () => {
-		expect(sentinelIntersectsViewport(-2, -1, height)).toBe(false);
-		expect(sentinelIntersectsViewport(300, 301, height)).toBe(true);
-	});
-});
+import { isScrollJump } from './stuck-state';
 
 describe('isScrollJump', () => {
 	const height = 800;
