@@ -19,14 +19,14 @@
 		font-size: 1.5rem;
 		line-height: 1.2;
 		letter-spacing: 0.18em;
-		transition:
-			font-size 0.3s ease,
-			letter-spacing 0.3s ease;
+		transform-origin: left center;
+		transition: transform 0.3s ease;
 	}
 
 	.section-header:global(.is-stuck) :global(.section-title) {
-		font-size: 0.875rem;
-		letter-spacing: 0.15em;
+		/* 0.875rem / 1.5rem, compositor-only: the layout box never changes height, so a
+		   stuck toggle can't shift the sections below and re-trigger their detection. */
+		transform: scale(0.58333);
 	}
 
 	.section-header::before {
@@ -39,10 +39,11 @@
 		z-index: -1;
 		background-color: transparent;
 		border-bottom: 1px solid transparent;
+		/* Only the tint and hairline fade; the blur snaps on instead of interpolating
+		   a full-width backdrop-filter every frame during fast-scroll handoffs. */
 		transition:
 			background-color 0.25s ease,
-			border-color 0.25s ease,
-			backdrop-filter 0.25s ease;
+			border-color 0.25s ease;
 	}
 
 	.section-header:global(.is-stuck)::before {
