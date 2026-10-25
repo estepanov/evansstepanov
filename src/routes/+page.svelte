@@ -222,7 +222,7 @@
 				“I have not failed. I've just found 10,000 ways that won't work.” ― Thomas A. Edison
 			</p>
 			<p class="text-[10px] font-medium uppercase tracking-[0.18em]">
-				© {currentYear} Evans Stepanov · Built with SvelteKit
+				© {currentYear} Evans Stepanov
 			</p>
 		</div>
 	</footer>
