@@ -33,9 +33,10 @@
 
 	// Emojis cycled while the bottle is hidden behind the diamond, so a
 	// fresh one re-emerges from the top-left each lap. Period must match
-	// the planet-orbit animation duration in CSS (16s).
+	// the planet-orbit duration in CSS: the Alpine cadence tempo sets it
+	// to 24s / 0.85 ≈ 28.2s.
 	const orbitEmojis = ['🍼', '📚', '⛷️', '🎮', '🛌'] as const;
-	const ORBIT_MS = 16000;
+	const ORBIT_MS = Math.round(24000 / 0.85);
 	// 75% mark of the orbit = deep behind the diamond (top-left arc).
 	const SWAP_OFFSET_MS = ORBIT_MS * 0.75;
 	let emojiIdx = $state(0);
@@ -247,9 +248,14 @@
 </span>
 
 <style>
+	/* Display stays out of this rule on purpose: the wrapper's box mode is
+	 * owned by the utility classes (centered `block` below `sm`, float from
+	 * `sm` up). An unlayered `display` here would outrank Tailwind's layered
+	 * `block` utility and drop the diamond into the paragraph's first line
+	 * box as a tall inline-level box on small screens. `shape-outside` only
+	 * applies once the `sm:` float blockifies the wrapper. */
 	.profile-wrapper {
 		position: relative;
-		display: inline-block;
 		shape-outside: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 		shape-margin: 0.75rem;
 		--mx: 0;
@@ -361,6 +367,38 @@
 		}
 		.planet-body {
 			font-size: 26px;
+		}
+	}
+
+	/* "Alpine cadence": one shared slow rhythm across float, orbit, twinkle
+	   and drift. Kept as tempo/orbit custom props so the tuning stays
+	   adjustable from the wrapper; defaults are the tuned values. */
+	.diamond {
+		animation-duration: calc(6s / var(--p-tempo, 0.85));
+	}
+
+	.planet {
+		--rx: calc(46px * var(--p-orbit, 1.15));
+		--ry: calc(11px * var(--p-orbit, 1.15));
+		animation-duration: calc(24s / var(--p-tempo, 0.85));
+	}
+
+	.planet-body {
+		animation-duration: calc(12s / var(--p-tempo, 0.85));
+	}
+
+	.sparkle-icon {
+		animation-duration: calc(4s / var(--p-tempo, 0.85));
+	}
+
+	.sparkle-inner {
+		animation-duration: calc(12s / var(--p-tempo, 0.85));
+	}
+
+	@media (min-width: 640px) {
+		.planet {
+			--rx: calc(82px * var(--p-orbit, 1.15));
+			--ry: calc(18px * var(--p-orbit, 1.15));
 		}
 	}
 
