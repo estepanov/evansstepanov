@@ -33,8 +33,8 @@
 
 	// Emojis cycled while the bottle is hidden behind the diamond, so a
 	// fresh one re-emerges from the top-left each lap. Period must match
-	// the planet-orbit duration in CSS: the Alpine cadence tempo sets it
-	// to 24s / 0.85 ≈ 28.2s.
+	// the planet-orbit duration in CSS — the `calc(24s / 0.85)` literal on
+	// `.planet` (≈ 28.2s). Change both together.
 	const orbitEmojis = ['🍼', '📚', '⛷️', '🎮', '🛌'] as const;
 	const ORBIT_MS = Math.round(24000 / 0.85);
 	// 75% mark of the orbit = deep behind the diamond (top-left arc).
@@ -124,12 +124,10 @@
 			size: 36,
 			top: '8%',
 			left: '70%',
-			dur: 2.4,
 			delay: 0,
 			scale: 1,
 			dx: 1,
 			dy: 1,
-			driftDur: 7.5,
 			driftDelay: 0,
 			spin: 1
 		},
@@ -138,12 +136,10 @@
 			size: 28,
 			top: '54%',
 			left: '84%',
-			dur: 3.1,
 			delay: 0.6,
 			scale: 0.9,
 			dx: 1,
 			dy: 1,
-			driftDur: 9.2,
 			driftDelay: 1.3,
 			spin: -1
 		},
@@ -152,12 +148,10 @@
 			size: 24,
 			top: '88%',
 			left: '38%',
-			dur: 2.7,
 			delay: 1.2,
 			scale: 1.1,
 			dx: 1,
 			dy: -1,
-			driftDur: 6.8,
 			driftDelay: 2.1,
 			spin: 1
 		},
@@ -166,12 +160,10 @@
 			size: 32,
 			top: '22%',
 			left: '10%',
-			dur: 2.9,
 			delay: 0.3,
 			scale: 0.85,
 			dx: -1,
 			dy: -1,
-			driftDur: 8.4,
 			driftDelay: 0.7,
 			spin: -1
 		},
@@ -180,12 +172,10 @@
 			size: 30,
 			top: '72%',
 			left: '12%',
-			dur: 2.6,
 			delay: 0.9,
 			scale: 0.95,
 			dx: -1,
 			dy: 1,
-			driftDur: 7.8,
 			driftDelay: 1.8,
 			spin: 1
 		}
@@ -238,7 +228,7 @@
 		<span
 			class="sparkle-icon"
 			aria-hidden="true"
-			style="--top:{s.top}; --left:{s.left}; --dur:{s.dur}s; --delay:{s.delay}s; --scale:{s.scale}; --dx:{s.dx}; --dy:{s.dy}; --drift-dur:{s.driftDur}s; --drift-delay:{s.driftDelay}s; --spin:{s.spin};"
+			style="--top:{s.top}; --left:{s.left}; --delay:{s.delay}s; --scale:{s.scale}; --dx:{s.dx}; --dy:{s.dy}; --drift-delay:{s.driftDelay}s; --spin:{s.spin};"
 		>
 			<span class="sparkle-inner">
 				<svelte:component this={s.component} size={s.size} />
@@ -269,10 +259,15 @@
 		display: block;
 	}
 
+	/* "Alpine cadence": one shared slow rhythm across float, orbit,
+	   twinkle and drift — every animation duration below is its base
+	   value divided by the 0.85 tempo, and the orbit radii are widened
+	   by 1.15. `.planet`'s orbit duration is mirrored by ORBIT_MS in the
+	   script; change both together. */
 	.diamond {
 		transform-box: fill-box;
 		transform-origin: 80px 120px;
-		animation: float 6s ease-in-out infinite;
+		animation: float calc(6s / 0.85) ease-in-out infinite;
 		transform: translate(calc(var(--mx) * 6px), calc(var(--my) * 6px))
 			rotate(calc(var(--mx) * 4deg));
 		transition: transform 0.05s linear;
@@ -302,7 +297,7 @@
 				calc(-50% + var(--my) * 12px * var(--dy))
 			)
 			rotate(calc(var(--mx) * 16deg * var(--dx))) scale(var(--scale));
-		animation: twinkle var(--dur) ease-in-out infinite var(--delay);
+		animation: twinkle calc(4s / 0.85) ease-in-out infinite var(--delay);
 		filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.4));
 	}
 	:global(.dark) .sparkle-icon {
@@ -312,7 +307,7 @@
 	.sparkle-inner {
 		display: inline-flex;
 		transform-origin: center;
-		animation: sparkle-drift var(--drift-dur, 8s) ease-in-out infinite var(--drift-delay, 0s);
+		animation: sparkle-drift calc(12s / 0.85) ease-in-out infinite var(--drift-delay, 0s);
 		will-change: transform;
 	}
 
@@ -343,9 +338,9 @@
 		margin-left: -14px;
 		margin-top: -14px;
 		pointer-events: none;
-		--rx: 46px;
-		--ry: 11px;
-		animation: planet-orbit 16s linear infinite;
+		--rx: calc(46px * 1.15);
+		--ry: calc(11px * 1.15);
+		animation: planet-orbit calc(24s / 0.85) linear infinite;
 		will-change: transform, z-index;
 	}
 
@@ -356,49 +351,17 @@
 		font-size: 20px;
 		line-height: 28px;
 		text-align: center;
-		animation: planet-spin 9s ease-in-out infinite;
+		animation: planet-spin calc(12s / 0.85) ease-in-out infinite;
 		filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
 	}
 
 	@media (min-width: 640px) {
 		.planet {
-			--rx: 82px;
-			--ry: 18px;
+			--rx: calc(82px * 1.15);
+			--ry: calc(18px * 1.15);
 		}
 		.planet-body {
 			font-size: 26px;
-		}
-	}
-
-	/* "Alpine cadence": one shared slow rhythm across float, orbit, twinkle
-	   and drift. Kept as tempo/orbit custom props so the tuning stays
-	   adjustable from the wrapper; defaults are the tuned values. */
-	.diamond {
-		animation-duration: calc(6s / var(--p-tempo, 0.85));
-	}
-
-	.planet {
-		--rx: calc(46px * var(--p-orbit, 1.15));
-		--ry: calc(11px * var(--p-orbit, 1.15));
-		animation-duration: calc(24s / var(--p-tempo, 0.85));
-	}
-
-	.planet-body {
-		animation-duration: calc(12s / var(--p-tempo, 0.85));
-	}
-
-	.sparkle-icon {
-		animation-duration: calc(4s / var(--p-tempo, 0.85));
-	}
-
-	.sparkle-inner {
-		animation-duration: calc(12s / var(--p-tempo, 0.85));
-	}
-
-	@media (min-width: 640px) {
-		.planet {
-			--rx: calc(82px * var(--p-orbit, 1.15));
-			--ry: calc(18px * var(--p-orbit, 1.15));
 		}
 	}
 
