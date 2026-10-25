@@ -6,6 +6,7 @@
 	import { getFormattedDate } from '../../../util/dates';
 	import { GithubIcon } from '@lucide/svelte';
 	import { handleGlowLeave, handleGlowMove } from './gridCardGlow';
+	import { glareScrollDriver } from './gridCardGlare';
 	import type { Project } from '../../../data/projects';
 
 	export let item: Project;
@@ -42,7 +43,7 @@
 		<span class="status-anchor">
 			<StatusIndicator label="In progress" variant="subtle" animation="orbit" />
 		</span>
-		<span class="active-glare" aria-hidden="true">
+		<span class="active-glare" aria-hidden="true" use:glareScrollDriver>
 			<span class="active-glare__spot"></span>
 		</span>
 	{/if}

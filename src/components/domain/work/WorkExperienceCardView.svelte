@@ -4,6 +4,7 @@
 	import { getFormattedDate } from '../../../util/dates';
 	import { workExperienceHref } from '../../../util/work-experience-href';
 	import { handleGlowLeave, handleGlowMove } from './gridCardGlow';
+	import { glareScrollDriver } from './gridCardGlare';
 	import type { Work } from '../../../data/work';
 	import './gridCardChrome.css';
 
@@ -23,7 +24,7 @@
 		<span class="status-anchor">
 			<StatusIndicator label="Now" variant="jade" animation="orbit" />
 		</span>
-		<span class="active-glare" aria-hidden="true">
+		<span class="active-glare" aria-hidden="true" use:glareScrollDriver>
 			<span class="active-glare__spot"></span>
 		</span>
 	{/if}
