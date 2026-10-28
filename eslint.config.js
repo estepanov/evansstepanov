@@ -10,6 +10,8 @@ export default [
 			'.DS_Store',
 			'node_modules/**',
 			'build/**',
+			'dist/**',
+			'.astro/**',
 			'.svelte-kit/**',
 			'package/**',
 			'.env',
