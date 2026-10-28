@@ -2,6 +2,10 @@
 
 These notes keep contributions consistent across the SvelteKit site and its automation scripts. Prefer small, reviewable changes and keep commands reproducible.
 
+## EmDash documentation
+
+Look up EmDash APIs, seed format, hooks, and config via the `emdash-docs` MCP server (`https://docs.emdashcms.com/mcp`, configured in `.mcp.json`). Prefer that over training-data assumptions. The site MCP at `http://localhost:4321/_emdash/api/mcp` is for content after `npm run dev` is running; it is not a substitute for the docs MCP.
+
 ## Project Structure & Module Organization
 
 - `src/routes/` holds page endpoints (`+page.svelte`, `+page.server.ts`, `+layout.*`); each folder is a URL segment. Subroutes like `tech/` and `bookmarks/` mirror their pages.
