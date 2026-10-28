@@ -123,10 +123,15 @@ export async function loadCompanyBySlug(slug: string): Promise<CompanyPage | nul
 	const roleHints: CacheHint[] = [publishedRoles.cacheHint];
 	const matchingRoles: ContentEntry[] = [];
 
-	for (const role of publishedRoles.entries) {
-		const hydrated = await getEmDashEntry('roles', role.id, {
-			references: { company: true, tech: true }
-		});
+	const hydratedRoles = await Promise.all(
+		publishedRoles.entries.map((role) =>
+			getEmDashEntry('roles', role.id, {
+				references: { company: true, tech: true }
+			})
+		)
+	);
+
+	for (const hydrated of hydratedRoles) {
 		if (hydrated.error) throw hydrated.error;
 		if (hydrated.cacheHint) roleHints.push(hydrated.cacheHint);
 		if (hydrated.entry && roleBelongsToCompany(hydrated.entry, entry)) {

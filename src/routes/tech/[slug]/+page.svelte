@@ -78,23 +78,25 @@
 					>
 						{tech.name}
 					</h1>
-					<div class="mt-4 flex items-center gap-3 flex-wrap">
-						<span
-							class="text-[10px] font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400"
-						>
-							Proficiency
-						</span>
-						<span class="inline-block h-3 w-px bg-slate-300 dark:bg-slate-700" aria-hidden="true"
-						></span>
-						<span
-							class="text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase {proficiencyTone[
-								tech.proficiency
-							]}"
-							aria-label="Proficiency: {tech.proficiency}"
-						>
-							{tech.proficiency}
-						</span>
-					</div>
+					{#if tech.proficiency}
+						<div class="mt-4 flex items-center gap-3 flex-wrap">
+							<span
+								class="text-[10px] font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400"
+							>
+								Proficiency
+							</span>
+							<span class="inline-block h-3 w-px bg-slate-300 dark:bg-slate-700" aria-hidden="true"
+							></span>
+							<span
+								class="text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase {proficiencyTone[
+									tech.proficiency
+								]}"
+								aria-label="Proficiency: {tech.proficiency}"
+							>
+								{tech.proficiency}
+							</span>
+						</div>
+					{/if}
 				</div>
 			</div>
 

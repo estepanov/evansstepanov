@@ -67,7 +67,6 @@
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 						{#each techItems as techItem (techItem.name)}
 							{@const techIcon = getTechIcon(techItem.name)}
-							{@const proficiencyColor = getColorFromWeight(techItem.proficiency)}
 							<a
 								href="/tech/{techItem.name}"
 								class="card card--interactive group relative flex gap-4 p-5"
@@ -84,11 +83,15 @@
 										<h3 class="font-semibold text-slate-900 dark:text-slate-100 truncate">
 											{techItem.name}
 										</h3>
-										<span
-											class="shrink-0 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border bg-transparent {proficiencyColor}"
-										>
-											{techItem.proficiency}
-										</span>
+										{#if techItem.proficiency}
+											<span
+												class="shrink-0 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border bg-transparent {getColorFromWeight(
+													techItem.proficiency
+												)}"
+											>
+												{techItem.proficiency}
+											</span>
+										{/if}
 									</div>
 									{#if techItem.description}
 										<p

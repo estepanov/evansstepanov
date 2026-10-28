@@ -1,6 +1,9 @@
 import { TechProficiency } from '../data/tech';
 
-export const getColorFromWeight = (proficiency: TechProficiency) => {
+const missingProficiencyColor =
+	'text-mist-500 border-mist-500 dark:text-mist-400 dark:border-mist-400';
+
+export const getColorFromWeight = (proficiency?: TechProficiency) => {
 	switch (proficiency) {
 		case TechProficiency.Expert:
 			return 'text-iris-800 border-iris-800 dark:text-iris-200 dark:border-iris-200';
@@ -9,8 +12,12 @@ export const getColorFromWeight = (proficiency: TechProficiency) => {
 		case TechProficiency.Intermediate:
 			return 'text-iris-600 border-iris-600 dark:text-iris-400 dark:border-iris-400';
 		case TechProficiency.Beginner:
-			return 'text-mist-500 border-mist-500 dark:text-mist-400 dark:border-mist-400';
-		default:
-			return 'text-mist-500 border-mist-500 dark:text-mist-400 dark:border-mist-400';
+			return missingProficiencyColor;
+		case undefined:
+			return missingProficiencyColor;
+		default: {
+			const _exhaustive: never = proficiency;
+			return _exhaustive;
+		}
 	}
 };
