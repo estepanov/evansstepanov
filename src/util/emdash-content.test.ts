@@ -95,6 +95,37 @@ describe('slug rejection', () => {
 		expect(getEntry).toHaveBeenCalledWith('tech', 'node-js');
 		expect(getEntry).not.toHaveBeenCalledWith('tech', 'Node.js');
 	});
+
+	it('returns the mocked Node.js entry for node-js', async () => {
+		getEntry.mockResolvedValue({
+			entry: {
+				id: 'node-js',
+				data: {
+					slug: 'node-js',
+					name: 'Node.js',
+					type: 'Runtime',
+					proficiency: 'Expert',
+					description: 'JavaScript runtime',
+					url: 'https://nodejs.org'
+				}
+			},
+			cacheHint: { tags: ['tech:node-js'] },
+			isPreview: false
+		});
+
+		await expect(loadTechBySlug('node-js')).resolves.toMatchObject({
+			tech: {
+				slug: 'node-js',
+				name: 'Node.js',
+				type: 'Runtime',
+				proficiency: 'Expert',
+				description: 'JavaScript runtime',
+				url: 'https://nodejs.org'
+			}
+		});
+		expect(getEntry).toHaveBeenCalledWith('tech', 'node-js');
+		expect(getEntry).not.toHaveBeenCalledWith('tech', 'Node.js');
+	});
 });
 
 describe('loadCompanyBySlug', () => {

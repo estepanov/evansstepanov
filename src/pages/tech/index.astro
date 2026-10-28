@@ -1,0 +1,109 @@
+---
+import { House } from '@lucide/svelte';
+import AnchorButton from '../../components/actions/AnchorButton.svelte';
+import ButtonContainer from '../../components/actions/ButtonContainer.svelte';
+import TechHeader from '../../components/domain/tech/TechHeader.svelte';
+import TechIcon from '../../components/domain/tech/TechIcon.svelte';
+import PageContainer from '../../components/layout/PageContainer.svelte';
+import Base from '../../layouts/Base.astro';
+import { loadPublished, publishedTech } from '../../util/emdash-content';
+import { getColorFromWeight } from '../../util/statusColors';
+import { getTechIcon } from '../../util/tech-icons';
+import { techDetailHref, techIndexSections } from '../../util/tech-page';
+
+const techResult = await loadPublished('tech');
+if (Astro.cache.enabled) {
+	Astro.cache.set(techResult.cacheHint);
+}
+
+const techItems = techResult.entries
+	.map(publishedTech)
+	.filter((tech): tech is NonNullable<typeof tech> => Boolean(tech?.name));
+const sections = techIndexSections(techItems);
+
+const cardClass = 'card card--interactive group relative flex gap-4 p-5';
+---
+
+<Base
+	title="Tech Stack - Evans Stepanov"
+	description="Explore the technologies and tools I work with."
+>
+	<PageContainer class="space-y-12 mt-10">
+		<TechHeader rootHref="/tech/" />
+		<main id="main-content" class="w-full space-y-16">
+			<header class="space-y-3 max-w-2xl">
+				<p class="text-xs font-medium tracking-[0.2em] uppercase text-jade-700 dark:text-jade-400">
+					Tech Stack
+				</p>
+				<h1
+					class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+				>
+					Tools and technologies I build with
+				</h1>
+				<p class="text-slate-600 dark:text-mist-400 leading-relaxed">
+					Organized by category. Select any item to see related work and projects.
+				</p>
+			</header>
+
+			{
+				sections.map(({ type, items }) => (
+					<section id={type.toLowerCase()} class="scroll-mt-24">
+						<div class="mb-6 pb-3 border-b border-slate-200 dark:border-slate-800">
+							<h2 class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 dark:text-slate-300">
+								{type}
+							</h2>
+						</div>
+						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+							{items.map((techItem) => {
+								const techIcon = getTechIcon(techItem.name);
+								const href = techDetailHref(techItem.slug);
+								const body = (
+									<>
+										{techIcon && (
+											<span class="shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 group-hover:bg-jade-50 dark:group-hover:bg-jade-500/10 group-hover:text-jade-700 dark:group-hover:text-jade-400 transition-colors">
+												<TechIcon icon={techIcon} size={22} />
+											</span>
+										)}
+										<div class="flex flex-col min-w-0 flex-1">
+											<div class="flex items-center justify-between gap-2 mb-1">
+												<h3 class="font-semibold text-slate-900 dark:text-slate-100 truncate">
+													{techItem.name}
+												</h3>
+												{techItem.proficiency && (
+													<span
+														class={`shrink-0 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border bg-transparent ${getColorFromWeight(techItem.proficiency)}`}
+													>
+														{techItem.proficiency}
+													</span>
+												)}
+											</div>
+											{techItem.description && (
+												<p class="text-sm text-slate-600 dark:text-mist-400 leading-relaxed line-clamp-2">
+													{techItem.description}
+												</p>
+											)}
+										</div>
+									</>
+								);
+								return href ? (
+									<a href={href} class={cardClass}>
+										{body}
+									</a>
+								) : (
+									<div class="card group relative flex gap-4 p-5">{body}</div>
+								);
+							})}
+						</div>
+					</section>
+				))
+			}
+
+			<ButtonContainer>
+				<AnchorButton href="/">
+					<House />
+					Back to Home
+				</AnchorButton>
+			</ButtonContainer>
+		</main>
+	</PageContainer>
+</Base>
