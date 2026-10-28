@@ -11,6 +11,30 @@ export interface Work {
 	techTags?: string[];
 }
 
+/** One position at a company. Tenure current-ness is derived from a missing end date. */
+export interface RoleView {
+	title: string;
+	summary?: string;
+	url?: string;
+	startDate?: Date;
+	endDate?: Date;
+	isCurrent: boolean;
+	techTags: string[];
+}
+
+/** Public company page/card. `summary` is authored on the company entry, never derived from roles. */
+export interface CompanyView {
+	slug: string;
+	name: string;
+	url?: string;
+	summary: string;
+	roles: RoleView[];
+	techTags: string[];
+	isCurrent: boolean;
+	startDate?: Date;
+	endDate?: Date;
+}
+
 export interface Company {
 	slug: string;
 	companyName: string;
@@ -20,6 +44,6 @@ export interface Company {
 	isCurrent: boolean;
 	startDate?: Date;
 	endDate?: Date;
-	/** Summary for hero: current role, else latest by startDate */
+	/** @deprecated Kit grouping still derives this; EmDash views use CompanyView.summary. */
 	summary: string;
 }
