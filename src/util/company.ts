@@ -1,12 +1,9 @@
 import type { Company, Work } from '../data/work';
+import { toUrlSlug } from './to-url-slug';
 
+/** @deprecated Use `toUrlSlug` until companies move to EmDash. */
 export function companySlug(name: string): string {
-	return name
-		.normalize('NFKD')
-		.replace(/[\u0300-\u036f]/g, '')
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '');
+	return toUrlSlug(name);
 }
 
 function latestStart(roles: Work[]): Date | undefined {
