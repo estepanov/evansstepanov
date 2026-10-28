@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, memoryCache } from 'astro/config';
 import node from '@astrojs/node';
 import svelte from '@astrojs/svelte';
@@ -6,9 +8,12 @@ import tailwindcss from '@tailwindcss/vite';
 import emdash, { local } from 'emdash/astro';
 import { sqlite } from 'emdash/db';
 
+const srcLib = path.join(path.dirname(fileURLToPath(import.meta.url)), 'src/lib');
+
 export default defineConfig({
 	output: 'server',
 	trailingSlash: 'always',
+	publicDir: 'static',
 	adapter: node({ mode: 'standalone' }),
 	integrations: [
 		svelte(),
@@ -25,7 +30,12 @@ export default defineConfig({
 		})
 	],
 	vite: {
-		plugins: [tailwindcss()]
+		plugins: [tailwindcss()],
+		resolve: {
+			alias: {
+				$lib: srcLib
+			}
+		}
 	},
 	cache: {
 		provider: memoryCache()

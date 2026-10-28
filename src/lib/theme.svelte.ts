@@ -1,12 +1,11 @@
-import { browser } from '$app/environment';
-
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
 
 const STORAGE_KEY = 'theme';
+const isBrowser = typeof document !== 'undefined';
 
 function readInitialMode(): ThemeMode {
-	if (!browser) return 'system';
+	if (!isBrowser) return 'system';
 	const root = document.documentElement;
 	const fromAttr = root.dataset.themeMode as ThemeMode | undefined;
 	if (fromAttr === 'light' || fromAttr === 'dark' || fromAttr === 'system') return fromAttr;
@@ -14,7 +13,7 @@ function readInitialMode(): ThemeMode {
 }
 
 function systemPrefersDark(): boolean {
-	return browser && window.matchMedia('(prefers-color-scheme: dark)').matches;
+	return isBrowser && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
 function resolve(mode: ThemeMode): ResolvedTheme {
@@ -23,7 +22,7 @@ function resolve(mode: ThemeMode): ResolvedTheme {
 }
 
 function apply(resolved: ResolvedTheme, mode: ThemeMode) {
-	if (!browser) return;
+	if (!isBrowser) return;
 	const root = document.documentElement;
 	root.classList.toggle('dark', resolved === 'dark');
 	root.style.colorScheme = resolved;
@@ -39,7 +38,7 @@ class ThemeController {
 	);
 
 	constructor() {
-		if (!browser) return;
+		if (!isBrowser) return;
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
 		mq.addEventListener('change', (e) => {
 			this.systemDark = e.matches;
@@ -67,10 +66,10 @@ class ThemeController {
 			}
 		};
 
-		const doc = browser
+		const doc = isBrowser
 			? (document as Document & { startViewTransition?: (cb: () => void) => void })
 			: null;
-		const reduced = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const reduced = isBrowser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (doc?.startViewTransition && !reduced) {
 			doc.startViewTransition(run);
 		} else {
