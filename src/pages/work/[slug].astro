@@ -1,0 +1,204 @@
+---
+import { ArrowUpRight, House, Table } from '@lucide/svelte';
+import AnchorButton from '../../components/actions/AnchorButton.svelte';
+import ButtonContainer from '../../components/actions/ButtonContainer.svelte';
+import TechHeader from '../../components/domain/tech/TechHeader.svelte';
+import TopicHero from '../../components/domain/tech/TopicHero.svelte';
+import ProjectCard from '../../components/domain/work/ProjectCard.svelte';
+import PageContainer from '../../components/layout/PageContainer.svelte';
+import StickySectionHeader from '../../components/layout/StickySectionHeader.svelte';
+import Base from '../../layouts/Base.astro';
+import {
+	hydrateCollection,
+	loadPublished,
+	mergeCacheHints,
+	projectFromEntry,
+	publishedTech
+} from '../../util/emdash-content';
+import { formatDateRange } from '../../util/dates';
+import { relatedProjectsForCompany, resolveCompanyPage, techChipHref } from '../../util/work-page';
+
+const page = await resolveCompanyPage(Astro.params.slug);
+if (!page) return Astro.rewrite('/404');
+
+const [projectsResult, techResult] = await Promise.all([
+	loadPublished('projects'),
+	loadPublished('tech')
+]);
+const hydratedProjects = await hydrateCollection('projects', projectsResult, { tech: true });
+
+if (Astro.cache.enabled) {
+	Astro.cache.set(
+		mergeCacheHints(page.cacheHint, hydratedProjects.cacheHint, techResult.cacheHint)
+	);
+}
+
+const { company } = page;
+const tenure = formatDateRange(company.startDate, company.endDate, company.isCurrent);
+const techItems = techResult.entries
+	.map(publishedTech)
+	.filter((tech): tech is NonNullable<typeof tech> => Boolean(tech?.name));
+const publishedTechChips = techItems.map((tech) => ({ name: tech.name, slug: tech.slug }));
+const techForCards = techItems.map((tech) => ({ name: tech.name, type: tech.type }));
+const relatedProjects = relatedProjectsForCompany(
+	company.techTags,
+	hydratedProjects.entries.map(projectFromEntry).filter((project) => project.name)
+);
+
+const chipClass =
+	'inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 rounded-lg';
+---
+
+<Base
+	title={`${company.name} - Evans Stepanov`}
+	description={company.summary || `Work experience at ${company.name}.`}
+>
+	<PageContainer class="mt-10 space-y-16">
+		<TechHeader rootLabel="Work" rootHref="/work/" leaf={company.name} />
+
+		<main id="main-content" class="w-full">
+			<TopicHero tags={company.techTags}>
+				<div class="flex items-center justify-between gap-4">
+					<span
+						class="text-[10px] font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400"
+					>
+						Company
+					</span>
+					{
+						company.url && (
+							<a
+								href={company.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-jade-700 dark:text-jade-400 hover:text-jade-800 dark:hover:text-jade-300 transition-colors group"
+							>
+								<span class="underline underline-offset-4 decoration-jade-600/30 group-hover:decoration-jade-600">
+									Visit
+								</span>
+								<ArrowUpRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+							</a>
+						)
+					}
+				</div>
+
+				<div class="min-w-0">
+					<h1
+						class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.05]"
+					>
+						{company.name}
+					</h1>
+					{
+						tenure && (
+							<p class="mt-4 text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase text-mist-500 dark:text-mist-400 tabular-nums">
+								{tenure}
+							</p>
+						)
+					}
+				</div>
+
+				{
+					company.summary && (
+						<p class="max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+							{company.summary}
+						</p>
+					)
+				}
+			</TopicHero>
+
+			{
+				company.roles.length > 0 && (
+					<section class="pb-20">
+						<StickySectionHeader>
+							<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+								Roles
+							</h2>
+						</StickySectionHeader>
+						<ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
+							{company.roles.map((role) => {
+								const range = formatDateRange(role.startDate, role.endDate, role.isCurrent);
+								return (
+									<li class="py-6 first:pt-0 space-y-2">
+										<h3 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+											{role.title}
+										</h3>
+										{range && (
+											<p class="text-sm text-mist-500 dark:text-mist-400 tabular-nums tracking-wide">
+												{range}
+											</p>
+										)}
+										{role.summary && (
+											<p class="text-sm text-slate-600 dark:text-mist-400 leading-relaxed">
+												{role.summary}
+											</p>
+										)}
+									</li>
+								);
+							})}
+						</ul>
+					</section>
+				)
+			}
+
+			{
+				company.techTags.length > 0 && (
+					<section class="pb-20">
+						<StickySectionHeader>
+							<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+								Tech
+							</h2>
+						</StickySectionHeader>
+						<ul class="mt-6 flex flex-wrap gap-2">
+							{company.techTags.map((tag) => {
+								const href = techChipHref(tag, publishedTechChips);
+								return (
+									<li>
+										{href ? (
+											<a
+												href={href}
+												class={`${chipClass} hover:border-jade-600/50 hover:text-jade-700 dark:hover:text-jade-400 transition-colors`}
+											>
+												{tag}
+											</a>
+										) : (
+											<span class={chipClass}>{tag}</span>
+										)}
+									</li>
+								);
+							})}
+						</ul>
+					</section>
+				)
+			}
+
+			{
+				relatedProjects.length > 0 && (
+					<section>
+						<StickySectionHeader>
+							<h2 class="section-title text-2xl font-semibold tracking-[0.18em] uppercase text-slate-700 dark:text-slate-300">
+								Related Projects
+							</h2>
+						</StickySectionHeader>
+						<ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 relative">
+							{relatedProjects.map((project) => (
+								<ProjectCard client:idle item={project} tech={techForCards} />
+							))}
+						</ul>
+					</section>
+				)
+			}
+		</main>
+
+		<div class="w-full mt-10 mb-20">
+			<ButtonContainer>
+				<AnchorButton href="/">
+					<House />
+					Back to Home
+				</AnchorButton>
+				<AnchorButton href="/work/">
+					<Table />
+					View all Work
+				</AnchorButton>
+			</ButtonContainer>
+		</div>
+	</PageContainer>
+</Base>

@@ -4,9 +4,10 @@ import ThemeToggle from '../components/chrome/ThemeToggle.svelte';
 
 interface Props {
 	title?: string;
+	description?: string;
 }
 
-const { title = 'Evans Stepanov' } = Astro.props;
+const { title = 'Evans Stepanov', description } = Astro.props;
 ---
 
 <!doctype html>
@@ -58,6 +59,7 @@ const { title = 'Evans Stepanov' } = Astro.props;
 			rel="stylesheet"
 		/>
 		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
 	</head>
 	<body>
 		<a
