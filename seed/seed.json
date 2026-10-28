@@ -1,0 +1,450 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"defaultLocale": "en",
+	"meta": {
+		"name": "Evans Stepanov",
+		"description": "Portfolio content model: pages, work, roles, projects, tech, links, bookmarks, quotes"
+	},
+	"settings": {
+		"title": "Evans Stepanov",
+		"timezone": "UTC"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"routable": false,
+			"sortOrder": 1,
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "about",
+					"label": "About",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "companies",
+			"label": "Work",
+			"labelSingular": "Company",
+			"routable": true,
+			"urlPattern": "/work/{slug}",
+			"sortOrder": 2,
+			"titleField": "name",
+			"supports": ["drafts", "revisions", "search"],
+			"admin": {
+				"listColumns": ["name"]
+			},
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "roles",
+			"label": "Roles",
+			"labelSingular": "Role",
+			"routable": false,
+			"sortOrder": 3,
+			"titleField": "title",
+			"dateField": "start_date",
+			"supports": ["drafts", "revisions", "search"],
+			"admin": {
+				"listColumns": ["title", "start_date", "end_date"]
+			},
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url"
+				},
+				{
+					"slug": "start_date",
+					"label": "Start date",
+					"type": "datetime",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "end_date",
+					"label": "End date",
+					"type": "datetime",
+					"indexed": true
+				},
+				{
+					"slug": "company",
+					"label": "Company",
+					"type": "reference",
+					"required": true,
+					"validation": {
+						"relation": "roles_company"
+					}
+				},
+				{
+					"slug": "tech",
+					"label": "Tech",
+					"type": "reference",
+					"validation": {
+						"relation": "roles_tech"
+					}
+				}
+			]
+		},
+		{
+			"slug": "projects",
+			"label": "Projects",
+			"labelSingular": "Project",
+			"routable": false,
+			"sortOrder": 4,
+			"titleField": "name",
+			"dateField": "start_date",
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url"
+				},
+				{
+					"slug": "source",
+					"label": "Source",
+					"type": "url"
+				},
+				{
+					"slug": "is_active",
+					"label": "Active",
+					"type": "boolean"
+				},
+				{
+					"slug": "start_date",
+					"label": "Start date",
+					"type": "datetime",
+					"indexed": true
+				},
+				{
+					"slug": "end_date",
+					"label": "End date",
+					"type": "datetime",
+					"indexed": true
+				},
+				{
+					"slug": "media",
+					"label": "Media",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "image",
+								"label": "Image",
+								"type": "image"
+							}
+						]
+					}
+				},
+				{
+					"slug": "tech",
+					"label": "Tech",
+					"type": "reference",
+					"validation": {
+						"relation": "projects_tech"
+					}
+				}
+			]
+		},
+		{
+			"slug": "tech",
+			"label": "Tech",
+			"labelSingular": "Tech",
+			"routable": true,
+			"urlPattern": "/tech/{slug}",
+			"sortOrder": 5,
+			"titleField": "name",
+			"supports": ["drafts", "revisions", "search"],
+			"admin": {
+				"listColumns": ["name", "type", "proficiency"]
+			},
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "type",
+					"label": "Type",
+					"type": "select",
+					"indexed": true,
+					"validation": {
+						"options": [
+							"Runtime",
+							"Language",
+							"Framework",
+							"Library",
+							"Database",
+							"Data",
+							"Cloud",
+							"DevOps",
+							"AI"
+						]
+					}
+				},
+				{
+					"slug": "proficiency",
+					"label": "Proficiency",
+					"type": "select",
+					"indexed": true,
+					"validation": {
+						"options": ["Beginner", "Intermediate", "Advanced", "Expert"]
+					}
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url"
+				}
+			]
+		},
+		{
+			"slug": "links",
+			"label": "Links",
+			"labelSingular": "Link",
+			"routable": false,
+			"sortOrder": 6,
+			"titleField": "title",
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url",
+					"required": true
+				}
+			]
+		},
+		{
+			"slug": "bookmarks",
+			"label": "Bookmarks",
+			"labelSingular": "Bookmark",
+			"routable": false,
+			"sortOrder": 7,
+			"titleField": "title",
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url",
+					"required": true
+				}
+			]
+		},
+		{
+			"slug": "quotes",
+			"label": "Quotes",
+			"labelSingular": "Quote",
+			"routable": false,
+			"sortOrder": 8,
+			"titleField": "attribution",
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "attribution",
+					"label": "Attribution",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				}
+			]
+		}
+	],
+	"relations": [
+		{
+			"slug": "roles_company",
+			"parentCollection": "roles",
+			"childCollection": "companies",
+			"parentLabel": "Roles",
+			"parentLabelSingular": "Role",
+			"childLabel": "Company",
+			"childLabelSingular": "Company",
+			"maxChildrenPerParent": 1
+		},
+		{
+			"slug": "roles_tech",
+			"parentCollection": "roles",
+			"childCollection": "tech",
+			"parentLabel": "Roles",
+			"parentLabelSingular": "Role",
+			"childLabel": "Tech",
+			"childLabelSingular": "Tech"
+		},
+		{
+			"slug": "projects_tech",
+			"parentCollection": "projects",
+			"childCollection": "tech",
+			"parentLabel": "Projects",
+			"parentLabelSingular": "Project",
+			"childLabel": "Tech",
+			"childLabelSingular": "Tech"
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "project_tags",
+			"label": "Project tags",
+			"labelSingular": "Project tag",
+			"hierarchical": false,
+			"collections": ["projects"]
+		},
+		{
+			"name": "bookmark_tags",
+			"label": "Bookmark tags",
+			"labelSingular": "Bookmark tag",
+			"hierarchical": false,
+			"collections": ["bookmarks"]
+		}
+	],
+	"content": {
+		"companies": [
+			{
+				"id": "co-clear",
+				"slug": "clear",
+				"status": "published",
+				"data": {
+					"name": "CLEAR",
+					"url": "https://www.clearme.com",
+					"summary": "Placeholder company summary for local seed."
+				}
+			}
+		],
+		"quotes": [
+			{
+				"id": "quote-edison",
+				"status": "published",
+				"data": {
+					"text": "I have not failed. I've just found 10,000 ways that won't work.",
+					"attribution": "Thomas A. Edison"
+				}
+			}
+		],
+		"pages": [
+			{
+				"id": "page-home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"about": [
+						{
+							"_type": "block",
+							"_key": "home-about",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "home-about-text",
+									"text": "I'm a product focused software engineer."
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"roles": [
+			{
+				"id": "role-clear-staff",
+				"status": "published",
+				"data": {
+					"title": "Staff Software Engineer",
+					"start_date": "2026-08-01T00:00:00.000Z",
+					"company": "$ref:co-clear"
+				}
+			},
+			{
+				"id": "role-clear-senior",
+				"status": "published",
+				"data": {
+					"title": "Senior Software Engineer",
+					"start_date": "2023-06-15T00:00:00.000Z",
+					"end_date": "2026-08-01T00:00:00.000Z",
+					"company": "$ref:co-clear"
+				}
+			}
+		]
+	}
+}

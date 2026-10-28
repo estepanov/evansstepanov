@@ -50,6 +50,9 @@
 		"vitest": "^1.0.0"
 	},
 	"type": "module",
+	"emdash": {
+		"seed": "seed/seed.json"
+	},
 	"dependencies": {
 		"@astrojs/node": "^11.1.9",
 		"@astrojs/react": "^7.1.2",
