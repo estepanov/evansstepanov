@@ -18,7 +18,10 @@ export default defineConfig({
 			storage: local({
 				directory: './data/uploads',
 				baseUrl: '/_emdash/api/media/file'
-			})
+			}),
+			middleware: {
+				outer: './src/outer-middleware.ts'
+			}
 		})
 	],
 	vite: {
