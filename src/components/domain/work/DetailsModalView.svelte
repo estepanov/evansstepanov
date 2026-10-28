@@ -5,6 +5,7 @@
 	import { getFormattedDate } from '../../../util/dates';
 	import type { Work } from '../../../data/work';
 	import type { Project } from '../../../data/projects';
+	import { mediaSrc } from './media-src';
 
 	export let open = false;
 	export let item: Work | Project | undefined = undefined;
@@ -179,7 +180,7 @@
 						<ul class="media-grid">
 							{#each media as src, i (src)}
 								<li class="media-tile">
-									<img src="/{src}" alt={mediaAlt(i)} loading="lazy" />
+									<img src={mediaSrc(src)} alt={mediaAlt(i)} loading="lazy" />
 								</li>
 							{/each}
 						</ul>
