@@ -23,7 +23,7 @@ export interface TechPage {
 	cacheHint: CacheHint;
 }
 
-function mergeCacheHints(...hints: CacheHint[]): CacheHint {
+export function mergeCacheHints(...hints: CacheHint[]): CacheHint {
 	const tags = [...new Set(hints.flatMap((hint) => hint.tags ?? []))];
 	const lastModified = hints
 		.map((hint) => hint.lastModified)
@@ -55,6 +55,32 @@ function parseProficiency(value: unknown): TechProficiency | undefined {
 		default:
 			return undefined;
 	}
+}
+
+export function publishedTech(entry: ContentEntry): Tech & { slug: string } {
+	return toTechView(entry, entrySlug(entry));
+}
+
+export function publishedCompanyViews(
+	companies: ContentEntry[],
+	roles: ContentEntry[]
+): CompanyView[] {
+	const views: CompanyView[] = [];
+	for (const company of companies) {
+		const slug = entrySlug(company);
+		if (!isUrlSlug(slug)) continue;
+		views.push(
+			companyFromRoles(
+				company,
+				roles.filter((role) => roleBelongsToCompany(role, company))
+			)
+		);
+	}
+	return views.sort((left, right) => {
+		const leftTime = left.roles[0]?.startDate?.getTime() ?? 0;
+		const rightTime = right.roles[0]?.startDate?.getTime() ?? 0;
+		return rightTime - leftTime;
+	});
 }
 
 function toTechView(entry: ContentEntry, requestedSlug: string): Tech & { slug: string } {

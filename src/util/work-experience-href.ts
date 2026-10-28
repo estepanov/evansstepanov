@@ -2,5 +2,5 @@ export function workExperienceHref(companySlug: string | undefined | null): stri
 	if (companySlug == null) return null;
 	const slug = companySlug.trim();
 	if (!slug) return null;
-	return `/work/${slug}`;
+	return `/work/${slug}/`;
 }

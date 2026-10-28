@@ -1,4 +1,4 @@
-import type { CompanyView, RoleView } from '../data/work';
+import type { CompanyView, RoleView, Work } from '../data/work';
 import { TechProficiencyWeight, type TechProficiency } from '../data/tech';
 import { isUrlSlug } from './to-url-slug';
 
@@ -128,5 +128,20 @@ export function companyFromRoles(company: CompanySource, roles: CompanyRoleSourc
 			: ends.length
 				? new Date(Math.max(...ends.map((date) => date.getTime())))
 				: undefined
+	};
+}
+
+/** Home work card: newest role title (or company name), authored company summary. */
+export function workFromCompanyView(company: CompanyView): Work {
+	return {
+		companyName: company.name,
+		companySlug: company.slug,
+		title: company.roles[0]?.title || company.name,
+		description: company.summary,
+		url: company.url ?? '',
+		startDate: company.startDate,
+		endDate: company.endDate,
+		isCurrent: company.isCurrent,
+		techTags: company.techTags
 	};
 }

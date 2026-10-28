@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { companyFromRoles } from './company-from-roles';
+import { companyFromRoles, workFromCompanyView } from './company-from-roles';
 import { isUrlSlug } from './to-url-slug';
 
 const clearSummary = 'Placeholder company summary for local seed.';
@@ -119,5 +119,28 @@ describe('companyFromRoles', () => {
 		expect(company.isCurrent).toBe(false);
 		expect(company.startDate).toEqual(new Date('2022-01-01T00:00:00.000Z'));
 		expect(company.endDate).toEqual(new Date('2025-01-01T00:00:00.000Z'));
+	});
+});
+
+describe('workFromCompanyView', () => {
+	it('maps the authored company summary onto the card, not role text', () => {
+		const company = companyFromRoles(clearCompany, [staffRole, seniorRole]);
+		const work = workFromCompanyView(company);
+
+		expect(work.companySlug).toBe('clear');
+		expect(work.companyName).toBe('CLEAR');
+		expect(work.title).toBe('Staff Software Engineer');
+		expect(work.description).toBe(clearSummary);
+		expect(work.description).not.toBe(staffRole.data.summary);
+		expect(work.isCurrent).toBe(true);
+		expect(work.techTags).toEqual(company.techTags);
+	});
+
+	it('falls back to the company name when there are no roles', () => {
+		const company = companyFromRoles(clearCompany, []);
+		const work = workFromCompanyView(company);
+
+		expect(work.title).toBe('CLEAR');
+		expect(work.description).toBe(clearSummary);
 	});
 });
