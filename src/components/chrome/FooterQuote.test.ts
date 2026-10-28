@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { pickRandomQuote, type Quote } from './pick-random-quote';
+import { pickRandomQuote, ssrFooterQuote, type Quote } from './pick-random-quote';
 
 const edison: Quote = {
 	text: "I have not failed. I've just found 10,000 ways that won't work.",
@@ -31,5 +31,21 @@ describe('pickRandomQuote', () => {
 		for (let i = 0; i < 40; i++) {
 			expect(quotes).toContainEqual(pickRandomQuote(quotes, jobs));
 		}
+	});
+});
+
+describe('ssrFooterQuote', () => {
+	it('uses the last-resort quote when the collection is empty', () => {
+		expect(ssrFooterQuote([], edison)).toEqual(edison);
+	});
+
+	it('selects Edison by attribution, not by quote text', () => {
+		const decoy = { text: edison.text, attribution: 'Someone Else' };
+		const edisonByName = { text: 'A different Edison line.', attribution: 'Thomas A. Edison' };
+		expect(ssrFooterQuote([decoy, jobs, edisonByName], edison)).toEqual(edisonByName);
+	});
+
+	it('uses the first published quote when Edison is absent', () => {
+		expect(ssrFooterQuote([jobs, yoda], edison)).toEqual(jobs);
 	});
 });

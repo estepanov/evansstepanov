@@ -1,5 +1,5 @@
 ---
-import { getEmDashEntry, type CacheHint, type ContentEntry } from 'emdash';
+import type { ContentEntry } from 'emdash';
 import { PortableText, type PortableTextBlock } from 'emdash/ui';
 import Base from '../layouts/Base.astro';
 import Logo from '../components/chrome/Logo.svelte';
@@ -12,20 +12,20 @@ import WorkExperienceCard from '../components/domain/work/WorkExperienceCard.sve
 import TechIcon from '../components/domain/tech/TechIcon.svelte';
 import ProfileDiamond from '../components/media/ProfileDiamond.svelte';
 import { TECH_TYPE_ORDER, type TechType } from '../data/tech';
-import type { Project } from '../data/projects';
 import {
+	hydrateCollection,
 	loadHomePage,
 	loadPublished,
 	mergeCacheHints,
+	projectFromEntry,
 	publishedCompanyViews,
 	publishedTech
 } from '../util/emdash-content';
 import { workFromCompanyView } from '../util/company-from-roles';
-import { idHash } from '../util/id-hash-link-format';
 import { normalizeExternalLink, type ExternalLink } from '../util/links';
 import { getTechIcon } from '../util/tech-icons';
 import { isUrlSlug } from '../util/to-url-slug';
-import type { Quote } from '../components/chrome/pick-random-quote';
+import { ssrFooterQuote, type Quote } from '../components/chrome/pick-random-quote';
 
 const EDISON_QUOTE: Quote = {
 	text: "I have not failed. I've just found 10,000 ways that won't work.",
@@ -36,56 +36,8 @@ function asString(value: unknown): string {
 	return typeof value === 'string' ? value : '';
 }
 
-function asDate(value: unknown): Date | undefined {
-	if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
-	if (typeof value === 'string' && value) {
-		const date = new Date(value);
-		return Number.isNaN(date.getTime()) ? undefined : date;
-	}
-	return undefined;
-}
-
 function dataOf(entry: ContentEntry): Record<string, unknown> {
 	return entry.data as Record<string, unknown>;
-}
-
-async function hydrateCollection(
-	name: 'roles' | 'projects',
-	published: { entries: ContentEntry[]; cacheHint: CacheHint },
-	references: { company?: true; tech?: true }
-): Promise<{ entries: ContentEntry[]; cacheHint: CacheHint }> {
-	if (published.entries.length === 0) return published;
-	const hints: CacheHint[] = [published.cacheHint];
-	const entries: ContentEntry[] = [];
-	const results = await Promise.all(
-		published.entries.map((entry) => getEmDashEntry(name, entry.id, { references }))
-	);
-	for (const result of results) {
-		if (result.error) throw result.error;
-		if (result.cacheHint) hints.push(result.cacheHint);
-		if (result.entry) entries.push(result.entry);
-	}
-	return { entries, cacheHint: mergeCacheHints(...hints) };
-}
-
-function projectFromEntry(entry: ContentEntry): Project {
-	const data = dataOf(entry);
-	const slug = asString(data.slug) || entry.id;
-	const techTags = (entry.references?.tech?.entries ?? [])
-		.map((tech) => asString(dataOf(tech).name).trim())
-		.filter(Boolean);
-	return {
-		slug: isUrlSlug(slug) ? slug : undefined,
-		name: asString(data.name),
-		description: asString(data.description),
-		url: asString(data.url),
-		source: asString(data.source),
-		isActive: data.is_active === true,
-		startDate: asDate(data.start_date),
-		endDate: asDate(data.end_date),
-		media: [],
-		techTags
-	};
 }
 
 const [
@@ -141,7 +93,9 @@ const workCards = publishedCompanyViews(companiesResult.entries, hydratedRoles.e
 	workFromCompanyView
 );
 
-const techItems = techResult.entries.map(publishedTech).filter((tech) => tech.name);
+const techItems = techResult.entries
+	.map(publishedTech)
+	.filter((tech): tech is NonNullable<typeof tech> => Boolean(tech?.name));
 const presentTypes = new Set(
 	techItems.map((tech) => tech.type).filter((type): type is TechType => Boolean(type))
 );
@@ -180,6 +134,7 @@ const quotes: Quote[] = quotesResult.entries
 		return { text, attribution };
 	})
 	.filter((quote): quote is Quote => Boolean(quote));
+const fallback = ssrFooterQuote(quotes, EDISON_QUOTE);
 
 const currentYear = new Date().getFullYear();
 const techForCards = techItems.map((tech) => ({ name: tech.name, type: tech.type }));
@@ -247,7 +202,7 @@ const techForCards = techItems.map((tech) => ({ name: tech.name, type: tech.type
 				<ul class="landing-grid mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
 					{
 						projects.map((project) => (
-							<ProjectCard item={project} idHash={idHash} tech={techForCards} />
+							<ProjectCard client:idle item={project} tech={techForCards} />
 						))
 					}
 				</ul>
@@ -303,7 +258,7 @@ const techForCards = techItems.map((tech) => ({ name: tech.name, type: tech.type
 		</main>
 		<footer class="landing-footer reveal-ready mt-10">
 			<div class="my-5 text-xs text-mist-500 dark:text-mist-400 text-center space-y-2">
-				<FooterQuote quotes={quotes} fallback={EDISON_QUOTE} client:load />
+				<FooterQuote quotes={quotes} fallback={fallback} client:load />
 				<p class="text-[10px] font-medium uppercase tracking-[0.18em]">
 					© {currentYear} Evans Stepanov
 				</p>

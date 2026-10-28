@@ -1,4 +1,5 @@
 import { getEmDashCollection, getEmDashEntry, type CacheHint, type ContentEntry } from 'emdash';
+import type { Project } from '../data/projects';
 import {
 	TECH_TYPE_ORDER,
 	TechProficiency,
@@ -57,8 +58,87 @@ function parseProficiency(value: unknown): TechProficiency | undefined {
 	}
 }
 
-export function publishedTech(entry: ContentEntry): Tech & { slug: string } {
-	return toTechView(entry, entrySlug(entry));
+export function publishedTech(entry: ContentEntry): (Tech & { slug: string }) | undefined {
+	const slug = entrySlug(entry);
+	if (!isUrlSlug(slug)) return undefined;
+	return toTechView(entry, slug);
+}
+
+export async function hydrateCollection(
+	name: 'roles' | 'projects',
+	published: { entries: ContentEntry[]; cacheHint: CacheHint },
+	references: { company?: true; tech?: true }
+): Promise<{ entries: ContentEntry[]; cacheHint: CacheHint }> {
+	if (published.entries.length === 0) return published;
+	const hints: CacheHint[] = [published.cacheHint];
+	const entries: ContentEntry[] = [];
+	const results = await Promise.all(
+		published.entries.map((entry) => getEmDashEntry(name, entry.id, { references }))
+	);
+	for (const result of results) {
+		if (result.error) throw result.error;
+		if (result.cacheHint) hints.push(result.cacheHint);
+		if (result.entry) entries.push(result.entry);
+	}
+	return { entries, cacheHint: mergeCacheHints(...hints) };
+}
+
+function asString(value: unknown): string {
+	return typeof value === 'string' ? value : '';
+}
+
+function asDate(value: unknown): Date | undefined {
+	if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+	if (typeof value === 'string' && value) {
+		const date = new Date(value);
+		return Number.isNaN(date.getTime()) ? undefined : date;
+	}
+	return undefined;
+}
+
+function publishedImageUrl(value: unknown): string | undefined {
+	if (typeof value === 'string' && value.trim()) return value.trim();
+	if (!value || typeof value !== 'object') return undefined;
+	const record = value as Record<string, unknown>;
+	if ('image' in record) return publishedImageUrl(record.image);
+	if (typeof record.url === 'string' && record.url.trim()) return record.url.trim();
+	if (typeof record.src === 'string' && record.src.trim()) return record.src.trim();
+	const asset = record.asset;
+	if (asset && typeof asset === 'object') {
+		const nestedUrl = (asset as Record<string, unknown>).url;
+		if (typeof nestedUrl === 'string' && nestedUrl.trim()) return nestedUrl.trim();
+	}
+	return undefined;
+}
+
+function projectMedia(data: Record<string, unknown>): string[] {
+	if (!Array.isArray(data.media)) return [];
+	const urls: string[] = [];
+	for (const item of data.media) {
+		const url = publishedImageUrl(item);
+		if (url) urls.push(url);
+	}
+	return urls;
+}
+
+export function projectFromEntry(entry: ContentEntry): Project {
+	const data = dataRecord(entry);
+	const slug = asString(data.slug) || entry.id;
+	const techTags = (entry.references?.tech?.entries ?? [])
+		.map((tech) => asString(dataRecord(tech).name).trim())
+		.filter(Boolean);
+	return {
+		slug: isUrlSlug(slug) ? slug : undefined,
+		name: asString(data.name),
+		description: asString(data.description),
+		url: asString(data.url),
+		source: asString(data.source),
+		isActive: data.is_active === true,
+		startDate: asDate(data.start_date),
+		endDate: asDate(data.end_date),
+		media: projectMedia(data),
+		techTags
+	};
 }
 
 export function publishedCompanyViews(
