@@ -379,6 +379,22 @@
 			"collections": ["bookmarks"]
 		}
 	],
+	"redirects": [
+		{
+			"source": "/tech/Node.js",
+			"destination": "/tech/node-js/",
+			"type": 308,
+			"enabled": true,
+			"groupName": "legacy-tech"
+		},
+		{
+			"source": "/tech/Node.js/",
+			"destination": "/tech/node-js/",
+			"type": 308,
+			"enabled": true,
+			"groupName": "legacy-tech"
+		}
+	],
 	"content": {
 		"companies": [
 			{

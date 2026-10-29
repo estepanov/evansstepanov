@@ -6,6 +6,7 @@
 	import type { Work } from '../../../data/work';
 	import type { Project } from '../../../data/projects';
 	import { mediaSrc } from './media-src';
+	import { techNameHref } from '../../../util/to-url-slug';
 
 	export let open = false;
 	export let item: Work | Project | undefined = undefined;
@@ -203,7 +204,9 @@
 									<ul class="stack-chips" aria-label="{group.category} technologies">
 										{#each group.tags as tag (tag)}
 											<li>
-												<a href="/tech/{tag}" class="chip"><span class="chip-text">{tag}</span></a>
+												<a href={techNameHref(tag)} class="chip"
+													><span class="chip-text">{tag}</span></a
+												>
 											</li>
 										{/each}
 									</ul>

@@ -15,3 +15,20 @@ export function toUrlSlug(input: string): string {
 export function isUrlSlug(input: string): boolean {
 	return URL_SLUG_PATTERN.test(input);
 }
+
+export function techNameHref(name: string): string {
+	return `/tech/${toUrlSlug(name)}/`;
+}
+
+export function uniqueUrlSlugs(names: string[]): Map<string, string> {
+	const slugToName = new Map<string, string>();
+	for (const name of names) {
+		const slug = toUrlSlug(name);
+		const existing = slugToName.get(slug);
+		if (existing !== undefined && existing !== name) {
+			throw new Error(`Slug collision: "${existing}" and "${name}" both map to "${slug}"`);
+		}
+		slugToName.set(slug, name);
+	}
+	return slugToName;
+}

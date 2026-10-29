@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toUrlSlug, isUrlSlug } from './to-url-slug';
+import { toUrlSlug, isUrlSlug, techNameHref, uniqueUrlSlugs } from './to-url-slug';
 
 describe('toUrlSlug', () => {
 	it('kebabs company names', () => {
@@ -17,6 +17,25 @@ describe('toUrlSlug', () => {
 	it('throws on empty or punctuation-only input', () => {
 		expect(() => toUrlSlug('   ')).toThrow(/url slug/i);
 		expect(() => toUrlSlug('***')).toThrow(/url slug/i);
+	});
+});
+
+describe('techNameHref', () => {
+	it('slugs a display name onto the live chip path', () => {
+		expect(techNameHref('Node.js')).toBe('/tech/node-js/');
+	});
+});
+
+describe('uniqueUrlSlugs', () => {
+	it('maps each name through toUrlSlug', () => {
+		expect(Object.fromEntries(uniqueUrlSlugs(['Node.js', 'Amazon Web Services']))).toEqual({
+			'node-js': 'Node.js',
+			'amazon-web-services': 'Amazon Web Services'
+		});
+	});
+
+	it('throws on distinct names that collide', () => {
+		expect(() => uniqueUrlSlugs(['Foo Bar', 'Foo-Bar'])).toThrow(/collision/i);
 	});
 });
 
