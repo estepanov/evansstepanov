@@ -15,7 +15,7 @@ function bookmarkEntry(
 			url,
 			terms: { bookmark_tags: tags }
 		}
-	} as ContentEntry;
+	} as unknown as ContentEntry;
 }
 
 describe('groupBookmarksByTags', () => {

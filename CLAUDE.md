@@ -6,39 +6,49 @@ See `AGENTS.md` for the full contributor guide (structure, style, commit convent
 
 ## Stack
 
-SvelteKit 2 + Svelte 5 + TypeScript + Tailwind, shipped as a fully static site via `@sveltejs/adapter-static` (output in `build/`). Content is sourced from Notion at build/dev time.
+Astro (`output: "server"`) + EmDash + Svelte 5 + TypeScript + Tailwind v4. Local adapter is `@astrojs/node` with SQLite and local media (`data/emdash.db`, `data/uploads`). React is admin-only (`/_emdash/admin`).
+
+**EmDash is content truth.** Publishing an entry updates the live site. Public slugs are kebab-case. Quotes are home-only.
 
 ## Commands
 
-- `npm run dev` — downloads Notion images, then starts Vite dev server. Requires `.env` with `NOTION_TOKEN`, `LANDING_LINKS_NOTION_DB_ID`, and `PROJECTS_NOTION_DB_ID`.
-- `npm run build` — same image prefetch, then static build.
-- `npm run check` — `svelte-kit sync` + `svelte-check`. Run this after touching types, routes, or `$env` usage.
+- `npm run dev` — Astro + EmDash on `http://localhost:4321`. Requires `.env` with `EMDASH_ENCRYPTION_KEY` (`npx emdash secrets generate`).
+- `npm run build` — production server build into `dist/`.
+- `npm run preview` — serve `dist/` with `.env` loaded.
+- `npm run check` — `astro check`. Run this after touching types, pages, or `import.meta.env`.
 - `npm run test:unit` — Vitest (unit `*.test.ts` colocated with source). Single test: `npx vitest run path/to/file.test.ts -t "name"`.
 - `npm test` — Playwright E2E in `tests/`. Debug with `npx playwright test --ui`.
+- `npm run verify:public-js` — after a production client build, fail if public JS reaches React or `@emdash-cms/admin`.
 - `npm run lint` / `npm run format` — Prettier + ESLint.
+- `npm run storybook` — component workshop; needs no CMS and no `.env`.
 
 Node version is pinned in `.nvmrc`.
 
-## Notion-driven content pipeline
+## EmDash content pipeline
 
-The site does not hit Notion at runtime in production — all Notion reads happen during SvelteKit's prerender/build phase (server `load` functions in `+page.server.ts`), plus an image prefetch step.
+The public site reads published EmDash entries at request time (`src/util/emdash-content.ts` → `getEmDashCollection` / `getEmDashEntry`). There is no Notion runtime and no build-time content fetch.
 
-1. `scripts/download-build-images.ts` runs automatically before `dev` and `build`. It queries the `PROJECTS_NOTION_DB_ID` database, downloads every file from the `Media` property, and writes them to `static/_dld/static/` with hashed filenames (`src/util/file-names.ts#hashFileName`).
-2. Route `load` functions use `src/util/notion.ts` (which reads `NOTION_TOKEN` via `$env/static/private`) to fetch page content. Image URLs coming from Notion are remapped to the local hashed paths via `src/util/motion-files.ts` / `formate-notion-files.ts`.
-3. Because the output is static, any new Notion-dependent data must be fetched in a server `load` (not a client-side fetch) and must be serializable.
+1. Collections: `pages` (slug `home` → `/`), `companies` (`/work/{slug}/`), `roles` (listed on the company page), `projects`, `tech` (`/tech/{slug}/`), `links` (home), `bookmarks` (`/bookmarks`, `noindex`), `quotes` (home footer only).
+2. Route cache (`memoryCache`) on `/`, `/work`, `/work/[slug]`, `/tech`, `/tech/[slug]`, `/bookmarks`. Do not cache `/_emdash/*` or `/api/*`.
+3. Canonical health: `GET /api/health/` → 200. Unsuffixed `/api/health` is 404 under `trailingSlash: 'always'`.
 
-When adding a new Notion-backed feature: add the DB id to `.env` + README, fetch in `+page.server.ts`, and if it involves images, extend `download-build-images.ts` so assets land in `static/_dld/` before the build reads them.
+When adding a collection-backed page: query in the Astro frontmatter (not a client fetch), tag the route cache, and keep editorial copy out of the template.
 
 ## Routing notes
 
-- `src/routes/tech/[slug]/` renders per-tech-tag pages; the tag list is static in `src/data/tech.ts` and used for both the index and slug params.
-- `src/routes/bookmarks/` is driven by `LANDING_LINKS_NOTION_DB_ID`.
-- `src/data/` holds static content (projects, work, tech) that is not in Notion — edit these TS files directly rather than adding a new data source.
+- Pages live in `src/pages/`, not SvelteKit `src/routes/`.
+- `src/pages/tech/[slug].astro` and `src/pages/work/[slug].astro` use `entry.slug` (`toUrlSlug`). Valid slug: `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
+- `src/data/` is types and view models only — not content rows.
+- Footer quotes load only on `src/pages/index.astro`. `/work` and `/tech` do not.
 
 ## Env vars
 
-Required in `.env` / `.env.local`:
+Required in `.env` / `.env.local` for `npm run dev`:
 
-- `NOTION_TOKEN` — Notion integration secret
-- `LANDING_LINKS_NOTION_DB_ID` — bookmarks/links DB
-- `PROJECTS_NOTION_DB_ID` — projects DB (used by the image prefetch script)
+- `EMDASH_ENCRYPTION_KEY` — generated locally; never commit
+
+Optional:
+
+- `PUBLIC_FATHOM_SITE_ID` — analytics; skipped when empty
+
+Notion `NOTION_*` vars are only for a live `npm run import:notion -- --apply`. They are not required to boot the site.

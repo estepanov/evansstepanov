@@ -1,88 +1,68 @@
-# My personal domain
+# Evans Stepanov
 
-A very simple personal landing page, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Personal site: Astro + EmDash, with the existing Svelte visual system.
 
-## Data sourced from Notion
+**EmDash is content truth.** Work, projects, tech, links, bookmarks, about copy, and footer quotes are authored in the CMS. Publishing an entry updates the live site — no rebuild.
 
-Before you can build/run the project you will Notion integration, check [their API docs](https://developers.notion.com/docs/getting-started).
-
-1. Set up a private integration from https://www.notion.so/my-integrations
-2. Copy Notion's "internal integration secret" and paste it into `.env` file as `NOTION_TOKEN`
-3. Grant the integration access to a Notion database, this is done via `Connections` > `Add a connection`
-
-### The Main Links DB
-
-These are the instructions for creating a DB that will show up on the landing page
-
-1. In Notion create a new database
-2. We need a `Name` and `URL` field
-3. Grab the [database id](https://developers.notion.com/docs/working-with-databases) and save it to `.env` as `LANDING_LINKS_NOTION_DB_ID`
+Public company and tech URLs use kebab-case slugs (`/work/amazon-web-services/`, `/tech/node-js/`), never display names. Quotes render on the home footer only.
 
 ## Developing
 
-Once you've cloned this projecte installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+`npm run dev` needs `EMDASH_ENCRYPTION_KEY` in gitignored `.env` (generate with `npx emdash secrets generate`). Do not commit the key.
 
 ```bash
+npm install
 npm run dev
+# http://localhost:4321/          public site
+# http://localhost:4321/_emdash/admin/   CMS admin
+```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Local data lives in gitignored `data/` (SQLite + media). Seed: `seed/seed.json`.
+
+## Sample `.env`
+
+```bash
+EMDASH_ENCRYPTION_KEY=
+PUBLIC_FATHOM_SITE_ID=
 ```
 
 ## Building
 
-To create a production version of this app:
-
 ```bash
 npm run build
+npm run preview
 ```
-
-You can preview the production build with `npm run preview`.
 
 ## Storybook
 
-Component workshop for the presentational components in `src/components/`:
+Component workshop for presentational components in `src/components/`. Storybook needs no CMS (no EmDash, no Notion) and works with no `.env`.
 
 ```bash
-npm run storybook        # dev server on http://localhost:6006
-npm run build-storybook  # static build into storybook-static/
+npm run storybook        # http://localhost:6006
+npm run build-storybook  # storybook-static/
 ```
 
-Storybook needs no Notion credentials and does not run the image prefetch, so it
-works with no `.env` at all. Stories are colocated with their components as
-`*.stories.svelte` and use the Svelte CSF format.
-
-Use the toolbar theme switcher to toggle light/dark — it applies the `dark` class
-to `<html>`, which is what the components' styles key off.
+Stories are colocated as `*.stories.svelte` (Svelte CSF). The toolbar theme switcher toggles the `dark` class on `<html>`.
 
 ### Story organization
 
-Stories are grouped to match folders under `src/components/`:
-
 - `Actions/` — buttons, links, select
 - `Feedback/` — status + spinners
-- `Chrome/` — site header, logos, theme toggle
+- `Chrome/` — site header, logos, theme toggle, footer quote
 - `Layout/` — page/section scaffolding
 - `Media/` — images, backdrops, profile diamond
 - `Icons/` — custom tech icons (+ Gallery)
 - `Domain/Tech|Work|Links/` — feature composites
 
-Presentational `*View` shells are what Storybook targets for analytics-coupled
-composites (`GridItem`, `LinkItem`, `DetailsModal`). Containers keep Fathom calls.
+Presentational `*View` shells are what Storybook targets for analytics-coupled composites (`GridItem`, `LinkItem`, `DetailsModal`).
 
-### Future visual QA
+## Optional Notion import
 
-Story IDs are stable CSF paths derived from `title` + story `name`
-(e.g. `domain-work-griditem--work-current`). Optional later hooks:
-
-- `npm run build-storybook` then browse `storybook-static/`
-- Playwright against the static build, or Chromatic on CI
-
-No visual-regression CI is wired yet.
-
-## Sample `.env.local`
+A one-shot importer can copy Notion databases into EmDash. Daily `dev` / `build` / Storybook do not need Notion credentials. A live import does:
 
 ```bash
-NOTION_TOKEN=
-LANDING_LINKS_NOTION_DB_ID=
+npm run import:notion            # dry-run
+npm run import:notion -- --apply # write (needs Notion + EMDASH_TOKEN)
 ```
+
+For `--apply`: `NOTION_TOKEN`, `LANDING_LINKS_NOTION_DB_ID`, `PROJECTS_NOTION_DB_ID`, `WORK_NOTION_DB_ID`, `TECH_NOTION_DB_ID`, `BOOKMARKS_NOTION_DB_ID`, and `EMDASH_TOKEN` (admin PAT). Optional `EMDASH_URL` defaults to `http://localhost:4321`.

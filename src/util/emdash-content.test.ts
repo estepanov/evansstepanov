@@ -5,7 +5,7 @@ vi.mock('emdash', () => ({
 	getEmDashEntry: vi.fn()
 }));
 
-import { getEmDashCollection, getEmDashEntry } from 'emdash';
+import { getEmDashCollection, getEmDashEntry, type ContentEntry } from 'emdash';
 import {
 	hydrateCollection,
 	loadCompanyBySlug,
@@ -15,12 +15,16 @@ import {
 	publishedTech
 } from './emdash-content';
 
+function asEntry(value: object): ContentEntry {
+	return value as unknown as ContentEntry;
+}
+
 const getCollection = vi.mocked(getEmDashCollection);
 const getEntry = vi.mocked(getEmDashEntry);
 
 const clearSummary = 'Placeholder company summary for local seed.';
 
-const clearCompany = {
+const clearCompany = asEntry({
 	id: 'clear',
 	data: {
 		slug: 'clear',
@@ -29,9 +33,9 @@ const clearCompany = {
 		url: 'https://www.clearme.com',
 		summary: clearSummary
 	}
-};
+});
 
-const staffRole = {
+const staffRole = asEntry({
 	id: 'role-clear-staff',
 	data: {
 		title: 'Staff Software Engineer',
@@ -47,9 +51,9 @@ const staffRole = {
 			]
 		}
 	}
-};
+});
 
-const seniorRole = {
+const seniorRole = asEntry({
 	id: 'role-clear-senior',
 	data: {
 		title: 'Senior Software Engineer',
@@ -66,7 +70,7 @@ const seniorRole = {
 			]
 		}
 	}
-};
+});
 
 describe('slug rejection', () => {
 	beforeEach(() => {
@@ -98,7 +102,7 @@ describe('slug rejection', () => {
 
 	it('returns the mocked Node.js entry for node-js', async () => {
 		getEntry.mockResolvedValue({
-			entry: {
+			entry: asEntry({
 				id: 'node-js',
 				data: {
 					slug: 'node-js',
@@ -108,7 +112,7 @@ describe('slug rejection', () => {
 					description: 'JavaScript runtime',
 					url: 'https://nodejs.org'
 				}
-			},
+			}),
 			cacheHint: { tags: ['tech:node-js'] },
 			isPreview: false
 		});
@@ -175,15 +179,15 @@ describe('loadCompanyBySlug', () => {
 });
 
 describe('publishedCompanyViews', () => {
-	const awsCompany = {
+	const awsCompany = asEntry({
 		id: 'amazon-web-services',
 		data: {
 			slug: 'amazon-web-services',
 			name: 'Amazon Web Services',
 			summary: 'Older tenure.'
 		}
-	};
-	const awsRole = {
+	});
+	const awsRole = asEntry({
 		id: 'role-aws',
 		data: {
 			title: 'SDE',
@@ -191,13 +195,13 @@ describe('publishedCompanyViews', () => {
 			end_date: new Date('2022-01-01T00:00:00.000Z')
 		},
 		references: { company: { entries: [awsCompany] } }
-	};
+	});
 
 	it('skips companies whose slug is a display name', () => {
-		const named = {
+		const named = asEntry({
 			id: 'CLEAR',
 			data: { slug: 'CLEAR', name: 'CLEAR', summary: clearSummary }
-		};
+		});
 		expect(publishedCompanyViews([named], [staffRole])).toEqual([]);
 	});
 
@@ -213,29 +217,35 @@ describe('publishedCompanyViews', () => {
 describe('publishedTech', () => {
 	it('skips a display-name slug', () => {
 		expect(
-			publishedTech({
-				id: 'node',
-				data: { slug: 'Node.js', name: 'Node.js', type: 'Runtime', proficiency: 'Expert' }
-			})
+			publishedTech(
+				asEntry({
+					id: 'node',
+					data: { slug: 'Node.js', name: 'Node.js', type: 'Runtime', proficiency: 'Expert' }
+				})
+			)
 		).toBeUndefined();
 	});
 
 	it('maps a kebab slug and the proficiency weight used for sort', () => {
 		expect(
-			publishedTech({
-				id: 'node-js',
-				data: { slug: 'node-js', name: 'Node.js', type: 'Runtime', proficiency: 'Expert' }
-			})
+			publishedTech(
+				asEntry({
+					id: 'node-js',
+					data: { slug: 'node-js', name: 'Node.js', type: 'Runtime', proficiency: 'Expert' }
+				})
+			)
 		).toMatchObject({
 			slug: 'node-js',
 			name: 'Node.js',
 			proficiencyWeight: 3
 		});
 		expect(
-			publishedTech({
-				id: 'typescript',
-				data: { slug: 'typescript', name: 'TypeScript', proficiency: 'Beginner' }
-			})?.proficiencyWeight
+			publishedTech(
+				asEntry({
+					id: 'typescript',
+					data: { slug: 'typescript', name: 'TypeScript', proficiency: 'Beginner' }
+				})
+			)?.proficiencyWeight
 		).toBe(0);
 	});
 });
@@ -253,12 +263,12 @@ describe('hydrateCollection', () => {
 	});
 
 	it('hydrates each entry with references and merges cache hints', async () => {
-		const listed = { id: 'proj-1', data: { name: 'Site' } };
-		const hydrated = {
+		const listed = asEntry({ id: 'proj-1', data: { name: 'Site' } });
+		const hydrated = asEntry({
 			id: 'proj-1',
 			data: { name: 'Site' },
 			references: { tech: { entries: [{ data: { name: 'TypeScript' } }] } }
-		};
+		});
 		getEntry.mockResolvedValue({
 			entry: hydrated,
 			cacheHint: { tags: ['projects:proj-1'] },
@@ -279,28 +289,30 @@ describe('hydrateCollection', () => {
 
 describe('projectFromEntry', () => {
 	it('maps repeater image urls from src, url, and asset.url', () => {
-		const project = projectFromEntry({
-			id: 'site',
-			data: {
-				slug: 'site',
-				name: 'Site',
-				description: 'Portfolio',
-				url: 'https://example.com',
-				source: 'https://github.com/x/y',
-				is_active: true,
-				start_date: new Date('2024-01-01T00:00:00.000Z'),
-				media: [
-					{ image: { src: '/_emdash/api/media/file/abc' } },
-					{ image: { url: 'https://cdn.example/shot.jpg' } },
-					{ image: { asset: { url: 'https://cdn.example/asset.png' } } },
-					{ image: { alt: 'no published url' } },
-					null
-				]
-			},
-			references: {
-				tech: { entries: [{ data: { name: 'TypeScript' } }, { data: { name: '  ' } }] }
-			}
-		});
+		const project = projectFromEntry(
+			asEntry({
+				id: 'site',
+				data: {
+					slug: 'site',
+					name: 'Site',
+					description: 'Portfolio',
+					url: 'https://example.com',
+					source: 'https://github.com/x/y',
+					is_active: true,
+					start_date: new Date('2024-01-01T00:00:00.000Z'),
+					media: [
+						{ image: { src: '/_emdash/api/media/file/abc' } },
+						{ image: { url: 'https://cdn.example/shot.jpg' } },
+						{ image: { asset: { url: 'https://cdn.example/asset.png' } } },
+						{ image: { alt: 'no published url' } },
+						null
+					]
+				},
+				references: {
+					tech: { entries: [{ data: { name: 'TypeScript' } }, { data: { name: '  ' } }] }
+				}
+			})
+		);
 
 		expect(project.media).toEqual([
 			'/_emdash/api/media/file/abc',
@@ -314,6 +326,6 @@ describe('projectFromEntry', () => {
 	});
 
 	it('returns an empty media list when the repeater is missing', () => {
-		expect(projectFromEntry({ id: 'bare', data: { name: 'Bare' } }).media).toEqual([]);
+		expect(projectFromEntry(asEntry({ id: 'bare', data: { name: 'Bare' } })).media).toEqual([]);
 	});
 });

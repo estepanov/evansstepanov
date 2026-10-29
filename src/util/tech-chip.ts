@@ -7,10 +7,7 @@ export type TechChip = {
 	proficiencyWeight?: number;
 };
 
-export function techChipHref(
-	name: string,
-	published: Array<{ name: string; slug: string }>
-): string | undefined {
+export function techChipHref(name: string, published: TechChip[]): string | undefined {
 	const match = published.find((tech) => tech.name === name);
 	if (!match || !isUrlSlug(match.slug)) return undefined;
 	return `/tech/${match.slug}/`;
