@@ -6,12 +6,12 @@
 	import type { Work } from '../../../data/work';
 	import type { Project } from '../../../data/projects';
 	import { mediaSrc } from './media-src';
-	import { techNameHref } from '../../../util/to-url-slug';
+	import { techChipHref, type TechChip } from '../../../util/tech-chip';
 
 	export let open = false;
 	export let item: Work | Project | undefined = undefined;
 	export let type: 'work' | 'project' = 'work';
-	export let tech: Array<{ name: string; type?: string; proficiencyWeight?: number }> = [];
+	export let tech: TechChip[] = [];
 	export let onClose: () => void = () => {};
 
 	const CATEGORY_ORDER = ['Runtime', 'Language', 'Framework', 'Library', 'Database', 'DevOps'];
@@ -203,10 +203,13 @@
 									<div class="stack-cat">{group.category}</div>
 									<ul class="stack-chips" aria-label="{group.category} technologies">
 										{#each group.tags as tag (tag)}
+											{@const href = techChipHref(tag, tech)}
 											<li>
-												<a href={techNameHref(tag)} class="chip"
-													><span class="chip-text">{tag}</span></a
-												>
+												{#if href}
+													<a {href} class="chip"><span class="chip-text">{tag}</span></a>
+												{:else}
+													<span class="chip"><span class="chip-text">{tag}</span></span>
+												{/if}
 											</li>
 										{/each}
 									</ul>

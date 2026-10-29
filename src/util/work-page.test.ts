@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Project } from '../data/projects';
 import type { CompanyPage } from './emdash-content';
-import { relatedProjectsForCompany, resolveCompanyPage, techChipHref } from './work-page';
+import { relatedProjectsForCompany, resolveCompanyPage } from './work-page';
 
 describe('resolveCompanyPage', () => {
 	it('returns not found for Node.js without looking up a company', async () => {
@@ -60,16 +60,5 @@ describe('relatedProjectsForCompany', () => {
 
 	it('returns none when there is no intersection', () => {
 		expect(relatedProjectsForCompany(['React'], [other])).toEqual([]);
-	});
-});
-
-describe('techChipHref', () => {
-	it('links by published slug, never by display name', () => {
-		expect(techChipHref('Node.js', [{ name: 'Node.js', slug: 'node-js' }])).toBe('/tech/node-js/');
-	});
-
-	it('does not link a name with no published url slug', () => {
-		expect(techChipHref('Node.js', [])).toBeUndefined();
-		expect(techChipHref('Node.js', [{ name: 'Node.js', slug: 'Node.js' }])).toBeUndefined();
 	});
 });

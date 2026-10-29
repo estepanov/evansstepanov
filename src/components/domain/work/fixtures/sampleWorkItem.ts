@@ -20,7 +20,7 @@ export const samplePastWorkItem = {
 };
 
 export const sampleTech = [
-	{ name: 'TypeScript', type: 'Language', proficiencyWeight: 5 },
-	{ name: 'Svelte', type: 'Framework', proficiencyWeight: 4 },
-	{ name: 'PostgreSQL', type: 'Database', proficiencyWeight: 3 }
+	{ name: 'TypeScript', slug: 'typescript', type: 'Language', proficiencyWeight: 5 },
+	{ name: 'Svelte', slug: 'svelte', type: 'Framework', proficiencyWeight: 4 },
+	{ name: 'PostgreSQL', slug: 'postgresql', type: 'Database', proficiencyWeight: 3 }
 ];

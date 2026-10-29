@@ -39,7 +39,12 @@ const techItems = techResult.entries
 	.map(publishedTech)
 	.filter((tech): tech is NonNullable<typeof tech> => Boolean(tech?.name));
 const publishedTechChips = techItems.map((tech) => ({ name: tech.name, slug: tech.slug }));
-const techForCards = techItems.map((tech) => ({ name: tech.name, type: tech.type }));
+const techForCards = techItems.map((tech) => ({
+	name: tech.name,
+	slug: tech.slug,
+	type: tech.type,
+	proficiencyWeight: tech.proficiencyWeight
+}));
 const relatedProjects = relatedProjectsForCompany(
 	company.techTags,
 	hydratedProjects.entries.map(projectFromEntry).filter((project) => project.name)

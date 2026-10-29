@@ -137,7 +137,12 @@ const quotes: Quote[] = quotesResult.entries
 const fallback = ssrFooterQuote(quotes, EDISON_QUOTE);
 
 const currentYear = new Date().getFullYear();
-const techForCards = techItems.map((tech) => ({ name: tech.name, type: tech.type }));
+const techForCards = techItems.map((tech) => ({
+	name: tech.name,
+	slug: tech.slug,
+	type: tech.type,
+	proficiencyWeight: tech.proficiencyWeight
+}));
 ---
 
 <Base>

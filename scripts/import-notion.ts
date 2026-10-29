@@ -148,7 +148,7 @@ async function queryAll(client: Client, databaseId: string) {
 	return results.filter(isFullPage);
 }
 
-function planFromMapped(input: {
+export function planFromMapped(input: {
 	tech: Tech[];
 	work: Work[];
 	projects: ProjectWithMedia[];
@@ -443,21 +443,57 @@ type ContentItem = {
 	data?: Record<string, unknown>;
 };
 
+function asRecord(value: unknown): Record<string, unknown> {
+	return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+}
+
+function asContentItem(data: unknown): ContentItem {
+	const record = asRecord(data);
+	const nested = asRecord(record.item);
+	const item = typeof nested.id === 'string' ? nested : record;
+	const id = typeof item.id === 'string' ? item.id : undefined;
+	if (!id) throw new Error('Content response missing id');
+	const slug = typeof item.slug === 'string' || item.slug === null ? item.slug : undefined;
+	const rev =
+		typeof record._rev === 'string'
+			? record._rev
+			: typeof item._rev === 'string'
+				? item._rev
+				: undefined;
+	return { id, slug, _rev: rev, data: asRecord(item.data) };
+}
+
+function asTermId(data: unknown): string {
+	const record = asRecord(data);
+	const term = asRecord(record.term);
+	const id =
+		typeof term.id === 'string' ? term.id : typeof record.id === 'string' ? record.id : undefined;
+	if (!id) throw new Error('Term response missing id');
+	return id;
+}
+
+function asMediaItem(data: unknown): { id: string; url?: string } {
+	const record = asRecord(data);
+	const item = asRecord(record.item);
+	const source = typeof item.id === 'string' ? item : record;
+	const id = typeof source.id === 'string' ? source.id : undefined;
+	if (!id) throw new Error('Media response missing id');
+	return { id, url: typeof source.url === 'string' ? source.url : undefined };
+}
+
 async function ensureTerm(api: EmDashApi, taxonomy: string, label: string): Promise<string> {
 	const slug = toUrlSlug(label);
 	try {
-		const existing = await api.get<{ id: string }>(
-			`/_emdash/api/taxonomies/${taxonomy}/terms/${slug}`
-		);
-		return existing.id;
+		const existing = await api.get<unknown>(`/_emdash/api/taxonomies/${taxonomy}/terms/${slug}`);
+		return asTermId(existing);
 	} catch (error) {
 		if ((error as { status?: number }).status !== 404) throw error;
 	}
-	const created = await api.post<{ id: string }>(`/_emdash/api/taxonomies/${taxonomy}/terms`, {
+	const created = await api.post<unknown>(`/_emdash/api/taxonomies/${taxonomy}/terms`, {
 		slug,
 		label
 	});
-	return created.id;
+	return asTermId(created);
 }
 
 async function uploadMedia(api: EmDashApi, url: string): Promise<{ id: string; url?: string }> {
@@ -469,7 +505,7 @@ async function uploadMedia(api: EmDashApi, url: string): Promise<{ id: string; u
 	const form = new FormData();
 	form.set('file', new Blob([bytes]), filenameFromUrl(url));
 	form.set('deduplicate', 'true');
-	return api.post<{ id: string; url?: string }>('/_emdash/api/media', form);
+	return asMediaItem(await api.post<unknown>('/_emdash/api/media', form));
 }
 
 async function upsertEntry(
@@ -514,32 +550,35 @@ async function upsertEntry(
 			)
 		: undefined;
 
-	if (existing) {
-		const updated = await api.put<ContentItem>(
-			`/_emdash/api/content/${entry.collection}/${existing.id}`,
-			{
-				data,
-				slug: entry.slug,
-				_rev: existing._rev,
-				...(references ? { references } : {}),
-				...(taxonomies ? { taxonomies } : {})
-			}
-		);
-		idByCollectionSlug.set(key, { ...updated, slug: entry.slug });
-		return updated.id;
+	const written = existing
+		? asContentItem(
+				await api.put<unknown>(`/_emdash/api/content/${entry.collection}/${existing.id}`, {
+					data,
+					slug: entry.slug,
+					_rev: existing._rev,
+					...(references ? { references } : {}),
+					...(taxonomies ? { taxonomies } : {})
+				})
+			)
+		: asContentItem(
+				await api.post<unknown>(`/_emdash/api/content/${entry.collection}`, {
+					data,
+					slug: entry.slug,
+					...(references ? { references } : {}),
+					...(taxonomies ? { taxonomies } : {})
+				})
+			);
+	if (!written._rev) {
+		throw new Error(`Missing _rev after writing ${entry.collection}/${entry.slug}`);
 	}
-
-	const created = await api.post<ContentItem>(`/_emdash/api/content/${entry.collection}`, {
-		data,
-		slug: entry.slug,
-		...(references ? { references } : {}),
-		...(taxonomies ? { taxonomies } : {})
+	await api.post(`/_emdash/api/content/${entry.collection}/${written.id}/publish`, {
+		_rev: written._rev
 	});
-	idByCollectionSlug.set(key, { ...created, slug: entry.slug });
-	return created.id;
+	idByCollectionSlug.set(key, { ...written, slug: entry.slug });
+	return written.id;
 }
 
-async function applyPlan(plan: ImportPlan, env: NodeJS.Dict<string>): Promise<void> {
+export async function applyPlan(plan: ImportPlan, env: NodeJS.Dict<string>): Promise<void> {
 	const token = env.EMDASH_TOKEN?.trim();
 	if (!token) {
 		throw new Error('EMDASH_TOKEN is required for --apply');

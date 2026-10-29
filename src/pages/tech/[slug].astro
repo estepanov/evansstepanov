@@ -58,7 +58,12 @@ const techIcon = getTechIcon(tech.name);
 const techItems = techResult.entries
 	.map(publishedTech)
 	.filter((item): item is NonNullable<typeof item> => Boolean(item?.name));
-const techForCards = techItems.map((item) => ({ name: item.name, type: item.type }));
+const techForCards = techItems.map((item) => ({
+	name: item.name,
+	slug: item.slug,
+	type: item.type,
+	proficiencyWeight: item.proficiencyWeight
+}));
 const relatedWork = relatedCompaniesForTech(
 	tech.name,
 	publishedCompanyViews(companiesResult.entries, hydratedRoles.entries)

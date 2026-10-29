@@ -2,10 +2,11 @@
 	import * as Fathom from 'fathom-client';
 	import ProjectCardView from './ProjectCardView.svelte';
 	import type { Project } from '../../../data/projects';
+	import type { TechChip } from '../../../util/tech-chip';
 
 	export let item: Project;
 	export let idHash: ((name: string) => string) | undefined = undefined;
-	export let tech: Array<{ name: string; type?: string }> = [];
+	export let tech: TechChip[] = [];
 
 	const handleLinkClick = (itemName: string) => {
 		Fathom.trackEvent(`click_project_link-${itemName}`);

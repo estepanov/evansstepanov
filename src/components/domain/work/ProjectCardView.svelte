@@ -8,10 +8,11 @@
 	import { handleGlowLeave, handleGlowMove } from './gridCardGlow';
 	import { glareScrollDriver } from './gridCardGlare';
 	import type { Project } from '../../../data/projects';
+	import type { TechChip } from '../../../util/tech-chip';
 
 	export let item: Project;
 	export let idHash: ((name: string) => string) | undefined = undefined;
-	export let tech: Array<{ name: string; type?: string }> = [];
+	export let tech: TechChip[] = [];
 	export let onLinkClick: (itemName: string) => void = () => {};
 	export let onSourceClick: (itemName: string) => void = () => {};
 	export let onDetailsClick: () => void = () => {};

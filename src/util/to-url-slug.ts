@@ -16,10 +16,6 @@ export function isUrlSlug(input: string): boolean {
 	return URL_SLUG_PATTERN.test(input);
 }
 
-export function techNameHref(name: string): string {
-	return `/tech/${toUrlSlug(name)}/`;
-}
-
 export function uniqueUrlSlugs(names: string[]): Map<string, string> {
 	const slugToName = new Map<string, string>();
 	for (const name of names) {

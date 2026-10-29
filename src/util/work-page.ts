@@ -3,6 +3,9 @@ import type { Project } from '../data/projects';
 import { loadCompanyBySlug, type CompanyPage } from './emdash-content';
 import { isUrlSlug } from './to-url-slug';
 
+export type { TechChip } from './tech-chip';
+export { techChipHref } from './tech-chip';
+
 export async function resolveCompanyPage(
 	rawSlug: string | undefined,
 	load: (slug: string) => Promise<CompanyPage | null> = loadCompanyBySlug
@@ -27,13 +30,4 @@ export function relatedProjectsForCompany(
 			const rightTime = right.startDate?.getTime() ?? 0;
 			return rightTime - leftTime;
 		});
-}
-
-export function techChipHref(
-	name: string,
-	published: Array<{ name: string; slug: string }>
-): string | undefined {
-	const match = published.find((tech) => tech.name === name);
-	if (!match || !isUrlSlug(match.slug)) return undefined;
-	return `/tech/${match.slug}/`;
 }
