@@ -1,0 +1,30 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "evansstepanov",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-10-28",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "evansstepanov"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "evansstepanov-media"
+		}
+	],
+	"images": {
+		"binding": "IMAGES"
+	},
+	"triggers": {
+		"crons": ["* * * * *"]
+	},
+	"observability": {
+		"enabled": true,
+		"logs": { "enabled": true, "head_sampling_rate": 1 },
+		"traces": { "enabled": true, "head_sampling_rate": 0.01 }
+	}
+}

@@ -11,6 +11,8 @@ node_modules
 /data
 .emdash/
 emdash-env.d.ts
+.wrangler
+.dev.vars
 .superpowers
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

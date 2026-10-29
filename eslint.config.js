@@ -12,6 +12,8 @@ export default [
 			'build/**',
 			'dist/**',
 			'.astro/**',
+			'.wrangler/**',
+			'worker-configuration.d.ts',
 			'.svelte-kit/**',
 			'package/**',
 			'.env',

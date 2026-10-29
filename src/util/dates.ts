@@ -1,4 +1,4 @@
-// Notion dates arrive as ISO date strings, which `new Date` parses as UTC midnight.
+// ISO date strings (`YYYY-MM-DD`) parse as UTC midnight in `new Date`.
 // Format in UTC so a 1st-of-month date cannot roll back into the previous month.
 export const getFormattedDate = (date: Date): string => {
 	const month = date.toLocaleString('default', { month: 'long', timeZone: 'UTC' });

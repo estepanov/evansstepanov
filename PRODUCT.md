@@ -38,14 +38,14 @@ The user confirmed all four pillars without ranking them. They are recorded as o
 - **Quotes.** Home footer only. Seed includes Edison; SSR serves that (or the first published) quote, and a Svelte island shuffles among published quotes on the client. `/work` and `/tech` do not load quotes.
 - **Surfaces.** `/` (About, Links, Work, Projects, Tech, footer quote), `/work/` and `/work/[slug]/`, `/tech/` and `/tech/[slug]/`, `/bookmarks/` (deliberately unindexed). Canonical health is `/api/health/` 200. Admin is `/_emdash/admin/`.
 - **Analytics.** Fathom via `PUBLIC_FATHOM_SITE_ID`, loaded in `src/layouts/Base.astro` when the site id is set. Analytics calls stay out of presentational `*View` shells so stories stay free of them.
-- **Component workshop.** Storybook on `:6006` (`npm run storybook`), stories colocated as `*.stories.svelte`, needs no CMS (no EmDash, no Notion). Grouped `Actions/ Feedback/ Chrome/ Layout/ Media/ Icons/ Domain/<feature>`.
+- **Component workshop.** Storybook on `:6006` (`npm run storybook`), stories colocated as `*.stories.svelte`, needs no CMS. Grouped `Actions/ Feedback/ Chrome/ Layout/ Media/ Icons/ Domain/<feature>`.
 - **Theming.** Light/dark with a system default, persisted in `localStorage`, applied as a `dark` class on `<html>` by an inline no-flash script in `src/layouts/Base.astro`.
-- **Local development requires `.env`:** `EMDASH_ENCRYPTION_KEY`. Optional: `PUBLIC_FATHOM_SITE_ID`. Notion credentials are only for a live `scripts/import-notion.ts` run.
+- **Local development requires `.env`:** `EMDASH_ENCRYPTION_KEY`. Optional: `PUBLIC_FATHOM_SITE_ID`.
 - **AI crawler policy as shipped:** `static/robots.txt` disallows `ChatGPT-User` sitewide.
 
 ## Capabilities and Constraints
 
-**Stack (answered by the codebase).** Astro `output: "server"` + EmDash + Svelte 5 + TypeScript + Tailwind v4. Local: `@astrojs/node` + SQLite + local media. `trailingSlash: 'always'`. React hydrates `/_emdash/admin` only. Node `>=24 <25` pinned in `.nvmrc`.
+**Stack (answered by the codebase).** Astro `output: "server"` + EmDash + Svelte 5 + TypeScript + Tailwind v4. Local: `@astrojs/node` + SQLite + local media. Production: Cloudflare Workers + D1 + R2 when `ADAPTER=cloudflare`. `trailingSlash: 'always'`. React hydrates `/_emdash/admin` only. Node `>=24 <25` pinned in `.nvmrc`.
 
 **Binding constraints:**
 
@@ -65,7 +65,7 @@ The user confirmed all four pillars without ranking them. They are recorded as o
 **Open product decisions (recorded, not invented):**
 
 - The primary action for a hiring visitor is undecided. The landing page currently has no contact path — it ends on an Edison quote. Email, calendar, or form: not established.
-- Deployment host is not recorded in the repo (origin is `github.com/estepanov/evansstepanov`); the public domain is not asserted here. Cloudflare Workers + D1 + R2 is the planned production adapter and is not wired in this checkout.
+- Deployment host is Cloudflare Workers (`wrangler.jsonc`, Worker name `evansstepanov`) with D1 and R2. The public custom domain is not asserted here.
 - No accessibility conformance level (e.g. WCAG 2.2 AA) was named.
 
 ## Brand Commitments

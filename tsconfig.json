@@ -6,8 +6,7 @@
 		"storybook-static",
 		"node_modules",
 		".astro",
-		"src/routes",
-		"src/util/notion.ts"
+		".wrangler"
 	],
 	"compilerOptions": {
 		"baseUrl": ".",

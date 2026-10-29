@@ -33,7 +33,7 @@ describe('formatDateRange', () => {
 });
 
 describe('getFormattedDate', () => {
-	// Notion hands us ISO date strings, which `new Date` parses as UTC midnight.
+	// ISO date strings parse as UTC midnight.
 	// Reading them back with local-timezone getters rolls a 1st-of-month date into
 	// the previous month for every negative-UTC-offset zone.
 	it('formats a first-of-month ISO date without slipping a month', () => {

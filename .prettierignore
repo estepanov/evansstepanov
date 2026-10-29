@@ -16,6 +16,11 @@ yarn.lock
 /storybook-static
 *storybook.log
 
+# Cloudflare
+.wrangler
+worker-configuration.d.ts
+/dist
+
 # Local agent/tooling state (untracked)
 /.agents
 /.claude
