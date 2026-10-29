@@ -15,10 +15,13 @@ test('tech section renders flat category rows', async ({ page }) => {
 	const firstLabel = rows.first().locator('.tech-row__label');
 	await expect(firstLabel).toHaveAttribute('href', /^\/tech\/#/);
 
-	// Every item links to its own tech detail page.
+	// Every item links to its own tech detail page by url slug.
 	const items = page.locator('.tech-rows .tech-item');
 	expect(await items.count()).toBeGreaterThan(0);
-	await expect(items.first()).toHaveAttribute('href', /^\/tech\/[^#]/);
+	const hrefs = await items.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href')));
+	for (const href of hrefs) {
+		expect(href).toMatch(/^\/tech\/[a-z0-9]+(?:-[a-z0-9]+)*\/?$/);
+	}
 });
 
 test('tech section has no card surfaces or proficiency controls', async ({ page }) => {

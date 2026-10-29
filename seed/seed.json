@@ -425,6 +425,35 @@
 				}
 			}
 		],
+		"tech": [
+			{
+				"id": "tech-node-js",
+				"slug": "node-js",
+				"status": "published",
+				"data": {
+					"name": "Node.js",
+					"type": "Runtime"
+				}
+			}
+		],
+		"links": [
+			{
+				"id": "link-github",
+				"status": "published",
+				"data": {
+					"title": "GitHub",
+					"url": "https://github.com/evansstepanov"
+				}
+			},
+			{
+				"id": "link-linkedin",
+				"status": "published",
+				"data": {
+					"title": "LinkedIn",
+					"url": "https://www.linkedin.com/in/evansstepanov"
+				}
+			}
+		],
 		"roles": [
 			{
 				"id": "role-clear-staff",

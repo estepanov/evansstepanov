@@ -30,7 +30,53 @@ export default defineConfig({
 		})
 	],
 	vite: {
-		plugins: [tailwindcss()],
+		ssr: {
+			noExternal: ['cookie']
+		},
+		plugins: [
+			tailwindcss(),
+			{
+				name: 'emdash-env-chunks',
+				enforce: 'post',
+				outputOptions(opts) {
+					const envName = this.environment?.name ?? 'ssr';
+					if (envName !== 'client') return;
+					const groups = [
+						{
+							name: 'clsx',
+							test: /node_modules[\\/]clsx(?:[\\/]|$)/,
+							priority: 40
+						},
+						{
+							name: 'react',
+							test: /node_modules[\\/](?:react|react-dom|scheduler)(?:[\\/]|$)|preload-helper|modulepreload-polyfill/,
+							priority: 30
+						},
+						{
+							name: 'emdash-admin',
+							test: /node_modules[\\/](?:@emdash-cms|emdash)(?:[\\/]|$)/,
+							priority: 10
+						}
+					];
+					opts.manualChunks = (id) => {
+						if (/node_modules[\\/](?:react|react-dom|scheduler)(?:[\\/]|$)/.test(id)) {
+							return 'react';
+						}
+						if (id.includes('preload-helper') || id.includes('modulepreload-polyfill')) {
+							return 'react';
+						}
+						if (/node_modules[\\/]clsx(?:[\\/]|$)/.test(id)) return 'clsx';
+						if (
+							id.includes('node_modules/@emdash-cms') ||
+							/node_modules[\\/]emdash(?:[\\/]|$)/.test(id)
+						) {
+							return 'emdash-admin';
+						}
+					};
+					opts.codeSplitting = { groups };
+				}
+			}
+		],
 		resolve: {
 			alias: {
 				$lib: srcLib

@@ -13,6 +13,7 @@
 		"check": "astro check",
 		"check:watch": "astro check --watch",
 		"test:unit": "vitest run",
+		"verify:public-js": "tsx scripts/verify-public-js.ts",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
 		"lint": "prettier --check . && eslint .",

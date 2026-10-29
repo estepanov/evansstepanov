@@ -10,6 +10,6 @@ export default defineConfig({
 		}
 	},
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
+		include: ['src/**/*.{test,spec}.{js,ts}', 'scripts/**/*.{test,spec}.{js,ts}']
 	}
 } as Parameters<typeof defineConfig>[0] & { test: { include: string[] } });
