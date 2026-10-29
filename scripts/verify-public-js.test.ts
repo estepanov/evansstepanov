@@ -42,12 +42,23 @@ describe('scanPublicJs', () => {
 	});
 
 	it('allows react in an admin-named chunk', () => {
-		const result = scanPublicJs([
+		const result = scanPublicJs(
+			[
+				{ path: '/_astro/island.js', content: 'export const n = 1;' },
+				{
+					path: '/_astro/emdash-admin.CI6OnekD.js',
+					content: 'from "react"; react-dom; @emdash-cms/admin'
+				}
+			],
 			{
-				path: '/_astro/emdash-admin.CI6OnekD.js',
-				content: 'from "react"; react-dom; @emdash-cms/admin'
+				htmlDocuments: [
+					{
+						path: '/index.html',
+						content: '<script type="module" src="/_astro/island.js"></script>'
+					}
+				]
 			}
-		]);
+		);
 
 		expect(result.ok).toBe(true);
 		expect(result.violations).toEqual([]);
@@ -172,6 +183,91 @@ describe('scanPublicJs', () => {
 		expect(result.ok).toBe(false);
 		expect(
 			result.violations.some((violation) => violation.path.endsWith('emdash-admin.CI6OnekD.js'))
+		).toBe(true);
+	});
+
+	it('fails when a public island imports a marker-free emdash-admin chunk', () => {
+		const result = scanPublicJs(
+			[
+				{
+					path: '/_astro/island.js',
+					content: 'import { n } from "./emdash-admin.x.js";'
+				},
+				{
+					path: '/_astro/emdash-admin.x.js',
+					content: 'export const n = 1'
+				}
+			],
+			{
+				htmlDocuments: [
+					{
+						path: '/index.html',
+						content: '<script type="module" src="/_astro/island.js"></script>'
+					}
+				]
+			}
+		);
+
+		expect(result.ok).toBe(false);
+		expect(
+			result.violations.some((violation) => violation.path.endsWith('emdash-admin.x.js'))
+		).toBe(true);
+	});
+
+	it('fails when a public island imports a marker-free react chunk', () => {
+		const result = scanPublicJs(
+			[
+				{
+					path: '/_astro/island.js',
+					content: 'import { n } from "./react.x.js";'
+				},
+				{
+					path: '/_astro/react.x.js',
+					content: 'export const n = 1'
+				}
+			],
+			{
+				htmlDocuments: [
+					{
+						path: '/index.html',
+						content: '<script type="module" src="/_astro/island.js"></script>'
+					}
+				]
+			}
+		);
+
+		expect(result.ok).toBe(false);
+		expect(result.violations.some((violation) => violation.path.endsWith('react.x.js'))).toBe(true);
+	});
+
+	it('follows side-effect import without from', () => {
+		const result = scanPublicJs(
+			[
+				{
+					path: '/_astro/FooterQuote.js',
+					content: 'import"./disclose-version.x.js";'
+				},
+				{
+					path: '/_astro/disclose-version.x.js',
+					content: 'export const n = 1; import "react-dom";'
+				}
+			],
+			{
+				htmlDocuments: [
+					{
+						path: '/index.html',
+						content: '<script type="module" src="/_astro/FooterQuote.js"></script>'
+					}
+				]
+			}
+		);
+
+		expect(result.ok).toBe(false);
+		expect(
+			result.violations.some(
+				(violation) =>
+					violation.path.endsWith('disclose-version.x.js') && violation.marker === 'react-dom'
+			)
 		).toBe(true);
 	});
 });

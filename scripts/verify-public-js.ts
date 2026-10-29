@@ -32,7 +32,9 @@ export type ScanPublicJsOptions = {
 };
 
 const CLIENT_ASSET_REF =
-	/(?:(?:src|href)=["']([^"']+\.js)["']|from\s*["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)|["'](\/_astro\/[^"']+\.js)["'])/g;
+	/(?:(?:src|href)=["']([^"']+\.js)["']|from\s*["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)|import\s*["']([^"']+)["']|["'](\/_astro\/[^"']+\.js)["'])/g;
+
+const FORBIDDEN_PUBLIC_CHUNK_PREFIXES = ['emdash-admin', 'react'] as const;
 
 function normalizePath(assetPath: string): string {
 	return assetPath.replaceAll('\\', '/');
@@ -44,8 +46,15 @@ function basename(assetPath: string): string {
 }
 
 export function isExemptClientPath(assetPath: string): boolean {
-	const normalized = normalizePath(assetPath);
-	return normalized.includes('/_emdash/') || basename(normalized).includes('emdash-admin');
+	return isEmdashUrl(assetPath);
+}
+
+export function forbiddenPublicChunkMarker(assetPath: string): string | undefined {
+	const name = basename(assetPath);
+	for (const prefix of FORBIDDEN_PUBLIC_CHUNK_PREFIXES) {
+		if (name === `${prefix}.js` || name.startsWith(`${prefix}.`)) return prefix;
+	}
+	return undefined;
 }
 
 export function isEmdashUrl(assetPath: string): boolean {
@@ -59,7 +68,7 @@ function markersIn(content: string): string[] {
 export function extractClientAssetRefs(source: string): string[] {
 	const refs: string[] = [];
 	for (const match of source.matchAll(CLIENT_ASSET_REF)) {
-		const ref = match[1] ?? match[2] ?? match[3] ?? match[4];
+		const ref = match[1] ?? match[2] ?? match[3] ?? match[4] ?? match[5];
 		if (ref) refs.push(ref);
 	}
 	return refs;
@@ -154,6 +163,12 @@ export function scanPublicJs(
 		const asset = index.get(assetPath);
 		if (!asset) continue;
 		if (!htmlDocuments && isExemptClientPath(asset.path)) continue;
+		if (htmlDocuments) {
+			const forbiddenChunk = forbiddenPublicChunkMarker(asset.path);
+			if (forbiddenChunk) {
+				violations.push({ path: asset.path, marker: forbiddenChunk });
+			}
+		}
 		for (const marker of markersIn(asset.content)) {
 			violations.push({ path: asset.path, marker });
 		}
