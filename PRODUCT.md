@@ -58,7 +58,7 @@ The user confirmed all four pillars without ranking them. They are recorded as o
 
 **Terminology:**
 
-- `Work` — a single role. `Company` — roles grouped by company; **one card per company**, newest role first, so a promotion never adds a card (`companyHighlights` in `src/util/company.ts`).
+- `Work` — a single role. `Company` — EmDash `companies` with related `roles`; **one card per company**, newest role first, so a promotion never adds a card (`publishedCompanyViews` / `companyFromRoles` in `src/util/` — not derived by grouping role rows alone).
 - `Tech` — a stack entry with `proficiency` (`Beginner | Intermediate | Advanced | Expert`, weighted 0–3) and a `TechType` category (`Runtime, Language, Framework, Library, Database, Data, Cloud, DevOps, AI`).
 - `Project` — carries `isActive`, `startDate`/`endDate`, `url`, `source`, `media`. Sorting is active-first, then newest.
 
@@ -101,7 +101,7 @@ The user confirmed all four pillars without ranking them. They are recorded as o
 
 1. **The site must be the proof.** No claim about craft, performance, or accessibility that the site itself does not demonstrate in the same moment.
 2. **Real or absent.** EmDash is the source. Nothing invented to fill a layout, nothing duplicated into code.
-3. **Answer the hiring question first, keep the depth one link away.** The landing page resolves level and scope; `/work`, `/tech`, and `/projects` carry the detail peers want, undiluted.
+3. **Answer the hiring question first, keep the depth one link away.** The landing page resolves level and scope; `/work` and `/tech` carry the detail peers want, undiluted. `projects` appear on the landing and in related lists only — not as a public depth route.
 4. **Structure must not inflate the record.** One card per company, one honest proficiency per technology, active projects first — never let layout imply more than happened.
 5. **Accessibility and reduced-motion support are requirements,** not final-pass polish.
 
